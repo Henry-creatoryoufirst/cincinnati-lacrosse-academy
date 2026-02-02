@@ -1119,18 +1119,8 @@ a[href*="→"] {
   transform: scale(1.05);
 }
 
-/* Image fade-in on load */
+/* Image fade-in on load - removed opacity:0 rule that was hiding lazy images */
 img {
-  opacity: 1;
-  transition: opacity 0.4s ease;
-}
-
-img[loading="lazy"] {
-  opacity: 0;
-}
-
-img[loading="lazy"].loaded,
-img:not([loading="lazy"]) {
   opacity: 1;
 }
 
