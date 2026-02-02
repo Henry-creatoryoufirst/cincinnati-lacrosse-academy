@@ -25,10 +25,10 @@ export default function Footer() {
           <div>
             <h4 className="footer-title">Connect</h4>
             <ul className="footer-links" style={{ display: 'flex', flexWrap: 'wrap', gap: '24px' }}>
-              <li><a href="https://youtube.com/@cincinnatilaax" target="_blank" rel="noopener noreferrer">YouTube</a></li>
-              <li><a href="https://podcasts.apple.com" target="_blank" rel="noopener noreferrer">Podcast</a></li>
+              <li><a href="https://youtube.com/@theschertzingertwins?si=xNoJs0yxNOsK_snw" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+              <li><a href="https://podcasts.apple.com/us/podcast/the-infinite-game-podcast/id1657820186" target="_blank" rel="noopener noreferrer">Podcast</a></li>
               <li><a href="https://youprjct.com" target="_blank" rel="noopener noreferrer">You.Prjct App</a></li>
-              <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              <li><a href="https://www.instagram.com/cincinnati_lax_acdmy?igsh=OXBqeGs5cmtyNjdy&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a></li>
             </ul>
           </div>
         </div>

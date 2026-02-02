@@ -128,14 +128,11 @@ export default function ContactPage() {
                     Stay connected with CLA on social media for training tips, event updates, and lacrosse content.
                   </p>
                   <div className="flex gap-3">
-                    <a href="https://youtube.com/@cincinnatilaxtv" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center text-white hover:bg-red-600 transition-colors">
+                    <a href="https://youtube.com/@theschertzingertwins?si=xNoJs0yxNOsK_snw" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center text-white hover:bg-red-600 transition-colors">
                       YT
                     </a>
-                    <a href="https://instagram.com/cincinnatlax" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center text-white hover:bg-pink-600 transition-colors">
+                    <a href="https://www.instagram.com/cincinnati_lax_acdmy?igsh=OXBqeGs5cmtyNjdy&utm_source=qr" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center text-white hover:bg-pink-600 transition-colors">
                       IG
-                    </a>
-                    <a href="https://twitter.com/cincinnatlax" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-blue-400 rounded-lg flex items-center justify-center text-white hover:bg-blue-500 transition-colors">
-                      X
                     </a>
                   </div>
                 </CardContent>

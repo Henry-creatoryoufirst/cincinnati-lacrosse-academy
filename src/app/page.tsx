@@ -682,7 +682,7 @@ export default function HomePage() {
                   Behind the scenes, training content, and the journey of building something special.
                 </p>
                 <a
-                  href="https://youtube.com/@cincinnatilaax"
+                  href="https://youtube.com/@theschertzingertwins?si=xNoJs0yxNOsK_snw"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -861,7 +861,7 @@ export default function HomePage() {
                   To play the infinite game is to live as both masterpiece and work in progress, never finished, always invited further.
                 </p>
                 <a
-                  href="https://podcasts.apple.com"
+                  href="https://podcasts.apple.com/us/podcast/the-infinite-game-podcast/id1657820186"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
