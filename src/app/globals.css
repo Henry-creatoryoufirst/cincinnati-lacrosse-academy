@@ -386,6 +386,33 @@ p {
   }
 }
 
+/* Mobile Menu Button & Desktop Nav Responsive */
+.mobile-menu-button {
+  display: flex !important;
+}
+
+.desktop-nav {
+  display: none !important;
+}
+
+.nav-tagline {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-button {
+    display: none !important;
+  }
+
+  .desktop-nav {
+    display: flex !important;
+  }
+
+  .nav-tagline {
+    display: inline;
+  }
+}
+
 .nav-link {
   font-size: 0.9375rem;
   font-weight: 500;

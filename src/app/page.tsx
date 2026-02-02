@@ -588,14 +588,17 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials - Cinematic */}
-      <TestimonialsSection />
+      <div id="testimonials" style={{ scrollMarginTop: '80px' }}>
+        <TestimonialsSection />
+      </div>
 
       {/* Beyond the Academy - Immersive Dark Section */}
-      <section style={{
+      <section id="beyond" style={{
         background: '#0a0a0b',
         padding: '100px 0 120px',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        scrollMarginTop: '80px'
       }}>
         {/* Subtle noise texture overlay */}
         <div style={{
