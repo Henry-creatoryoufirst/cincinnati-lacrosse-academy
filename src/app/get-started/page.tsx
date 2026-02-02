@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 
 // Session type for future Supabase integration
 type Session = {
@@ -18,86 +19,204 @@ const upcomingSessions: Session[] = []
 
 export default function GetStartedPage() {
   const [showBrettContact, setShowBrettContact] = useState(false)
+  const [showRemoteContact, setShowRemoteContact] = useState(false)
 
   return (
     <main>
-      {/* Hero Section */}
-      <section style={{
-        position: 'relative',
-        minHeight: '400px',
-        display: 'flex',
-        alignItems: 'center',
-        overflow: 'hidden'
-      }}>
-        {/* Background Image */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0
-        }}>
+      {/* Hero Section - Triptych Layout */}
+      <section className="triptych-header">
+        {/* Left Image Panel */}
+        <div className="triptych-header-left">
           <Image
-            src="/images/community/dsc05410.jpg"
-            alt="Training at The Barn"
+            src="/images/get-started-header-1.jpg"
+            alt="Athlete training"
             fill
-            sizes="100vw"
+            sizes="30vw"
             quality={85}
-            style={{ objectFit: 'cover', objectPosition: 'center 30%' }}
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
             priority
           />
-          {/* Dark overlay */}
+          {/* Subtle edge gradient */}
           <div style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.8) 100%)'
+            background: 'linear-gradient(to left, rgba(10,10,11,0.3) 0%, transparent 30%)',
+            pointerEvents: 'none'
           }} />
         </div>
 
-        {/* Content */}
-        <div className="container" style={{ position: 'relative', zIndex: 1, paddingTop: '140px', paddingBottom: '80px' }}>
-          <Link
-            href="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              color: 'rgba(255,255,255,0.6)',
-              fontSize: '0.875rem',
-              textDecoration: 'none',
-              marginBottom: '32px',
-              transition: 'color 0.2s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.9)'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
-          >
-            <span>←</span> Back to Home
-          </Link>
+        {/* Center Text Panel */}
+        <div className="triptych-header-center" style={{
+          background: 'linear-gradient(180deg, #111827 0%, #0a0a0b 100%)',
+          position: 'relative'
+        }}>
+          {/* Radial glow behind text */}
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '400px',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%)',
+            pointerEvents: 'none'
+          }} />
 
-          <h1 style={{
-            color: 'white',
-            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-            fontWeight: 700,
-            letterSpacing: '-0.03em',
-            marginBottom: '16px',
-            lineHeight: 1.1
-          }}>
-            Get Started
-          </h1>
-          <p style={{
-            fontSize: 'clamp(1.125rem, 2vw, 1.375rem)',
-            color: 'rgba(255,255,255,0.7)',
-            fontWeight: 400,
-            maxWidth: '460px'
-          }}>
-            Choose how you want to train with us
-          </p>
+          {/* Edge lines */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            width: '1px',
+            background: 'linear-gradient(to bottom, transparent 10%, rgba(255,255,255,0.08) 50%, transparent 90%)',
+            pointerEvents: 'none'
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            right: 0,
+            width: '1px',
+            background: 'linear-gradient(to bottom, transparent 10%, rgba(255,255,255,0.08) 50%, transparent 90%)',
+            pointerEvents: 'none'
+          }} />
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Link
+              href="/"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                color: 'rgba(255,255,255,0.35)',
+                fontSize: '0.8125rem',
+                textDecoration: 'none',
+                marginBottom: '48px',
+                transition: 'color 0.2s ease',
+                letterSpacing: '0.03em'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.35)'}
+            >
+              <span>←</span> Back to Home
+            </Link>
+          </motion.div>
+
+          {/* Decorative line above title */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              width: '48px',
+              height: '2px',
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+              marginBottom: '28px'
+            }}
+          />
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontSize: 'clamp(2.25rem, 4vw, 3.25rem)',
+              fontWeight: 700,
+              letterSpacing: '-0.02em',
+              marginBottom: '20px',
+              lineHeight: 1.1,
+              background: 'linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '0 4px 30px rgba(255,255,255,0.1)'
+            }}
+          >
+            Your Journey<br />Starts Here
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontSize: '1.125rem',
+              color: 'rgba(255,255,255,0.45)',
+              fontWeight: 400,
+              letterSpacing: '0.04em',
+              marginBottom: '32px'
+            }}
+          >
+            Three ways to train with us
+          </motion.p>
+
+          {/* Animated scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+          >
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              style={{
+                width: '20px',
+                height: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="rgba(255,255,255,0.3)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Right Image Panel */}
+        <div className="triptych-header-right">
+          <Image
+            src="/images/get-started-header-2.jpg"
+            alt="Athletes working hard"
+            fill
+            sizes="(max-width: 1024px) 100vw, 30vw"
+            quality={85}
+            style={{ objectFit: 'cover', objectPosition: 'top' }}
+            priority
+          />
+          {/* Subtle edge gradient */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to right, rgba(10,10,11,0.3) 0%, transparent 30%)',
+            pointerEvents: 'none'
+          }} />
         </div>
       </section>
 
-      {/* Cards Section */}
-      <section style={{
-        padding: '80px 0 120px',
-        background: 'linear-gradient(to bottom, #f8fafc 0%, white 100%)'
-      }}>
+      {/* Cards Section - Completely separate with solid white background */}
+      <section className="get-started-cards">
         <div className="container">
           <div style={{
             display: 'grid',
@@ -106,7 +225,11 @@ export default function GetStartedPage() {
           }}>
 
             {/* Card 1: Weekend Training */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.08)' }}
               style={{
                 background: 'white',
                 borderRadius: '20px',
@@ -114,16 +237,7 @@ export default function GetStartedPage() {
                 boxShadow: '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
                 display: 'flex',
                 flexDirection: 'column',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-6px)'
-                e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)'
               }}
             >
               {/* Image */}
@@ -133,7 +247,7 @@ export default function GetStartedPage() {
                 overflow: 'hidden'
               }}>
                 <Image
-                  src="/images/community/dsc00511.jpg"
+                  src="/images/weekend-training-card.jpg"
                   alt="Weekend training session"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
@@ -225,10 +339,14 @@ export default function GetStartedPage() {
                   </Link>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 2: Strength Training */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.08)' }}
               style={{
                 background: 'white',
                 borderRadius: '20px',
@@ -236,16 +354,7 @@ export default function GetStartedPage() {
                 boxShadow: '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
                 display: 'flex',
                 flexDirection: 'column',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-6px)'
-                e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)'
               }}
             >
               {/* Image */}
@@ -255,12 +364,12 @@ export default function GetStartedPage() {
                 overflow: 'hidden'
               }}>
                 <Image
-                  src="/images/community/dsc00033.jpg"
+                  src="/images/strength-training-card.jpg"
                   alt="Strength training"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   quality={80}
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: 'cover', objectPosition: 'top' }}
                 />
                 {/* Gradient fade to white */}
                 <div style={{
@@ -318,7 +427,7 @@ export default function GetStartedPage() {
                       Call or text Brett:
                     </p>
                     <a
-                      href="tel:+15135551234"
+                      href="tel:+19372321141"
                       style={{
                         fontSize: '1.25rem',
                         fontWeight: 700,
@@ -326,7 +435,7 @@ export default function GetStartedPage() {
                         textDecoration: 'none'
                       }}
                     >
-                      (513) 555-1234
+                      (937) 232-1141
                     </a>
                   </div>
                 )}
@@ -367,10 +476,14 @@ export default function GetStartedPage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 3: Remote Training */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.08)' }}
               style={{
                 background: 'white',
                 borderRadius: '20px',
@@ -378,16 +491,7 @@ export default function GetStartedPage() {
                 boxShadow: '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
                 display: 'flex',
                 flexDirection: 'column',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-6px)'
-                e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)'
               }}
             >
               {/* Image */}
@@ -397,7 +501,7 @@ export default function GetStartedPage() {
                 overflow: 'hidden'
               }}>
                 <Image
-                  src="/images/community/dww03060.jpg"
+                  src="/images/remote-training-card.jpg"
                   alt="Remote lacrosse training"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
@@ -470,63 +574,68 @@ export default function GetStartedPage() {
                   }}>Personalized 1-on-1 coaching</span>
                 </div>
 
+                {showRemoteContact && (
+                  <div style={{
+                    background: '#f5f3ff',
+                    borderRadius: '10px',
+                    padding: '16px',
+                    marginBottom: '20px'
+                  }}>
+                    <p style={{ fontSize: '0.8125rem', color: '#6b7280', marginBottom: '6px' }}>
+                      Call or text Henry & Harrison:
+                    </p>
+                    <a
+                      href="tel:+15134445199"
+                      style={{
+                        fontSize: '1.25rem',
+                        fontWeight: 700,
+                        color: '#0a0a0a',
+                        textDecoration: 'none'
+                      }}
+                    >
+                      (513) 444-5199
+                    </a>
+                  </div>
+                )}
+
                 <div style={{ marginTop: 'auto' }}>
-                  <Link
-                    href="/contact?subject=remote-training"
+                  <button
+                    onClick={() => setShowRemoteContact(!showRemoteContact)}
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       width: '100%',
                       padding: '16px 24px',
-                      background: '#2563EB',
-                      color: 'white',
+                      background: showRemoteContact ? '#ede9fe' : 'white',
+                      color: showRemoteContact ? '#7c3aed' : '#0a0a0a',
                       fontSize: '0.9375rem',
                       fontWeight: 600,
                       borderRadius: '12px',
-                      textDecoration: 'none',
-                      transition: 'background 0.2s ease'
+                      border: '2px solid',
+                      borderColor: showRemoteContact ? '#ddd6fe' : '#e5e7eb',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = '#1d4ed8'}
-                    onMouseLeave={(e) => e.currentTarget.style.background = '#2563EB'}
+                    onMouseEnter={(e) => {
+                      if (!showRemoteContact) {
+                        e.currentTarget.style.borderColor = '#d1d5db'
+                        e.currentTarget.style.background = '#f9fafb'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!showRemoteContact) {
+                        e.currentTarget.style.borderColor = '#e5e7eb'
+                        e.currentTarget.style.background = 'white'
+                      }
+                    }}
                   >
-                    Start Training
-                  </Link>
+                    {showRemoteContact ? 'Hide Contact Info' : 'Get in Touch'}
+                  </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-          </div>
-
-          {/* Help Section */}
-          <div style={{
-            marginTop: '64px',
-            textAlign: 'center'
-          }}>
-            <p style={{
-              color: '#9ca3af',
-              fontSize: '0.9375rem',
-              marginBottom: '6px'
-            }}>
-              Not sure which option is right for you?
-            </p>
-            <Link
-              href="/contact"
-              style={{
-                color: '#2563EB',
-                fontWeight: 600,
-                fontSize: '0.9375rem',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                transition: 'gap 0.2s ease'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.gap = '8px'}
-              onMouseLeave={(e) => e.currentTarget.style.gap = '4px'}
-            >
-              Reach out and we'll help you decide <span>→</span>
-            </Link>
           </div>
         </div>
       </section>

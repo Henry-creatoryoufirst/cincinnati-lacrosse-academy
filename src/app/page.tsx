@@ -118,20 +118,29 @@ function TestimonialsSection() {
     <section
       style={{
         background: '#111827',
-        padding: '72px 0',
+        padding: '80px 0',
         position: 'relative',
         overflow: 'hidden'
       }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="container">
+      {/* Noise texture overlay */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        opacity: 0.03,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        pointerEvents: 'none'
+      }} />
+
+      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         {/* Section label */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <span style={{
-            fontSize: '0.75rem',
+            fontSize: '0.6875rem',
             fontWeight: 600,
-            letterSpacing: '0.1em',
+            letterSpacing: '0.15em',
             textTransform: 'uppercase',
             color: '#2563EB'
           }}>Testimonials</span>
@@ -271,44 +280,65 @@ export default function HomePage() {
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div style={{ maxWidth: '640px', paddingTop: '120px', paddingBottom: '80px' }}>
             {/* Credential Badge - understated, earned */}
-            <span style={{
-              display: 'inline-block',
-              color: 'rgba(255,255,255,0.7)',
-              fontSize: '0.75rem',
-              fontWeight: 500,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              marginBottom: '28px'
-            }}>
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                display: 'inline-block',
+                color: 'rgba(255,255,255,0.7)',
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                marginBottom: '28px'
+              }}
+            >
               50+ College Commits
-            </span>
+            </motion.span>
 
             {/* Headline */}
-            <h1 style={{
-              color: 'white',
-              fontSize: 'clamp(2.75rem, 6vw, 4rem)',
-              fontWeight: 700,
-              letterSpacing: '-0.025em',
-              lineHeight: 1.1,
-              marginBottom: '24px'
-            }}>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                color: 'white',
+                fontSize: 'clamp(2.75rem, 6vw, 4rem)',
+                fontWeight: 700,
+                letterSpacing: '-0.025em',
+                lineHeight: 1.1,
+                marginBottom: '24px',
+                textShadow: '0 4px 30px rgba(0,0,0,0.3)'
+              }}
+            >
               Where Leaders<br />Are Formed
-            </h1>
+            </motion.h1>
 
             {/* Subtitle */}
-            <p style={{
-              color: 'rgba(255,255,255,0.8)',
-              fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-              fontWeight: 400,
-              lineHeight: 1.7,
-              marginBottom: '40px',
-              maxWidth: '540px'
-            }}>
+            <motion.p
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+                fontWeight: 400,
+                lineHeight: 1.7,
+                marginBottom: '40px',
+                maxWidth: '540px'
+              }}
+            >
               World-class coaching. Relentless standards. But more importantly, young people who become confident, disciplined, and capable of carrying responsibility in sport and in life.
-            </p>
+            </motion.p>
 
             {/* Single CTA */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '20px' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '20px' }}
+            >
               <Link
                 href="/get-started"
                 style={{
@@ -322,16 +352,16 @@ export default function HomePage() {
                   fontWeight: 600,
                   borderRadius: '9999px',
                   textDecoration: 'none',
-                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  transition: 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.2)'
+                  e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)'
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.25)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)'
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)'
                 }}
               >
                 Get Started
@@ -343,14 +373,21 @@ export default function HomePage() {
                   fontSize: '0.875rem',
                   fontWeight: 500,
                   textDecoration: 'none',
-                  transition: 'color 0.2s ease'
+                  transition: 'color 0.2s ease, gap 0.3s ease',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.9)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'rgba(255,255,255,0.9)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgba(255,255,255,0.6)'
+                }}
               >
-                View Programs →
+                View Programs <span style={{ transition: 'transform 0.3s ease' }}>→</span>
               </a>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -362,7 +399,7 @@ export default function HomePage() {
             <span className="eyebrow">Our Community</span>
             <h2>More Than Training.<br />Join the Family.</h2>
             <p>
-              Cincinnati Lacrosse Academy isn't just a place to train. It's a culture.
+              The Cincinnati Lacrosse Academy isn't just a place to train. It's a culture.
               A community of athletes who show up daily, hold the line together, and raise the standard.
             </p>
           </div>
@@ -378,10 +415,10 @@ export default function HomePage() {
                     <Image
                       src={`/images/community/${photo.file}`}
                       alt={photo.alt}
-                      fill
-                      sizes="220px"
+                      width={220}
+                      height={320}
                       quality={75}
-                      style={{ objectFit: 'cover' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
                 ))}
@@ -396,10 +433,10 @@ export default function HomePage() {
                     <Image
                       src={`/images/community/${photo.file}`}
                       alt={photo.alt}
-                      fill
-                      sizes="220px"
+                      width={220}
+                      height={320}
                       quality={75}
-                      style={{ objectFit: 'cover' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
                 ))}
@@ -428,24 +465,16 @@ export default function HomePage() {
             {/* 01 - Development: Weekend Training & Memberships */}
             <div className="program-item">
               <div className="program-row">
-                <motion.div
-                  className="program-image"
-                  initial={{ opacity: 0, x: -40, scale: 1.05 }}
-                  whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ scale: 1.02 }}
-                  style={{ overflow: 'hidden' }}
-                >
+                <div className="program-image">
                   <Image
                     src="/images/community/dsc05410.jpg"
                     alt="Weekend training session"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={800}
+                    height={600}
                     quality={85}
-                    style={{ objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                </motion.div>
+                </div>
                 <motion.div
                   className="program-content"
                   initial={{ opacity: 0, y: 30 }}
@@ -476,24 +505,16 @@ export default function HomePage() {
             {/* 02 - Strength Training */}
             <div className="program-item">
               <div className="program-row program-row--reverse">
-                <motion.div
-                  className="program-image"
-                  initial={{ opacity: 0, x: 40, scale: 1.05 }}
-                  whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ scale: 1.02 }}
-                  style={{ overflow: 'hidden' }}
-                >
+                <div className="program-image">
                   <Image
-                    src="/images/community/dsc00033.jpg"
-                    alt="Strength training"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    src="/images/homepage-brett.jpg"
+                    alt="Strength training with Brett"
+                    width={800}
+                    height={600}
                     quality={85}
-                    style={{ objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
                   />
-                </motion.div>
+                </div>
                 <motion.div
                   className="program-content"
                   initial={{ opacity: 0, y: 30 }}
@@ -524,24 +545,16 @@ export default function HomePage() {
             {/* 03 - Remote Assistance */}
             <div className="program-item">
               <div className="program-row">
-                <motion.div
-                  className="program-image"
-                  initial={{ opacity: 0, x: -40, scale: 1.05 }}
-                  whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ scale: 1.02 }}
-                  style={{ overflow: 'hidden' }}
-                >
+                <div className="program-image">
                   <Image
-                    src="/images/community/dww03060.jpg"
+                    src="/images/remote-training-card.jpg"
                     alt="Remote training assistance"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={800}
+                    height={600}
                     quality={85}
-                    style={{ objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                </motion.div>
+                </div>
                 <motion.div
                   className="program-content"
                   initial={{ opacity: 0, y: 30 }}
@@ -626,12 +639,7 @@ export default function HomePage() {
             gap: '32px'
           }}>
             {/* YouTube Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0 }}
-              whileHover={{ y: -6 }}
+            <div
               style={{
                 background: '#141416',
                 borderRadius: '20px',
@@ -640,28 +648,23 @@ export default function HomePage() {
                 flexDirection: 'column',
                 minHeight: '420px',
                 cursor: 'pointer',
-                transition: 'box-shadow 0.4s ease'
+                transition: 'transform 0.3s ease, box-shadow 0.4s ease'
               }}
+              className="beyond-card"
             >
-              {/* Image with Ken Burns hover effect - extends 70-75% of card */}
+              {/* Image - extends 70-75% of card */}
               <div style={{
                 position: 'relative',
                 height: '310px',
                 overflow: 'hidden'
               }}>
-                <motion.div
-                  style={{ width: '100%', height: '100%' }}
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ duration: 8, ease: 'linear' }}
-                >
-                  <Image
-                    src="/images/youtube-banner.jpg"
-                    alt="Cincinnati Lacrosse YouTube"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    style={{ objectFit: 'cover', objectPosition: 'top' }}
-                  />
-                </motion.div>
+                <Image
+                  src="/images/youtube-banner.jpg"
+                  alt="Cincinnati Lacrosse YouTube"
+                  width={600}
+                  height={400}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+                />
                 {/* Gradient fade - gradual cinematic blend */}
                 <div style={{
                   position: 'absolute',
@@ -696,7 +699,7 @@ export default function HomePage() {
                 }}>
                   Behind the scenes, training content, and the journey of building something special.
                 </p>
-                <motion.a
+                <a
                   href="https://youtube.com/@cincinnatilaax"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -709,21 +712,15 @@ export default function HomePage() {
                     alignItems: 'center',
                     gap: '6px'
                   }}
-                  whileHover={{ x: 4 }}
-                  transition={{ duration: 0.2 }}
                 >
                   Watch Now <span style={{ transition: 'transform 0.2s' }}>→</span>
-                </motion.a>
+                </a>
               </div>
-            </motion.div>
+            </div>
 
             {/* You.Prjct Card - Featured/Larger */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-              whileHover={{ y: -6 }}
+            <div
+              className="beyond-card"
               style={{
                 background: '#000000',
                 borderRadius: '20px',
@@ -736,21 +733,24 @@ export default function HomePage() {
                 boxShadow: '0 0 100px 15px rgba(59, 130, 246, 0.2), 0 0 60px 8px rgba(139, 92, 246, 0.15), 0 0 160px 30px rgba(59, 130, 246, 0.1)'
               }}
             >
-              {/* Prominent glow effect */}
-              <div style={{
-                position: 'absolute',
-                top: '15%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '320px',
-                height: '320px',
-                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(139, 92, 246, 0.2) 40%, transparent 70%)',
-                filter: 'blur(60px)',
-                pointerEvents: 'none'
-              }} />
+              {/* Prominent glow effect with subtle pulse */}
+              <div
+                className="glow-pulse"
+                style={{
+                  position: 'absolute',
+                  top: '15%',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '320px',
+                  height: '320px',
+                  background: 'radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(139, 92, 246, 0.2) 40%, transparent 70%)',
+                  filter: 'blur(60px)',
+                  pointerEvents: 'none'
+                }}
+              />
 
-              {/* Phone mockup with float animation */}
-              <motion.div
+              {/* Phone mockup */}
+              <div
                 style={{
                   position: 'relative',
                   height: '260px',
@@ -761,8 +761,6 @@ export default function HomePage() {
                   maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
                   WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)'
                 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
                 <Image
                   src="/images/youprjct-phone.png"
@@ -772,7 +770,7 @@ export default function HomePage() {
                   quality={90}
                   style={{ height: '100%', width: 'auto', objectFit: 'contain' }}
                 />
-              </motion.div>
+              </div>
 
               {/* Content - anchored to bottom */}
               <div style={{ padding: '24px 28px 28px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', zIndex: 1 }}>
@@ -804,7 +802,7 @@ export default function HomePage() {
                 }}>
                   Build discipline, track progress, become who you're meant to be.
                 </p>
-                <motion.a
+                <a
                   href="https://youprjct.com"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -817,21 +815,15 @@ export default function HomePage() {
                     alignItems: 'center',
                     gap: '6px'
                   }}
-                  whileHover={{ x: 4 }}
-                  transition={{ duration: 0.2 }}
                 >
                   Download Free <span>→</span>
-                </motion.a>
+                </a>
               </div>
-            </motion.div>
+            </div>
 
             {/* Podcast Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-              whileHover={{ y: -6 }}
+            <div
+              className="beyond-card"
               style={{
                 background: '#141416',
                 borderRadius: '20px',
@@ -845,28 +837,25 @@ export default function HomePage() {
               }}
             >
               {/* Podcast cover - hero element, centered and prominent */}
-              <motion.div
+              <div
                 style={{
                   width: '200px',
                   height: '200px',
                   borderRadius: '20px',
                   overflow: 'hidden',
                   boxShadow: '0 24px 64px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.3)',
-                  position: 'relative',
                   marginTop: '16px'
                 }}
-                whileHover={{ scale: 1.05, y: -6, boxShadow: '0 32px 80px rgba(0, 0, 0, 0.6), 0 12px 32px rgba(0, 0, 0, 0.4)' }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
                 <Image
                   src="/images/podcast-cover.png"
                   alt="The Infinite Game podcast"
-                  fill
-                  sizes="200px"
+                  width={200}
+                  height={200}
                   quality={90}
-                  style={{ objectFit: 'cover' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
-              </motion.div>
+              </div>
 
               {/* Content - anchored to bottom, full width for left alignment */}
               <div style={{ marginTop: 'auto', width: '100%', textAlign: 'left' }}>
@@ -895,7 +884,7 @@ export default function HomePage() {
                 }}>
                   To play the infinite game is to live as both masterpiece and work in progress, never finished, always invited further.
                 </p>
-                <motion.a
+                <a
                   href="https://podcasts.apple.com"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -908,13 +897,11 @@ export default function HomePage() {
                     alignItems: 'center',
                     gap: '6px'
                   }}
-                  whileHover={{ x: 4 }}
-                  transition={{ duration: 0.2 }}
                 >
                   Listen Now <span>→</span>
-                </motion.a>
+                </a>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>

@@ -967,3 +967,392 @@ p {
     order: 1;
   }
 }
+
+/* ============================================
+   TRIPTYCH HEADER - Get Started Page
+   ============================================ */
+
+.triptych-header {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Mobile: Single image background with text overlay */
+.triptych-header-left {
+  display: none;
+}
+
+.triptych-header-center {
+  background: #0a0a0b;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 140px 32px 80px;
+  position: relative;
+  z-index: 2;
+  min-height: 400px;
+}
+
+.triptych-header-right {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+}
+
+/* Cards section needs to sit above everything */
+.get-started-cards {
+  position: relative;
+  z-index: 10;
+  background: white;
+  padding: 80px 0 120px;
+}
+
+@media (min-width: 1024px) {
+  .triptych-header {
+    display: grid;
+    grid-template-columns: 30% 40% 30%;
+    height: 500px;
+    flex-direction: row;
+  }
+
+  .triptych-header-left {
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .triptych-header-center {
+    padding: 60px 48px;
+    min-height: auto;
+  }
+
+  .triptych-header-right {
+    height: auto;
+  }
+}
+
+/* ============================================
+   WORLD-CLASS POLISH - Premium Enhancements
+   ============================================ */
+
+/* Global smooth transitions */
+*, *::before, *::after {
+  transition-property: transform, opacity, box-shadow, background-color, border-color, color;
+  transition-duration: 0ms; /* Default off, enable per-element */
+}
+
+/* Premium button hover states */
+.btn {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-primary:hover,
+.btn-accent:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Link hover animations */
+a {
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+/* Arrow slide effect for links with arrows */
+.program-link,
+a[href*="→"] {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.program-link:hover {
+  gap: 10px;
+  color: var(--accent);
+}
+
+/* Image hover zoom effect */
+.marquee-photo img,
+.program-image img,
+.card-image {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.marquee-photo:hover img,
+.program-image:hover img {
+  transform: scale(1.05);
+}
+
+/* Image fade-in on load */
+img {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+img[loading="lazy"] {
+  opacity: 0;
+}
+
+img[loading="lazy"].loaded,
+img:not([loading="lazy"]) {
+  opacity: 1;
+}
+
+/* Beyond the Academy card hover states */
+.beyond-card {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.beyond-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Glow pulse animation for You.Prjct card */
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+/* Card premium hover states */
+.card,
+.feature-card,
+.pricing-card {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s ease;
+}
+
+.card:hover,
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Noise texture utility */
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subtle glow pulse animation */
+@keyframes subtle-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+}
+
+.glow-pulse {
+  animation: subtle-pulse 4s ease-in-out infinite;
+}
+
+/* Section entrance animation base */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease forwards;
+}
+
+/* Stagger delays for children */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 400ms; }
+
+/* Navigation link underline effect */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Eyebrow refined styling */
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Section header refined */
+.section-header .eyebrow {
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.section-header h2 {
+  letter-spacing: -0.03em;
+}
+
+/* Hero parallax container */
+.parallax-bg {
+  will-change: transform;
+}
+
+/* Premium text shadow for dark backgrounds */
+.text-shadow-subtle {
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Footer refinements */
+.footer {
+  background: var(--foreground);
+  color: white;
+  padding: 64px 0 32px;
+}
+
+.footer a {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.footer-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 16px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-bottom {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.875rem;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+
+  .glow-pulse {
+    animation: none;
+  }
+}
+
+/* Ken Burns effect for triptych images */
+.triptych-header-left img,
+.triptych-header-right img {
+  animation: ken-burns 20s ease-in-out infinite alternate;
+}
+
+@keyframes ken-burns {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .triptych-header-left img,
+  .triptych-header-right img {
+    animation: none;
+  }
+}
+
+/* Page transition wrapper */
+.page-transition {
+  animation: page-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

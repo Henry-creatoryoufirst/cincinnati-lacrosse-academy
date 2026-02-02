@@ -29,9 +29,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Header />
-        <main className="min-h-screen pt-20">
+        <div className="page-transition">
           {children}
-        </main>
+        </div>
         <Footer />
       </body>
     </html>
