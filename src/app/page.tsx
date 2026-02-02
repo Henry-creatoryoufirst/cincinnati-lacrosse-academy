@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
@@ -252,14 +251,10 @@ export default function HomePage() {
           inset: 0,
           zIndex: 0
         }}>
-          <Image
+          <img
             src="/images/community/top-banner.jpg"
             alt="Cincinnati Lacrosse Academy athletes"
-            fill
-            sizes="100vw"
-            quality={90}
-            style={{ objectFit: 'cover' }}
-            priority
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
           {/* Refined gradient overlay - dark left, transparent right */}
           <div style={{
@@ -412,12 +407,9 @@ export default function HomePage() {
                 {/* Photos duplicated for seamless infinite scroll */}
                 {[...ROW_1_PHOTOS, ...ROW_1_PHOTOS].map((photo, index) => (
                   <div key={`row1-${index}`} className="marquee-photo">
-                    <Image
+                    <img
                       src={`/images/community/${photo.file}`}
                       alt={photo.alt}
-                      width={220}
-                      height={320}
-                      quality={75}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
@@ -430,12 +422,9 @@ export default function HomePage() {
               <div className="marquee-track marquee-track--reverse">
                 {[...ROW_2_PHOTOS, ...ROW_2_PHOTOS].map((photo, index) => (
                   <div key={`row2-${index}`} className="marquee-photo">
-                    <Image
+                    <img
                       src={`/images/community/${photo.file}`}
                       alt={photo.alt}
-                      width={220}
-                      height={320}
-                      quality={75}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   </div>
@@ -466,12 +455,10 @@ export default function HomePage() {
             <div className="program-item">
               <div className="program-row">
                 <div className="program-image">
-                  <Image
+                  {/* TEST: Using plain img tag instead of Next.js Image */}
+                  <img
                     src="/images/community/dsc05410.jpg"
                     alt="Weekend training session"
-                    width={800}
-                    height={600}
-                    quality={85}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </div>
@@ -506,12 +493,9 @@ export default function HomePage() {
             <div className="program-item">
               <div className="program-row program-row--reverse">
                 <div className="program-image">
-                  <Image
+                  <img
                     src="/images/homepage-brett.jpg"
                     alt="Strength training with Brett"
-                    width={800}
-                    height={600}
-                    quality={85}
                     style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
                   />
                 </div>
@@ -546,12 +530,9 @@ export default function HomePage() {
             <div className="program-item">
               <div className="program-row">
                 <div className="program-image">
-                  <Image
+                  <img
                     src="/images/remote-training-card.jpg"
                     alt="Remote training assistance"
-                    width={800}
-                    height={600}
-                    quality={85}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </div>
@@ -661,11 +642,9 @@ export default function HomePage() {
                 height: '310px',
                 overflow: 'hidden'
               }}>
-                <Image
+                <img
                   src="/images/youtube-banner.jpg"
                   alt="Cincinnati Lacrosse YouTube"
-                  width={600}
-                  height={400}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
                 />
                 {/* Gradient fade - gradual cinematic blend */}
@@ -765,12 +744,9 @@ export default function HomePage() {
                   WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)'
                 }}
               >
-                <Image
+                <img
                   src="/images/youprjct-phone.png"
                   alt="You.Prjct app"
-                  width={170}
-                  height={300}
-                  quality={90}
                   style={{ height: '100%', width: 'auto', objectFit: 'contain' }}
                 />
               </div>
@@ -850,12 +826,9 @@ export default function HomePage() {
                   marginTop: '16px'
                 }}
               >
-                <Image
+                <img
                   src="/images/podcast-cover.png"
                   alt="The Infinite Game podcast"
-                  width={200}
-                  height={200}
-                  quality={90}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
@@ -925,13 +898,10 @@ export default function HomePage() {
             'dsc01692-3.jpg'
           ].map((photo, index) => (
             <div key={index} style={{ position: 'relative', height: '200px' }}>
-              <Image
+              <img
                 src={`/images/community/${photo}`}
                 alt="Community moment"
-                fill
-                sizes="(max-width: 768px) 50vw, 16vw"
-                quality={75}
-                style={{ objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           ))}
