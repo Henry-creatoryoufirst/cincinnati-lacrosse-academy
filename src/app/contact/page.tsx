@@ -227,7 +227,7 @@ export default function ContactPage() {
 
               {/* Contact Items */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-                {/* Email */}
+                {/* Text */}
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
                   <div style={{
                     width: '48px',
@@ -240,48 +240,13 @@ export default function ContactPage() {
                     flexShrink: 0
                   }}>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="4" width="20" height="16" rx="2"/>
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                     </svg>
                   </div>
                   <div>
-                    <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>Email</p>
+                    <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>TEXT</p>
                     <a
-                      href="mailto:info@cincinnatilacrosseacademy.com"
-                      style={{
-                        fontSize: '1rem',
-                        color: '#2563eb',
-                        textDecoration: 'none',
-                        fontWeight: 500
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-                      onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-                    >
-                      info@cincinnatilacrosseacademy.com
-                    </a>
-                  </div>
-                </div>
-
-                {/* Phone */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    background: '#eff6ff',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0
-                  }}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>Phone</p>
-                    <a
-                      href="tel:+15134445199"
+                      href="sms:+15134445199"
                       style={{
                         fontSize: '1rem',
                         color: '#0a0a0a',
@@ -291,30 +256,8 @@ export default function ContactPage() {
                     >
                       (513) 444-5199
                     </a>
-                  </div>
-                </div>
-
-                {/* Location */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    background: '#eff6ff',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0
-                  }}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                      <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>Location</p>
-                    <p style={{ fontSize: '1rem', color: '#6b7280', margin: 0 }}>
-                      Cincinnati, OH
+                    <p style={{ fontSize: '0.8125rem', color: '#9ca3af', margin: '6px 0 0', lineHeight: 1.4 }}>
+                      Text only — no calls please
                     </p>
                   </div>
                 </div>
@@ -462,6 +405,8 @@ export default function ContactPage() {
                   marginBottom: '28px'
                 }}>
                   Fill out the form below and we&apos;ll get back to you as soon as possible.
+                  You can also text us directly at{' '}
+                  <a href="sms:+15134445199" style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 500 }}>(513) 444-5199</a>.
                 </p>
 
                 <form onSubmit={handleSubmit}>
