@@ -39,13 +39,31 @@ export default function ContactPage() {
   })
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setIsSuccess(true)
-    setIsLoading(false)
+    setErrorMsg('')
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Failed to send message')
+      }
+
+      setIsSuccess(true)
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -551,6 +569,21 @@ export default function ContactPage() {
                       onBlur={handleBlur}
                     />
                   </div>
+
+                  {/* Error Message */}
+                  {errorMsg && (
+                    <div style={{
+                      padding: '12px 16px',
+                      background: '#fef2f2',
+                      border: '1px solid #fecaca',
+                      borderRadius: '12px',
+                      color: '#dc2626',
+                      fontSize: '0.875rem',
+                      marginBottom: '16px'
+                    }}>
+                      {errorMsg}
+                    </div>
+                  )}
 
                   {/* Submit */}
                   <button

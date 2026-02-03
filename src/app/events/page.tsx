@@ -3,9 +3,46 @@ import { Calendar, MapPin, Users, Clock, Filter, Search } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Card, { CardContent } from '@/components/ui/Card'
 import { formatPrice } from '@/lib/stripe'
+import { createClient } from '@/lib/supabase/server'
 
-// Mock data - in production this would come from Supabase
-const events = [
+interface EventData {
+  id: string
+  title: string
+  description: string
+  event_type: string
+  start_date: string
+  end_date: string
+  location: string
+  address?: string
+  max_participants: number
+  current_participants: number
+  price: number
+  member_price?: number
+  skill_levels: string[]
+  age_groups: string[]
+  is_active?: boolean
+}
+
+async function getEvents(): Promise<EventData[] | null> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .eq('is_active', true)
+      .order('start_date', { ascending: true })
+
+    if (error || !data || data.length === 0) {
+      return null
+    }
+    return data
+  } catch {
+    return null
+  }
+}
+
+// Fallback mock data used when Supabase table doesn't exist yet
+const fallbackEvents = [
   {
     id: '1',
     title: 'Spring Training Camp',
@@ -120,7 +157,10 @@ const formatDate = (dateString: string) => {
   })
 }
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const supabaseEvents = await getEvents()
+  const events = supabaseEvents || fallbackEvents
+
   return (
     <>
       {/* Hero Section */}
