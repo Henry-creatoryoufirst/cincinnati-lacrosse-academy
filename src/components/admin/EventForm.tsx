@@ -2,9 +2,6 @@
 
 import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { X } from 'lucide-react'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
 import type { Event } from '@/lib/types'
 
 interface EventFormProps {
@@ -31,7 +28,7 @@ interface EventFormData {
 const SKILL_LEVEL_OPTIONS = ['beginner', 'intermediate', 'advanced', 'elite'] as const
 
 const EVENT_TYPE_OPTIONS = [
-  { value: 'training', label: 'Training' },
+  { value: 'training', label: 'Training Session' },
   { value: 'camp', label: 'Camp' },
   { value: 'tournament', label: 'Tournament' },
   { value: 'clinic', label: 'Clinic' },
@@ -72,6 +69,26 @@ function formatDateTimeLocal(dateString: string): string {
   } catch {
     return ''
   }
+}
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '12px 16px',
+  fontSize: '0.9375rem',
+  border: '1px solid var(--border)',
+  borderRadius: '12px',
+  background: 'var(--background)',
+  color: 'var(--foreground)',
+  outline: 'none',
+  transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+}
+
+const labelStyle: React.CSSProperties = {
+  display: 'block',
+  fontSize: '0.8125rem',
+  fontWeight: 500,
+  color: 'var(--foreground)',
+  marginBottom: '8px'
 }
 
 export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
@@ -169,74 +186,131 @@ export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      zIndex: 50,
+      overflowY: 'auto',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '16px'
+    }}>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 transition-opacity"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          backdropFilter: 'blur(4px)'
+        }}
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-border">
-            <h2 className="text-xl font-semibold text-foreground">
-              {isEditMode ? 'Edit Event' : 'Create New Event'}
-            </h2>
-            <button
-              onClick={onClose}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors"
-            >
-              <X className="w-5 h-5 text-muted" />
-            </button>
-          </div>
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: '640px',
+        background: 'var(--background)',
+        borderRadius: '20px',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+      }}>
+        {/* Header */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '24px',
+          borderBottom: '1px solid var(--border)'
+        }}>
+          <h2 style={{
+            fontSize: '1.25rem',
+            fontWeight: 600,
+            color: 'var(--foreground)',
+            margin: 0
+          }}>
+            {isEditMode ? 'Edit Event' : 'Create New Event'}
+          </h2>
+          <button
+            onClick={onClose}
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '10px',
+              border: 'none',
+              background: 'var(--background-secondary)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--foreground-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
-            {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
-                {error}
-              </div>
-            )}
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{
+          padding: '24px',
+          maxHeight: '70vh',
+          overflowY: 'auto'
+        }}>
+          {error && (
+            <div style={{
+              padding: '14px 16px',
+              background: '#FEF2F2',
+              border: '1px solid #FEE2E2',
+              borderRadius: '12px',
+              color: '#DC2626',
+              fontSize: '0.875rem',
+              marginBottom: '20px'
+            }}>
+              {error}
+            </div>
+          )}
 
-            <Input
-              id="title"
-              name="title"
-              label="Event Title"
-              value={formData.title}
-              onChange={handleInputChange}
-              placeholder="e.g. Spring Training Camp"
-              required
-            />
-
-            <div className="w-full">
-              <label htmlFor="description" className="block text-sm font-medium text-foreground mb-2">
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {/* Title */}
+            <div>
+              <label style={labelStyle}>Event Title *</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
                 onChange={handleInputChange}
-                placeholder="Describe the event..."
-                rows={3}
+                placeholder="e.g. Saturday Training Session"
                 required
-                className="w-full px-4 py-3 rounded-xl border border-border bg-white text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+                style={inputStyle}
               />
             </div>
 
-            <div className="w-full">
-              <label htmlFor="event_type" className="block text-sm font-medium text-foreground mb-2">
-                Event Type
-              </label>
+            {/* Description */}
+            <div>
+              <label style={labelStyle}>Description *</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                placeholder="Describe the event, what players will learn, etc."
+                rows={3}
+                required
+                style={{ ...inputStyle, resize: 'vertical', minHeight: '80px' }}
+              />
+            </div>
+
+            {/* Event Type */}
+            <div>
+              <label style={labelStyle}>Event Type *</label>
               <select
-                id="event_type"
                 name="event_type"
                 value={formData.event_type}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 rounded-xl border border-border bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+                style={inputStyle}
               >
                 {EVENT_TYPE_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -246,123 +320,193 @@ export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <Input
-                id="start_date"
-                name="start_date"
-                label="Start Date & Time"
-                type="datetime-local"
-                value={formData.start_date}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                id="end_date"
-                name="end_date"
-                label="End Date & Time"
-                type="datetime-local"
-                value={formData.end_date}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-
-            <Input
-              id="location"
-              name="location"
-              label="Location"
-              value={formData.location}
-              onChange={handleInputChange}
-              placeholder="e.g. CLA Training Center"
-              required
-            />
-
-            <Input
-              id="address"
-              name="address"
-              label="Address"
-              value={formData.address}
-              onChange={handleInputChange}
-              placeholder="e.g. 123 Lacrosse Way, Cincinnati, OH"
-            />
-
-            <div className="grid grid-cols-3 gap-4">
-              <Input
-                id="max_participants"
-                name="max_participants"
-                label="Max Participants"
-                type="number"
-                min={1}
-                value={formData.max_participants}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                id="price"
-                name="price"
-                label="Price ($)"
-                type="number"
-                min={0}
-                step={0.01}
-                value={formData.price}
-                onChange={handleInputChange}
-                required
-              />
-              <Input
-                id="member_price"
-                name="member_price"
-                label="Member Price ($)"
-                type="number"
-                min={0}
-                step={0.01}
-                value={formData.member_price}
-                onChange={handleInputChange}
-              />
-            </div>
-
-            <div className="w-full">
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Skill Levels
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {SKILL_LEVEL_OPTIONS.map((level) => (
-                  <button
-                    key={level}
-                    type="button"
-                    onClick={() => handleSkillLevelToggle(level)}
-                    className={
-                      'px-4 py-2 rounded-lg text-sm font-medium transition-colors capitalize ' +
-                      (formData.skill_levels.includes(level)
-                        ? 'bg-primary text-white'
-                        : 'bg-secondary text-foreground hover:bg-cyan-100')
-                    }
-                  >
-                    {level}
-                  </button>
-                ))}
+            {/* Dates */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div>
+                <label style={labelStyle}>Start Date & Time *</label>
+                <input
+                  type="datetime-local"
+                  name="start_date"
+                  value={formData.start_date}
+                  onChange={handleInputChange}
+                  required
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>End Date & Time *</label>
+                <input
+                  type="datetime-local"
+                  name="end_date"
+                  value={formData.end_date}
+                  onChange={handleInputChange}
+                  required
+                  style={inputStyle}
+                />
               </div>
             </div>
 
-            <Input
-              id="age_groups"
-              name="age_groups"
-              label="Age Groups (comma-separated)"
-              value={ageGroupInput}
-              onChange={handleAgeGroupChange}
-              placeholder="e.g. 8-11, 12-14, 15-18"
-            />
-
-            {/* Footer */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
-              <Button type="button" variant="outline" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button type="submit" isLoading={isLoading}>
-                {isEditMode ? 'Update Event' : 'Create Event'}
-              </Button>
+            {/* Location */}
+            <div>
+              <label style={labelStyle}>Location *</label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                placeholder="e.g. CLA Training Center"
+                required
+                style={inputStyle}
+              />
             </div>
-          </form>
-        </div>
+
+            {/* Address */}
+            <div>
+              <label style={labelStyle}>Address</label>
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                placeholder="e.g. 123 Lacrosse Way, Cincinnati, OH"
+                style={inputStyle}
+              />
+            </div>
+
+            {/* Capacity & Pricing */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
+              <div>
+                <label style={labelStyle}>Max Participants *</label>
+                <input
+                  type="number"
+                  name="max_participants"
+                  min={1}
+                  value={formData.max_participants}
+                  onChange={handleInputChange}
+                  required
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Price ($) *</label>
+                <input
+                  type="number"
+                  name="price"
+                  min={0}
+                  step={0.01}
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  required
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Member Price ($)</label>
+                <input
+                  type="number"
+                  name="member_price"
+                  min={0}
+                  step={0.01}
+                  value={formData.member_price}
+                  onChange={handleInputChange}
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            {/* Skill Levels */}
+            <div>
+              <label style={labelStyle}>Skill Levels</label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {SKILL_LEVEL_OPTIONS.map((level) => {
+                  const isSelected = formData.skill_levels.includes(level)
+                  return (
+                    <button
+                      key={level}
+                      type="button"
+                      onClick={() => handleSkillLevelToggle(level)}
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: '9999px',
+                        fontSize: '0.8125rem',
+                        fontWeight: 500,
+                        border: isSelected ? 'none' : '1px solid var(--border)',
+                        background: isSelected ? 'var(--accent)' : 'transparent',
+                        color: isSelected ? 'white' : 'var(--foreground)',
+                        cursor: 'pointer',
+                        textTransform: 'capitalize',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      {level}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Age Groups */}
+            <div>
+              <label style={labelStyle}>Age Groups</label>
+              <input
+                type="text"
+                name="age_groups"
+                value={ageGroupInput}
+                onChange={handleAgeGroupChange}
+                placeholder="e.g. 8-11, 12-14, 15-18"
+                style={inputStyle}
+              />
+              <p style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)', marginTop: '6px' }}>
+                Separate multiple age groups with commas
+              </p>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: '12px',
+            marginTop: '28px',
+            paddingTop: '20px',
+            borderTop: '1px solid var(--border)'
+          }}>
+            <button
+              type="button"
+              onClick={onClose}
+              style={{
+                padding: '12px 24px',
+                fontSize: '0.9375rem',
+                fontWeight: 500,
+                borderRadius: '9999px',
+                border: '1px solid var(--border)',
+                background: 'transparent',
+                color: 'var(--foreground)',
+                cursor: 'pointer'
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isLoading}
+              style={{
+                padding: '12px 24px',
+                fontSize: '0.9375rem',
+                fontWeight: 500,
+                borderRadius: '9999px',
+                border: 'none',
+                background: 'var(--foreground)',
+                color: 'var(--background)',
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                opacity: isLoading ? 0.6 : 1
+              }}
+            >
+              {isLoading ? 'Saving...' : isEditMode ? 'Update Event' : 'Create Event'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )

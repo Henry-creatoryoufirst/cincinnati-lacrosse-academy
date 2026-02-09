@@ -2,9 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Calendar, MapPin, Users, Pencil, Trash2, ToggleLeft, ToggleRight } from 'lucide-react'
-import Button from '@/components/ui/Button'
-import Card, { CardContent } from '@/components/ui/Card'
 import EventForm from '@/components/admin/EventForm'
 import type { Event } from '@/lib/types'
 
@@ -12,12 +9,12 @@ interface EventListProps {
   events: Event[]
 }
 
-const eventTypeColors: Record<string, string> = {
-  camp: 'bg-blue-100 text-blue-700',
-  clinic: 'bg-green-100 text-green-700',
-  tournament: 'bg-purple-100 text-purple-700',
-  training: 'bg-cyan-100 text-cyan-700',
-  scrimmage: 'bg-orange-100 text-orange-700',
+const eventTypeStyles: Record<string, { bg: string; color: string }> = {
+  camp: { bg: '#EFF6FF', color: '#2563EB' },
+  clinic: { bg: '#F0FDF4', color: '#16A34A' },
+  tournament: { bg: '#FAF5FF', color: '#9333EA' },
+  training: { bg: '#ECFEFF', color: '#0891B2' },
+  scrimmage: { bg: '#FFF7ED', color: '#EA580C' },
 }
 
 function formatDate(dateString: string): string {
@@ -100,146 +97,171 @@ export default function EventList({ events }: EventListProps) {
     }
   }
 
+  // Separate upcoming and past events
+  const now = new Date()
+  const upcomingEvents = events.filter(e => new Date(e.start_date) >= now)
+  const pastEvents = events.filter(e => new Date(e.start_date) < now)
+
   return (
     <>
-      {/* Create Button */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-foreground">All Events</h2>
-        <Button onClick={handleCreateNew}>
-          + Create New Event
-        </Button>
+      {/* Section Header */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '24px'
+      }}>
+        <h2 style={{
+          fontSize: '1.25rem',
+          fontWeight: 600,
+          color: 'var(--foreground)',
+          letterSpacing: '-0.01em'
+        }}>
+          Events
+        </h2>
+        <button
+          onClick={handleCreateNew}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '12px 24px',
+            fontSize: '0.9375rem',
+            fontWeight: 500,
+            borderRadius: '9999px',
+            border: 'none',
+            cursor: 'pointer',
+            background: 'var(--foreground)',
+            color: 'var(--background)',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          New Event
+        </button>
       </div>
 
-      {/* Event List */}
+      {/* Events List */}
       {events.length === 0 ? (
-        <Card>
-          <CardContent className="text-center py-12">
-            <Calendar className="w-12 h-12 text-muted mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">No Events Yet</h3>
-            <p className="text-muted mb-6">Create your first event to get started.</p>
-            <Button onClick={handleCreateNew}>Create New Event</Button>
-          </CardContent>
-        </Card>
+        <div style={{
+          background: 'var(--background)',
+          borderRadius: '16px',
+          border: '1px solid var(--border)',
+          padding: '64px 24px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            width: '64px',
+            height: '64px',
+            borderRadius: '16px',
+            background: 'var(--background-secondary)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 20px'
+          }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--foreground-muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <h3 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '8px' }}>
+            No events yet
+          </h3>
+          <p style={{ color: 'var(--foreground-muted)', marginBottom: '24px' }}>
+            Create your first event to get started.
+          </p>
+          <button
+            onClick={handleCreateNew}
+            style={{
+              padding: '12px 24px',
+              fontSize: '0.9375rem',
+              fontWeight: 500,
+              borderRadius: '9999px',
+              border: 'none',
+              cursor: 'pointer',
+              background: 'var(--accent)',
+              color: 'white'
+            }}
+          >
+            Create Event
+          </button>
+        </div>
       ) : (
-        <div className="space-y-4">
-          {events.map((event) => (
-            <Card key={event.id}>
-              <CardContent>
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                  {/* Event Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2 flex-wrap">
-                      <h3 className="text-lg font-semibold text-foreground truncate">
-                        {event.title}
-                      </h3>
-                      <span
-                        className={
-                          'px-3 py-1 rounded-full text-xs font-medium capitalize ' +
-                          (eventTypeColors[event.event_type] || 'bg-gray-100 text-gray-700')
-                        }
-                      >
-                        {event.event_type}
-                      </span>
-                      <span
-                        className={
-                          'px-3 py-1 rounded-full text-xs font-medium ' +
-                          (event.is_active
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700')
-                        }
-                      >
-                        {event.is_active ? 'Active' : 'Inactive'}
-                      </span>
-                    </div>
+        <div style={{
+          background: 'var(--background)',
+          borderRadius: '16px',
+          border: '1px solid var(--border)',
+          overflow: 'hidden'
+        }}>
+          {/* Upcoming Events */}
+          {upcomingEvents.length > 0 && (
+            <>
+              <div style={{
+                padding: '16px 24px',
+                background: 'var(--background-secondary)',
+                borderBottom: '1px solid var(--border)',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: 'var(--foreground-muted)'
+              }}>
+                Upcoming ({upcomingEvents.length})
+              </div>
+              {upcomingEvents.map((event, idx) => (
+                <EventRow
+                  key={event.id}
+                  event={event}
+                  isLast={idx === upcomingEvents.length - 1 && pastEvents.length === 0}
+                  loadingId={loadingId}
+                  deleteConfirmId={deleteConfirmId}
+                  onEdit={handleEdit}
+                  onToggleActive={handleToggleActive}
+                  onDelete={handleDelete}
+                  setDeleteConfirmId={setDeleteConfirmId}
+                />
+              ))}
+            </>
+          )}
 
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted">
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-1.5" />
-                        {formatDate(event.start_date)}
-                        {event.start_date !== event.end_date && ' - ' + formatDate(event.end_date)}
-                      </div>
-                      <div className="flex items-center">
-                        <MapPin className="w-4 h-4 mr-1.5" />
-                        {event.location}
-                      </div>
-                      <div className="flex items-center">
-                        <Users className="w-4 h-4 mr-1.5" />
-                        {event.current_participants}/{event.max_participants} participants
-                      </div>
-                      <div className="font-medium text-foreground">
-                        {formatPrice(event.price)}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEdit(event)}
-                      title="Edit event"
-                    >
-                      <Pencil className="w-4 h-4 mr-1.5" />
-                      Edit
-                    </Button>
-
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleToggleActive(event)}
-                      disabled={loadingId === event.id}
-                      title={event.is_active ? 'Deactivate event' : 'Activate event'}
-                    >
-                      {event.is_active ? (
-                        <>
-                          <ToggleRight className="w-4 h-4 mr-1.5 text-green-600" />
-                          <span className="text-green-600">Active</span>
-                        </>
-                      ) : (
-                        <>
-                          <ToggleLeft className="w-4 h-4 mr-1.5 text-red-500" />
-                          <span className="text-red-500">Inactive</span>
-                        </>
-                      )}
-                    </Button>
-
-                    {deleteConfirmId === event.id ? (
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDelete(event.id)}
-                          disabled={loadingId === event.id}
-                          className="text-red-600 hover:bg-red-50"
-                        >
-                          Confirm
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setDeleteConfirmId(null)}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setDeleteConfirmId(event.id)}
-                        title="Delete event"
-                        className="text-red-500 hover:bg-red-50"
-                      >
-                        <Trash2 className="w-4 h-4 mr-1.5" />
-                        Delete
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          {/* Past Events */}
+          {pastEvents.length > 0 && (
+            <>
+              <div style={{
+                padding: '16px 24px',
+                background: 'var(--background-secondary)',
+                borderBottom: '1px solid var(--border)',
+                borderTop: upcomingEvents.length > 0 ? '1px solid var(--border)' : 'none',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: 'var(--foreground-muted)'
+              }}>
+                Past ({pastEvents.length})
+              </div>
+              {pastEvents.map((event, idx) => (
+                <EventRow
+                  key={event.id}
+                  event={event}
+                  isLast={idx === pastEvents.length - 1}
+                  isPast
+                  loadingId={loadingId}
+                  deleteConfirmId={deleteConfirmId}
+                  onEdit={handleEdit}
+                  onToggleActive={handleToggleActive}
+                  onDelete={handleDelete}
+                  setDeleteConfirmId={setDeleteConfirmId}
+                />
+              ))}
+            </>
+          )}
         </div>
       )}
 
@@ -250,5 +272,231 @@ export default function EventList({ events }: EventListProps) {
         onClose={handleCloseForm}
       />
     </>
+  )
+}
+
+interface EventRowProps {
+  event: Event
+  isLast?: boolean
+  isPast?: boolean
+  loadingId: string | null
+  deleteConfirmId: string | null
+  onEdit: (event: Event) => void
+  onToggleActive: (event: Event) => void
+  onDelete: (id: string) => void
+  setDeleteConfirmId: (id: string | null) => void
+}
+
+function EventRow({
+  event,
+  isLast,
+  isPast,
+  loadingId,
+  deleteConfirmId,
+  onEdit,
+  onToggleActive,
+  onDelete,
+  setDeleteConfirmId
+}: EventRowProps) {
+  const typeStyle = eventTypeStyles[event.event_type] || { bg: '#F3F4F6', color: '#6B7280' }
+  const isLoading = loadingId === event.id
+  const isDeleting = deleteConfirmId === event.id
+
+  return (
+    <div style={{
+      padding: '20px 24px',
+      borderBottom: isLast ? 'none' : '1px solid var(--border)',
+      opacity: isPast ? 0.6 : 1,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px'
+    }}>
+      {/* Main Row */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        gap: '16px',
+        flexWrap: 'wrap'
+      }}>
+        {/* Event Info */}
+        <div style={{ flex: 1, minWidth: '240px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
+            <h3 style={{
+              fontSize: '1rem',
+              fontWeight: 600,
+              color: 'var(--foreground)',
+              margin: 0
+            }}>
+              {event.title}
+            </h3>
+            <span style={{
+              padding: '4px 10px',
+              borderRadius: '9999px',
+              fontSize: '0.6875rem',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.03em',
+              background: typeStyle.bg,
+              color: typeStyle.color
+            }}>
+              {event.event_type}
+            </span>
+            <span style={{
+              padding: '4px 10px',
+              borderRadius: '9999px',
+              fontSize: '0.6875rem',
+              fontWeight: 600,
+              background: event.is_active ? '#D1FAE5' : '#FEE2E2',
+              color: event.is_active ? '#059669' : '#DC2626'
+            }}>
+              {event.is_active ? 'Active' : 'Inactive'}
+            </span>
+          </div>
+
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '20px',
+            fontSize: '0.875rem',
+            color: 'var(--foreground-muted)',
+            flexWrap: 'wrap'
+          }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              {formatDate(event.start_date)}
+              {event.start_date !== event.end_date && ` - ${formatDate(event.end_date)}`}
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              {event.location}
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              {event.current_participants}/{event.max_participants}
+            </span>
+            <span style={{ fontWeight: 600, color: 'var(--foreground)' }}>
+              {formatPrice(event.price)}
+            </span>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {isDeleting ? (
+            <>
+              <button
+                onClick={() => onDelete(event.id)}
+                disabled={isLoading}
+                style={{
+                  padding: '8px 16px',
+                  fontSize: '0.8125rem',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  background: '#DC2626',
+                  color: 'white',
+                  opacity: isLoading ? 0.5 : 1
+                }}
+              >
+                {isLoading ? 'Deleting...' : 'Confirm Delete'}
+              </button>
+              <button
+                onClick={() => setDeleteConfirmId(null)}
+                style={{
+                  padding: '8px 16px',
+                  fontSize: '0.8125rem',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  border: '1px solid var(--border)',
+                  cursor: 'pointer',
+                  background: 'transparent',
+                  color: 'var(--foreground-muted)'
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => onEdit(event)}
+                style={{
+                  padding: '8px 16px',
+                  fontSize: '0.8125rem',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  border: '1px solid var(--border)',
+                  cursor: 'pointer',
+                  background: 'transparent',
+                  color: 'var(--foreground)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Edit
+              </button>
+              <button
+                onClick={() => onToggleActive(event)}
+                disabled={isLoading}
+                style={{
+                  padding: '8px 16px',
+                  fontSize: '0.8125rem',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  background: event.is_active ? '#FEF3C7' : '#D1FAE5',
+                  color: event.is_active ? '#B45309' : '#059669',
+                  opacity: isLoading ? 0.5 : 1
+                }}
+              >
+                {isLoading ? '...' : event.is_active ? 'Deactivate' : 'Activate'}
+              </button>
+              <button
+                onClick={() => setDeleteConfirmId(event.id)}
+                style={{
+                  padding: '8px 12px',
+                  fontSize: '0.8125rem',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  border: '1px solid #FEE2E2',
+                  cursor: 'pointer',
+                  background: '#FEF2F2',
+                  color: '#DC2626',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+                title="Delete event"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
