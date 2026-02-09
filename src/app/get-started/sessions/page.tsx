@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import type { Event } from '@/lib/types'
 
 export default async function SessionsPage() {
   const supabase = await createClient()
@@ -62,7 +63,7 @@ export default async function SessionsPage() {
               display: 'grid',
               gap: '20px'
             }}>
-              {sessions.map((session) => (
+              {sessions.map((session: Event) => (
                 <div
                   key={session.id}
                   style={{
