@@ -16,6 +16,7 @@ export interface Profile {
   emergency_contact_phone?: string
   skill_level?: 'beginner' | 'intermediate' | 'advanced' | 'elite'
   position?: string
+  role: 'user' | 'admin'
   membership_status?: 'none' | 'active' | 'expired' | 'cancelled'
   membership_plan?: string
   stripe_customer_id?: string

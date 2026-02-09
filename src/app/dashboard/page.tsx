@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { Calendar, CreditCard, User, Clock, ArrowRight, CheckCircle } from 'lucide-react'
+import { Calendar, CreditCard, User, Clock, ArrowRight, CheckCircle, ShieldCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import Button from '@/components/ui/Button'
 import Card, { CardContent, CardHeader } from '@/components/ui/Card'
@@ -12,6 +12,15 @@ export default async function DashboardPage() {
   if (!user) {
     redirect('/auth/login?redirect=/dashboard')
   }
+
+  // Check if user is admin
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('user_id', user.id)
+    .single()
+
+  const isAdmin = profile?.role === 'admin'
 
   // Mock data - in production would come from Supabase
   const upcomingBookings = [
@@ -190,6 +199,14 @@ export default async function DashboardPage() {
                 <h2 className="text-xl font-semibold text-foreground">Quick Actions</h2>
               </CardHeader>
               <CardContent className="space-y-3">
+                {isAdmin && (
+                  <Link href="/dashboard/admin" className="block">
+                    <Button variant="primary" className="w-full justify-start">
+                      <ShieldCheck className="w-5 h-5 mr-3" />
+                      Admin Dashboard
+                    </Button>
+                  </Link>
+                )}
                 <Link href="/events" className="block">
                   <Button variant="secondary" className="w-full justify-start">
                     <Calendar className="w-5 h-5 mr-3" />
