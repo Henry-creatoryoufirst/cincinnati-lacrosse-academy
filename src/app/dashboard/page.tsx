@@ -83,49 +83,49 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         )}
 
         {/* Welcome Header */}
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-1">
+        <div className="mb-8 sm:mb-10">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-1">
             Welcome back, {firstName}
           </h1>
-          <p className="text-gray-500">
+          <p className="text-sm sm:text-base text-gray-500">
             Manage your bookings, membership, and account settings.
           </p>
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10">
           {[
-            { icon: Calendar, label: 'Upcoming Events', value: String(bookings.length), color: 'text-blue-600', bg: 'bg-blue-50' },
+            { icon: Calendar, label: 'Upcoming', value: String(bookings.length), color: 'text-blue-600', bg: 'bg-blue-50' },
             { icon: CheckCircle, label: 'Membership', value: membershipActive ? 'Active' : 'None', color: membershipActive ? 'text-green-600' : 'text-gray-400', bg: membershipActive ? 'bg-green-50' : 'bg-gray-100' },
-            { icon: Clock, label: 'Sessions Attended', value: String(sessionsAttended || 0), color: 'text-purple-600', bg: 'bg-purple-50' },
-            { icon: CreditCard, label: 'Current Plan', value: membership?.plan_id ? membership.plan_id.charAt(0).toUpperCase() + membership.plan_id.slice(1) : 'Free', color: 'text-cyan-600', bg: 'bg-cyan-50' },
+            { icon: Clock, label: 'Attended', value: String(sessionsAttended || 0), color: 'text-purple-600', bg: 'bg-purple-50' },
+            { icon: CreditCard, label: 'Plan', value: membership?.plan_id ? membership.plan_id.charAt(0).toUpperCase() + membership.plan_id.slice(1) : 'Free', color: 'text-cyan-600', bg: 'bg-cyan-50' },
           ].map((stat) => (
             <div
               key={stat.label}
-              className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm"
+              className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 shadow-sm min-w-0"
             >
-              <div className={`w-11 h-11 rounded-xl ${stat.bg} flex items-center justify-center mb-4`}>
+              <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl ${stat.bg} flex items-center justify-center mb-3 sm:mb-4`}>
                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
               </div>
-              <p className="text-2xl font-bold text-gray-900 tracking-tight leading-tight">
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-tight truncate">
                 {stat.value}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 mt-1 truncate">
                 {stat.label}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
 
           {/* Upcoming Events — Main Column */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6 lg:space-y-8 min-w-0">
 
             {/* Upcoming Events Card */}
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">
+              <div className="px-5 sm:px-6 py-4 sm:py-5 border-b border-gray-100 flex items-center justify-between">
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                   Upcoming Events
                 </h2>
                 <Link
@@ -202,10 +202,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
             {/* Quick Actions — Grid */}
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
                 Quick Actions
               </h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {[
                   ...(isAdmin ? [{ href: '/dashboard/admin', icon: ShieldCheck, label: 'Admin Dashboard', sublabel: 'Manage site', color: 'text-red-600', bg: 'bg-red-50' }] : []),
                   { href: '/events', icon: Calendar, label: 'Book Event', sublabel: 'Browse & register', color: 'text-blue-600', bg: 'bg-blue-50' },
@@ -215,16 +215,16 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   <Link
                     key={action.href}
                     href={action.href}
-                    className="bg-white rounded-2xl border border-gray-200 p-5 flex items-center gap-3.5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+                    className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-5 flex items-center gap-3.5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
                   >
-                    <div className={`w-11 h-11 rounded-xl ${action.bg} flex items-center justify-center flex-shrink-0`}>
+                    <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl ${action.bg} flex items-center justify-center flex-shrink-0`}>
                       <action.icon className={`w-5 h-5 ${action.color}`} />
                     </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900">
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
                         {action.label}
                       </p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-400 truncate">
                         {action.sublabel}
                       </p>
                     </div>
