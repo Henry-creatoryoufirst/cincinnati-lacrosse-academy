@@ -62,32 +62,75 @@ export default async function EventsPage() {
   const events = await getEvents()
 
   return (
-    <div className="pt-[72px]">
+    <main style={{ paddingTop: '72px', minHeight: '100vh', background: '#f9fafb' }}>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary to-accent text-white py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">Upcoming Events</h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
-              Browse and book our training sessions, camps, clinics, and tournaments.
-            </p>
-          </div>
+      <section style={{
+        background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+        color: 'white',
+        padding: '64px 24px 80px',
+        textAlign: 'center',
+      }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+          <h1 style={{
+            fontSize: 'clamp(1.75rem, 4vw, 3rem)',
+            fontWeight: 700,
+            marginBottom: '16px',
+            letterSpacing: '-0.025em',
+            color: 'white',
+          }}>
+            Upcoming Events
+          </h1>
+          <p style={{
+            fontSize: '1.125rem',
+            color: 'rgba(255,255,255,0.8)',
+            maxWidth: '600px',
+            margin: '0 auto',
+          }}>
+            Browse and book our training sessions, camps, clinics, and tournaments.
+          </p>
         </div>
       </section>
 
       {/* Events Grid */}
-      <section className="py-16 bg-gray-50 min-h-[50vh]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section style={{ padding: '64px 24px', minHeight: '50vh' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
           {!events || events.length === 0 ? (
-            <div className="text-center py-20">
-              <div className="w-20 h-20 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-6">
-                <Calendar className="w-10 h-10 text-gray-400" />
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              padding: '80px 16px',
+            }}>
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '16px',
+                background: '#f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '24px',
+              }}>
+                <Calendar style={{ width: '40px', height: '40px', color: '#9ca3af' }} />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">No Upcoming Events</h2>
-              <p className="text-gray-500 mb-8 max-w-md mx-auto">
+              <h2 style={{
+                fontSize: '1.5rem',
+                fontWeight: 700,
+                color: '#111827',
+                marginBottom: '12px',
+              }}>
+                No Upcoming Events
+              </h2>
+              <p style={{
+                color: '#6b7280',
+                marginBottom: '32px',
+                maxWidth: '420px',
+                fontSize: '1rem',
+              }}>
                 Check back soon — new training sessions, camps, and clinics are added regularly.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
                 <Link href="/get-started/sessions">
                   <Button>View Training Sessions</Button>
                 </Link>
@@ -164,10 +207,12 @@ export default async function EventsPage() {
 
       {/* CTA Section — only show when there are events */}
       {events && events.length > 0 && (
-        <section className="py-16 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Can&apos;t Find What You&apos;re Looking For?</h2>
-            <p className="text-xl text-muted mb-8">
+        <section style={{ padding: '64px 24px', background: 'white', textAlign: 'center' }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#111827', marginBottom: '16px' }}>
+              Can&apos;t Find What You&apos;re Looking For?
+            </h2>
+            <p style={{ fontSize: '1.125rem', color: '#6b7280', marginBottom: '32px' }}>
               Contact us to learn about private coaching, team training, or custom events.
             </p>
             <Link href="/contact">
@@ -176,6 +221,6 @@ export default async function EventsPage() {
           </div>
         </section>
       )}
-    </div>
+    </main>
   )
 }
