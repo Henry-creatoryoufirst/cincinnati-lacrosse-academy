@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 
@@ -26,10 +27,13 @@ export default function GetStartedPage() {
       <section className="triptych-header">
         {/* Left Image Panel */}
         <div className="triptych-header-left">
-          <img
+          <Image
             src="/images/get-started-header-1.jpg"
             alt="Athlete training"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+            fill
+            sizes="33vw"
+            priority
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
           />
           {/* Subtle edge gradient */}
           <div style={{
@@ -191,10 +195,13 @@ export default function GetStartedPage() {
 
         {/* Right Image Panel */}
         <div className="triptych-header-right">
-          <img
+          <Image
             src="/images/get-started-header-2.jpg"
             alt="Athletes working hard"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+            fill
+            sizes="33vw"
+            priority
+            style={{ objectFit: 'cover', objectPosition: 'top' }}
           />
           {/* Subtle edge gradient */}
           <div style={{
@@ -237,10 +244,12 @@ export default function GetStartedPage() {
                 height: '220px',
                 overflow: 'hidden'
               }}>
-                <img
+                <Image
                   src="/images/weekend-training-card.jpg"
                   alt="Weekend training session"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: 'cover' }}
                 />
                 {/* Gradient fade to white */}
                 <div style={{
@@ -351,10 +360,12 @@ export default function GetStartedPage() {
                 height: '220px',
                 overflow: 'hidden'
               }}>
-                <img
+                <Image
                   src="/images/strength-training-card.jpg"
                   alt="Strength training"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 35%' }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: 'cover', objectPosition: '50% 35%' }}
                 />
                 {/* Gradient fade to white */}
                 <div style={{
@@ -485,10 +496,12 @@ export default function GetStartedPage() {
                 height: '220px',
                 overflow: 'hidden'
               }}>
-                <img
+                <Image
                   src="/images/remote-training-card.jpg"
                   alt="Remote lacrosse training"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: 'cover' }}
                 />
                 {/* Gradient fade to white */}
                 <div style={{

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
@@ -251,10 +252,13 @@ export default function HomePage() {
           inset: 0,
           zIndex: 0
         }}>
-          <img
+          <Image
             src="/images/community/top-banner.jpg"
             alt="Cincinnati Lacrosse Academy athletes"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            fill
+            sizes="100vw"
+            priority
+            style={{ objectFit: 'cover' }}
           />
           {/* Refined gradient overlay - dark left, transparent right */}
           <div style={{
@@ -407,10 +411,12 @@ export default function HomePage() {
                 {/* Photos duplicated for seamless infinite scroll */}
                 {[...ROW_1_PHOTOS, ...ROW_1_PHOTOS].map((photo, index) => (
                   <div key={`row1-${index}`} className="marquee-photo">
-                    <img
+                    <Image
                       src={`/images/community/${photo.file}`}
                       alt={photo.alt}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      fill
+                      sizes="200px"
+                      style={{ objectFit: 'cover' }}
                     />
                   </div>
                 ))}
@@ -422,10 +428,12 @@ export default function HomePage() {
               <div className="marquee-track marquee-track--reverse">
                 {[...ROW_2_PHOTOS, ...ROW_2_PHOTOS].map((photo, index) => (
                   <div key={`row2-${index}`} className="marquee-photo">
-                    <img
+                    <Image
                       src={`/images/community/${photo.file}`}
                       alt={photo.alt}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      fill
+                      sizes="200px"
+                      style={{ objectFit: 'cover' }}
                     />
                   </div>
                 ))}
@@ -455,11 +463,12 @@ export default function HomePage() {
             <div className="program-item">
               <div className="program-row">
                 <div className="program-image">
-                  {/* TEST: Using plain img tag instead of Next.js Image */}
-                  <img
+                  <Image
                     src="/images/community/dsc05410.jpg"
                     alt="Weekend training session"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    style={{ objectFit: 'cover' }}
                   />
                 </div>
                 <motion.div
@@ -493,10 +502,12 @@ export default function HomePage() {
             <div className="program-item">
               <div className="program-row program-row--reverse">
                 <div className="program-image">
-                  <img
+                  <Image
                     src="/images/homepage-brett.jpg"
                     alt="Strength training with Brett"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    style={{ objectFit: 'cover', objectPosition: 'top' }}
                   />
                 </div>
                 <motion.div
@@ -530,10 +541,12 @@ export default function HomePage() {
             <div className="program-item">
               <div className="program-row">
                 <div className="program-image">
-                  <img
+                  <Image
                     src="/images/remote-training-card.jpg"
                     alt="Remote training assistance"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    style={{ objectFit: 'cover' }}
                   />
                 </div>
                 <motion.div
@@ -642,10 +655,12 @@ export default function HomePage() {
                 height: '310px',
                 overflow: 'hidden'
               }}>
-                <img
+                <Image
                   src="/images/youtube-banner.jpg"
                   alt="Cincinnati Lacrosse YouTube"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  style={{ objectFit: 'cover', objectPosition: 'top' }}
                 />
                 {/* Gradient fade - gradual cinematic blend */}
                 <div style={{
@@ -744,9 +759,11 @@ export default function HomePage() {
                   WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)'
                 }}
               >
-                <img
+                <Image
                   src="/images/youprjct-phone.png"
                   alt="You.Prjct app"
+                  width={200}
+                  height={400}
                   style={{ height: '100%', width: 'auto', objectFit: 'contain' }}
                 />
               </div>
@@ -826,10 +843,12 @@ export default function HomePage() {
                   marginTop: '16px'
                 }}
               >
-                <img
+                <Image
                   src="/images/podcast-cover.png"
                   alt="The Infinite Game podcast"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  fill
+                  sizes="200px"
+                  style={{ objectFit: 'cover' }}
                 />
               </div>
 
@@ -898,10 +917,12 @@ export default function HomePage() {
             'dsc01692-3.jpg'
           ].map((photo, index) => (
             <div key={index} style={{ position: 'relative', height: '200px' }}>
-              <img
+              <Image
                 src={`/images/community/${photo}`}
                 alt="Community moment"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                fill
+                sizes="(max-width: 768px) 50vw, 16vw"
+                style={{ objectFit: 'cover' }}
               />
             </div>
           ))}

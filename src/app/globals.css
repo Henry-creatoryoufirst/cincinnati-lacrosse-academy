@@ -1,6 +1,29 @@
 @import "tailwindcss";
 
 /* ============================================
+   TAILWIND v4 THEME — Maps CSS vars to utilities
+   bg-secondary, text-foreground, text-primary, etc.
+   ============================================ */
+
+@theme {
+  --color-background: #FFFFFF;
+  --color-card: #FFFFFF;
+  --color-secondary: #F4F5F7;
+  --color-tertiary: #EBEDF0;
+  --color-foreground: #1A1A1A;
+  --color-foreground-secondary: #4A4A4A;
+  --color-muted: #6B7280;
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-primary-light: #EFF6FF;
+  --color-accent: #1D4ED8;
+  --color-gold: #D97706;
+  --color-success: #059669;
+  --color-border: #E5E7EB;
+  --color-border-hover: #D1D5DB;
+}
+
+/* ============================================
    CINCINNATI LACROSSE ACADEMY
    Premium Light Theme Design System
    ============================================ */
@@ -293,6 +316,28 @@ p {
 .btn-sm {
   padding: 10px 20px;
   font-size: 0.875rem;
+}
+
+/* Gradient button for primary CTA */
+.btn-gradient {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: white;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+}
+
+/* Card hover utility */
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* ============================================

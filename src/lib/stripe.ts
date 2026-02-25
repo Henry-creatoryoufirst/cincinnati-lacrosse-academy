@@ -19,6 +19,10 @@ export const stripe = {
   get checkout() { return getStripe().checkout },
   get subscriptions() { return getStripe().subscriptions },
   get webhooks() { return getStripe().webhooks },
+  get billingPortal() { return getStripe().billingPortal },
+  get charges() { return getStripe().charges },
+  get paymentIntents() { return getStripe().paymentIntents },
+  get paymentMethods() { return getStripe().paymentMethods },
 }
 
 export const MEMBERSHIP_PLANS = {

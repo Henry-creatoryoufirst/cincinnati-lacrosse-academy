@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
+import OnchainProviders from "@/components/providers/OnchainProviders"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -113,11 +114,13 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Header />
-        <div className="page-transition">
-          {children}
-        </div>
-        <Footer />
+        <OnchainProviders>
+          <Header />
+          <div className="page-transition">
+            {children}
+          </div>
+          <Footer />
+        </OnchainProviders>
       </body>
     </html>
   )

@@ -11,40 +11,60 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { priceId, mode, eventId, successUrl, cancelUrl } = await request.json()
+    const { priceId, mode, eventId, successUrl, cancelUrl, amount, productName } = await request.json()
 
     // Create or retrieve Stripe customer
     let customerId: string | undefined
 
-    // In production, you would store the Stripe customer ID in your database
-    const customers = await stripe.customers.list({
-      email: user.email,
-      limit: 1,
-    })
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('stripe_customer_id')
+      .eq('user_id', user.id)
+      .single()
 
-    if (customers.data.length > 0) {
-      customerId = customers.data[0].id
-    } else {
-      const customer = await stripe.customers.create({
-        email: user.email!,
-        metadata: {
-          supabase_user_id: user.id,
-        },
+    customerId = profile?.stripe_customer_id || undefined
+
+    if (!customerId) {
+      const customers = await stripe.customers.list({
+        email: user.email,
+        limit: 1,
       })
-      customerId = customer.id
+
+      if (customers.data.length > 0) {
+        customerId = customers.data[0].id
+      } else {
+        const customer = await stripe.customers.create({
+          email: user.email!,
+          metadata: { supabase_user_id: user.id },
+        })
+        customerId = customer.id
+      }
+
+      // Save for next time
+      await supabase
+        .from('profiles')
+        .update({ stripe_customer_id: customerId })
+        .eq('user_id', user.id)
     }
+
+    // Build line items — support both priceId and dynamic price_data
+    const lineItems = priceId
+      ? [{ price: priceId, quantity: 1 }]
+      : [{
+          price_data: {
+            currency: 'usd',
+            product_data: { name: productName || 'Cincinnati Lacrosse Academy' },
+            unit_amount: Math.round((amount || 0) * 100),
+          },
+          quantity: 1,
+        }]
 
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       mode: mode || 'payment',
       payment_method_types: ['card'],
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
+      line_items: lineItems,
       success_url: successUrl || `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?success=true`,
       cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_APP_URL}/events?canceled=true`,
       metadata: {

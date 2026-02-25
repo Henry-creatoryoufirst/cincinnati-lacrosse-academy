@@ -41,9 +41,10 @@ export async function updateSession(request: NextRequest) {
 
   // Protected routes
   const protectedRoutes = ['/dashboard', '/events/book', '/membership/manage']
+  const isBookingRoute = /^\/events\/[^/]+\/book/.test(request.nextUrl.pathname)
   const isProtectedRoute = protectedRoutes.some(route =>
     request.nextUrl.pathname.startsWith(route)
-  )
+  ) || isBookingRoute
 
   if (isProtectedRoute && !user) {
     const url = request.nextUrl.clone()

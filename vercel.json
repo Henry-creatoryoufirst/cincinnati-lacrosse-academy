@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "src/middleware.ts": {
+      "maxDuration": 30
+    }
+  }
+}
