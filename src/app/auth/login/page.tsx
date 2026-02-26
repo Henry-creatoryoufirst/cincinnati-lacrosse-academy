@@ -39,102 +39,47 @@ function LoginForm() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '48px 24px',
-      background: 'linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%)'
-    }}>
-      <div style={{ width: '100%', maxWidth: '420px' }}>
+    <div className="min-h-screen flex items-center justify-center px-6 py-12 bg-gradient-to-b from-gray-50 to-white">
+      <div className="w-full max-w-[420px]">
         {/* Logo / Brand */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <div className="text-center mb-10">
           <Link
             href="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '56px',
-              height: '56px',
-              background: '#0a0a0a',
-              borderRadius: '16px',
-              marginBottom: '24px',
-              textDecoration: 'none'
-            }}
+            className="inline-flex items-center justify-center w-14 h-14 bg-[#0a0a0a] rounded-2xl mb-6 no-underline"
           >
-            <span style={{ color: 'white', fontWeight: 700, fontSize: '1.25rem' }}>CLA</span>
+            <span className="text-white font-bold text-xl">CLA</span>
           </Link>
 
-          <h1 style={{
-            fontSize: '2rem',
-            fontWeight: 700,
-            color: '#0a0a0a',
-            marginBottom: '8px',
-            letterSpacing: '-0.02em'
-          }}>
-            <span style={{ fontStyle: 'italic' }}>Welcome Back</span>
+          <h1 className="text-[2rem] font-bold text-[#0a0a0a] mb-2 tracking-tight">
+            <span className="italic">Welcome Back</span>
           </h1>
 
-          <p style={{
-            fontSize: '1rem',
-            color: '#6b7280',
-            fontWeight: 400
-          }}>
+          <p className="text-base text-gray-500 font-normal">
             Sign in to access your account
           </p>
         </div>
 
         {/* Card */}
-        <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04)',
-          border: '1px solid #e5e7eb',
-          overflow: 'hidden'
-        }}>
-          <div style={{ padding: '32px' }}>
+        <div className="bg-white rounded-[20px] shadow-[0_4px_24px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] border border-gray-200 overflow-hidden">
+          <div className="p-8">
             <form onSubmit={handleSubmit}>
               {/* Error Message */}
               {error && (
-                <div style={{
-                  padding: '14px 16px',
-                  background: '#fef2f2',
-                  border: '1px solid #fecaca',
-                  borderRadius: '12px',
-                  marginBottom: '24px'
-                }}>
-                  <p style={{
-                    fontSize: '0.875rem',
-                    color: '#dc2626',
-                    margin: 0
-                  }}>{error}</p>
+                <div className="px-4 py-3.5 bg-red-50 border border-red-200 rounded-xl mb-6">
+                  <p className="text-sm text-red-600 m-0">{error}</p>
                 </div>
               )}
 
               {/* Email Input */}
-              <div style={{ marginBottom: '20px' }}>
+              <div className="mb-5">
                 <label
                   htmlFor="email"
-                  style={{
-                    display: 'block',
-                    fontSize: '0.875rem',
-                    fontWeight: 500,
-                    color: '#374151',
-                    marginBottom: '8px'
-                  }}
+                  className="block text-sm font-medium text-gray-700 mb-2"
                 >
                   Email
                 </label>
-                <div style={{ position: 'relative' }}>
-                  <div style={{
-                    position: 'absolute',
-                    left: '14px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    pointerEvents: 'none'
-                  }}>
+                <div className="relative">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="2" y="4" width="20" height="16" rx="2"/>
                       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
@@ -147,54 +92,21 @@ function LoginForm() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    style={{
-                      width: '100%',
-                      padding: '14px 16px 14px 46px',
-                      fontSize: '1rem',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '12px',
-                      background: '#f9fafb',
-                      color: '#0a0a0a',
-                      outline: 'none',
-                      transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-                      boxSizing: 'border-box'
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#2563eb'
-                      e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
-                      e.target.style.background = 'white'
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#e5e7eb'
-                      e.target.style.boxShadow = 'none'
-                      e.target.style.background = '#f9fafb'
-                    }}
+                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 focus:bg-white"
                   />
                 </div>
               </div>
 
               {/* Password Input */}
-              <div style={{ marginBottom: '20px' }}>
+              <div className="mb-5">
                 <label
                   htmlFor="password"
-                  style={{
-                    display: 'block',
-                    fontSize: '0.875rem',
-                    fontWeight: 500,
-                    color: '#374151',
-                    marginBottom: '8px'
-                  }}
+                  className="block text-sm font-medium text-gray-700 mb-2"
                 >
                   Password
                 </label>
-                <div style={{ position: 'relative' }}>
-                  <div style={{
-                    position: 'absolute',
-                    left: '14px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    pointerEvents: 'none'
-                  }}>
+                <div className="relative">
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                       <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -207,74 +119,28 @@ function LoginForm() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    style={{
-                      width: '100%',
-                      padding: '14px 16px 14px 46px',
-                      fontSize: '1rem',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '12px',
-                      background: '#f9fafb',
-                      color: '#0a0a0a',
-                      outline: 'none',
-                      transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-                      boxSizing: 'border-box'
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#2563eb'
-                      e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
-                      e.target.style.background = 'white'
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#e5e7eb'
-                      e.target.style.boxShadow = 'none'
-                      e.target.style.background = '#f9fafb'
-                    }}
+                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 focus:bg-white"
                   />
                 </div>
               </div>
 
               {/* Remember Me & Forgot Password */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '28px'
-              }}>
-                <label style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}>
+              <div className="flex items-center justify-between mb-7">
+                <label className="flex items-center cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    style={{
-                      width: '18px',
-                      height: '18px',
-                      borderRadius: '5px',
-                      border: '1px solid #d1d5db',
-                      marginRight: '10px',
-                      cursor: 'pointer',
-                      accentColor: '#2563eb'
-                    }}
+                    className="w-[18px] h-[18px] rounded-[5px] border border-gray-300 mr-2.5 cursor-pointer accent-blue-600"
                   />
-                  <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>
+                  <span className="text-sm text-gray-500">
                     Remember me
                   </span>
                 </label>
 
                 <Link
                   href="/auth/forgot-password"
-                  style={{
-                    fontSize: '0.875rem',
-                    color: '#2563eb',
-                    textDecoration: 'none',
-                    fontWeight: 500
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-                  onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                  className="text-sm text-blue-600 no-underline font-medium hover:underline"
                 >
                   Forgot password?
                 </Link>
@@ -284,40 +150,12 @@ function LoginForm() {
               <button
                 type="submit"
                 disabled={isLoading}
-                style={{
-                  width: '100%',
-                  padding: '16px 24px',
-                  background: isLoading ? '#9ca3af' : '#2563eb',
-                  color: 'white',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  border: 'none',
-                  borderRadius: '12px',
-                  cursor: isLoading ? 'not-allowed' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  transition: 'background 0.2s ease, transform 0.2s ease',
-                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)'
-                }}
-                onMouseEnter={(e) => {
-                  if (!isLoading) {
-                    e.currentTarget.style.background = '#1d4ed8'
-                    e.currentTarget.style.transform = 'translateY(-1px)'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isLoading) {
-                    e.currentTarget.style.background = '#2563eb'
-                    e.currentTarget.style.transform = 'translateY(0)'
-                  }
-                }}
+                className="w-full py-4 px-6 bg-blue-600 text-white text-base font-semibold rounded-xl transition-all hover:bg-blue-700 hover:-translate-y-px disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(37,99,235,0.25)]"
               >
                 {isLoading ? (
                   <>
                     <svg
-                      style={{ animation: 'spin 1s linear infinite', width: '20px', height: '20px' }}
+                      className="animate-spin w-5 h-5"
                       viewBox="0 0 24 24"
                       fill="none"
                     >
@@ -351,27 +189,12 @@ function LoginForm() {
             </form>
 
             {/* Sign Up Link */}
-            <div style={{
-              marginTop: '28px',
-              paddingTop: '24px',
-              borderTop: '1px solid #e5e7eb',
-              textAlign: 'center'
-            }}>
-              <p style={{
-                fontSize: '0.9375rem',
-                color: '#6b7280',
-                margin: 0
-              }}>
+            <div className="mt-7 pt-6 border-t border-gray-200 text-center">
+              <p className="text-[0.9375rem] text-gray-500 m-0">
                 Don&apos;t have an account?{' '}
                 <Link
                   href="/auth/register"
-                  style={{
-                    color: '#2563eb',
-                    textDecoration: 'none',
-                    fontWeight: 600
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-                  onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                  className="text-blue-600 no-underline font-semibold hover:underline"
                 >
                   Sign up
                 </Link>
@@ -381,20 +204,10 @@ function LoginForm() {
         </div>
 
         {/* Back to Home */}
-        <div style={{ textAlign: 'center', marginTop: '32px' }}>
+        <div className="text-center mt-8">
           <Link
             href="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '0.875rem',
-              color: '#6b7280',
-              textDecoration: 'none',
-              transition: 'color 0.2s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#0a0a0a'}
-            onMouseLeave={(e) => e.currentTarget.style.color = '#6b7280'}
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 no-underline transition-colors hover:text-[#0a0a0a]"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m12 19-7-7 7-7"/>
@@ -404,14 +217,6 @@ function LoginForm() {
           </Link>
         </div>
       </div>
-
-      {/* CSS for spinner animation */}
-      <style jsx global>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   )
 }
@@ -419,21 +224,8 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%)'
-      }}>
-        <div style={{
-          width: '40px',
-          height: '40px',
-          border: '3px solid #e5e7eb',
-          borderTopColor: '#2563eb',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white">
+        <div className="w-10 h-10 border-[3px] border-gray-200 border-t-blue-600 rounded-full animate-spin" />
       </div>
     }>
       <LoginForm />

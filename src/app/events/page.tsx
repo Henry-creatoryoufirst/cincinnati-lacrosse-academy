@@ -62,85 +62,89 @@ export default async function EventsPage() {
   const events = await getEvents()
 
   return (
-    <main style={{ paddingTop: '72px', minHeight: '100vh', background: '#f9fafb' }}>
+    <main className="min-h-screen bg-secondary pt-[72px]">
       {/* Hero Section */}
-      <section style={{
-        background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
-        color: 'white',
-        padding: '64px 24px 80px',
-        textAlign: 'center',
-      }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <h1 style={{
-            fontSize: 'clamp(1.75rem, 4vw, 3rem)',
-            fontWeight: 700,
-            marginBottom: '16px',
-            letterSpacing: '-0.025em',
-            color: 'white',
-          }}>
+      <section
+        className="relative overflow-hidden text-center"
+        style={{
+          background: 'linear-gradient(180deg, #111827 0%, #0a0a0b 100%)',
+          padding: '64px 24px 80px',
+        }}
+      >
+        {/* Subtle radial glow */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: '600px',
+            height: '600px',
+            background: 'radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 60%)',
+          }}
+        />
+
+        <div className="relative z-10 mx-auto max-w-5xl">
+          <div
+            className="mx-auto mb-7"
+            style={{
+              width: '48px',
+              height: '2px',
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+            }}
+          />
+
+          <h1
+            className="mb-4 font-bold tracking-tight"
+            style={{
+              fontSize: 'clamp(2.25rem, 4vw, 3.25rem)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.1,
+              background: 'linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
             Upcoming Events
           </h1>
-          <p style={{
-            fontSize: '1.125rem',
-            color: 'rgba(255,255,255,0.8)',
-            maxWidth: '600px',
-            margin: '0 auto',
-          }}>
+
+          <p
+            className="mx-auto max-w-xl text-lg font-normal"
+            style={{ color: 'rgba(255,255,255,0.45)' }}
+          >
             Browse and book our training sessions, camps, clinics, and tournaments.
           </p>
         </div>
       </section>
 
       {/* Events Grid */}
-      <section style={{ padding: '64px 24px', minHeight: '50vh' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+      <section className="min-h-[50vh] px-6 py-16">
+        <div className="mx-auto max-w-7xl">
           {!events || events.length === 0 ? (
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              padding: '80px 16px',
-            }}>
-              <div style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: '16px',
-                background: '#f3f4f6',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '24px',
-              }}>
-                <Calendar style={{ width: '40px', height: '40px', color: '#9ca3af' }} />
-              </div>
-              <h2 style={{
-                fontSize: '1.5rem',
-                fontWeight: 700,
-                color: '#111827',
-                marginBottom: '12px',
-              }}>
-                No Upcoming Events
-              </h2>
-              <p style={{
-                color: '#6b7280',
-                marginBottom: '32px',
-                maxWidth: '420px',
-                fontSize: '1rem',
-              }}>
-                Check back soon — new training sessions, camps, and clinics are added regularly.
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
-                <Link href="/get-started/sessions">
-                  <Button>View Training Sessions</Button>
-                </Link>
-                <Link href="/contact">
-                  <Button variant="outline">Contact Us</Button>
-                </Link>
+            <div className="flex items-center justify-center px-4 py-20">
+              <div className="w-full max-w-md rounded-2xl border border-border bg-white p-10 text-center shadow-sm">
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-secondary">
+                  <Calendar className="h-10 w-10 text-muted" />
+                </div>
+
+                <h2 className="mb-3 text-2xl font-bold text-foreground">
+                  No Upcoming Events
+                </h2>
+
+                <p className="mx-auto mb-8 max-w-sm text-base text-muted">
+                  Check back soon — new training sessions, camps, and clinics are added regularly.
+                </p>
+
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <Link href="/get-started/sessions">
+                    <Button>View Training Sessions</Button>
+                  </Link>
+                  <Link href="/contact">
+                    <Button variant="outline">Contact Us</Button>
+                  </Link>
+                </div>
               </div>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {events.map((event) => (
                 <Card key={event.id} hover className="overflow-hidden">
                   <div className="h-44 bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
@@ -207,12 +211,12 @@ export default async function EventsPage() {
 
       {/* CTA Section — only show when there are events */}
       {events && events.length > 0 && (
-        <section style={{ padding: '64px 24px', background: 'white', textAlign: 'center' }}>
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#111827', marginBottom: '16px' }}>
+        <section className="bg-white px-6 py-16 text-center">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">
               Can&apos;t Find What You&apos;re Looking For?
             </h2>
-            <p style={{ fontSize: '1.125rem', color: '#6b7280', marginBottom: '32px' }}>
+            <p className="mb-8 text-lg text-muted">
               Contact us to learn about private coaching, team training, or custom events.
             </p>
             <Link href="/contact">

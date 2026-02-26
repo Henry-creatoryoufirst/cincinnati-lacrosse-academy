@@ -1,18 +1,15 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, CheckCircle, CreditCard, User, Calendar, Wallet, Loader2 } from 'lucide-react'
+import { ArrowLeft, CheckCircle, CreditCard, User, Calendar, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Card, { CardContent, CardHeader } from '@/components/ui/Card'
-import CryptoPayment from '@/components/payments/CryptoPayment'
 import { formatPrice } from '@/lib/stripe'
 import type { Event } from '@/lib/types'
-
-type PaymentMethod = 'card' | 'crypto'
 
 export default function BookEventPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
@@ -25,8 +22,6 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [step, setStep] = useState(1)
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card')
-  const [cryptoError, setCryptoError] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     participantName: '',
@@ -99,7 +94,7 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
   const handleContinue = () => {
     if (step === 1) {
       setStep(2)
-    } else if (paymentMethod === 'card') {
+    } else {
       handleStripePayment()
     }
   }
@@ -137,14 +132,6 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
       setIsSubmitting(false)
     }
   }
-
-  const handleCryptoSuccess = useCallback(() => {
-    router.push('/dashboard?booking=success')
-  }, [router])
-
-  const handleCryptoError = useCallback((err: string) => {
-    setCryptoError(err)
-  }, [])
 
   if (isLoading) {
     return (
@@ -287,79 +274,21 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    {/* Payment Method Selector */}
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-3">Choose Payment Method</h3>
-                      <div className="grid grid-cols-2 gap-3">
-                        <button
-                          type="button"
-                          onClick={() => { setPaymentMethod('card'); setCryptoError(null); setError(null) }}
-                          className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                            paymentMethod === 'card'
-                              ? 'border-blue-600 bg-blue-50'
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <CreditCard className={`w-5 h-5 ${paymentMethod === 'card' ? 'text-blue-600' : 'text-gray-400'}`} />
-                          <span className={`font-medium ${paymentMethod === 'card' ? 'text-blue-600' : 'text-gray-900'}`}>
-                            Pay with Card
-                          </span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => { setPaymentMethod('crypto'); setCryptoError(null); setError(null) }}
-                          className={`flex items-center justify-center gap-2 p-4 rounded-xl border-2 transition-all ${
-                            paymentMethod === 'crypto'
-                              ? 'border-blue-500 bg-blue-50'
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <Wallet className={`w-5 h-5 ${paymentMethod === 'crypto' ? 'text-blue-600' : 'text-gray-400'}`} />
-                          <span className={`font-medium ${paymentMethod === 'crypto' ? 'text-blue-600' : 'text-gray-900'}`}>
-                            Pay with Crypto
-                          </span>
-                        </button>
+                    {/* Card Payment Details */}
+                    <div className="bg-gray-50 rounded-xl p-6">
+                      <h3 className="font-semibold text-gray-900 mb-4">Card Payment</h3>
+                      <p className="text-gray-500 mb-4">
+                        You&apos;ll be redirected to Stripe&apos;s secure checkout to complete your payment.
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <div className="flex gap-2">
+                          <div className="w-10 h-6 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">VISA</div>
+                          <div className="w-10 h-6 bg-red-500 rounded flex items-center justify-center text-white text-xs font-bold">MC</div>
+                          <div className="w-10 h-6 bg-blue-400 rounded flex items-center justify-center text-white text-xs font-bold">AMEX</div>
+                        </div>
+                        <span className="text-sm text-gray-500">Secure payment via Stripe</span>
                       </div>
                     </div>
-
-                    {/* Card Payment Details */}
-                    {paymentMethod === 'card' && (
-                      <div className="bg-gray-50 rounded-xl p-6">
-                        <h3 className="font-semibold text-gray-900 mb-4">Card Payment</h3>
-                        <p className="text-gray-500 mb-4">
-                          You&apos;ll be redirected to Stripe&apos;s secure checkout to complete your payment.
-                        </p>
-                        <div className="flex items-center gap-4">
-                          <div className="flex gap-2">
-                            <div className="w-10 h-6 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">VISA</div>
-                            <div className="w-10 h-6 bg-red-500 rounded flex items-center justify-center text-white text-xs font-bold">MC</div>
-                            <div className="w-10 h-6 bg-blue-400 rounded flex items-center justify-center text-white text-xs font-bold">AMEX</div>
-                          </div>
-                          <span className="text-sm text-gray-500">Secure payment via Stripe</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Crypto Payment */}
-                    {paymentMethod === 'crypto' && (
-                      <div className="bg-blue-50 rounded-xl p-6">
-                        <h3 className="font-semibold text-gray-900 mb-2">Crypto Payment (USDC)</h3>
-                        <p className="text-sm text-gray-500 mb-4">
-                          Pay with USDC on Base network via Coinbase. Connect your wallet to complete the transaction.
-                        </p>
-                        <CryptoPayment
-                          eventName={event.title}
-                          eventId={eventId}
-                          userId={user?.id || ''}
-                          amount={price}
-                          onSuccess={handleCryptoSuccess}
-                          onError={handleCryptoError}
-                        />
-                        {cryptoError && (
-                          <p className="text-sm text-red-500 mt-3">{cryptoError}</p>
-                        )}
-                      </div>
-                    )}
 
                     {/* Booking Summary */}
                     <div className="border border-gray-200 rounded-xl p-4">
@@ -378,7 +307,7 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
                       Back
                     </Button>
                   )}
-                  {(step === 1 || paymentMethod === 'card') && (
+                  {step >= 1 && (
                     <Button
                       onClick={handleContinue}
                       className="flex-1"
@@ -441,15 +370,6 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
                   <span className="text-blue-600">{formatPrice(price)}</span>
                 </div>
 
-                {step === 2 && paymentMethod === 'crypto' && (
-                  <>
-                    <hr className="border-gray-200 my-4" />
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                      <Wallet className="w-4 h-4" />
-                      <span>Paying with USDC on Base</span>
-                    </div>
-                  </>
-                )}
               </CardContent>
             </Card>
           </div>

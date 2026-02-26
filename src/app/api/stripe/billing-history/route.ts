@@ -57,9 +57,7 @@ export async function GET() {
 
     const formattedCharges = charges.data.map((charge) => ({
       id: charge.id,
-      description: charge.description || charge.metadata?.event_id
-        ? `Event booking`
-        : 'Payment',
+      description: charge.description || (charge.metadata?.event_id ? 'Event booking' : 'Payment'),
       date: new Date(charge.created * 1000).toISOString(),
       amount: charge.amount / 100,
       status: charge.refunded ? 'refunded' : charge.status === 'succeeded' ? 'paid' : charge.status,
