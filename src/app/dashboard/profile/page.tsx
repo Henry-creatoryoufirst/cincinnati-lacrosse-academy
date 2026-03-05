@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, User, Phone, MapPin, AlertCircle, CheckCircle } from 'lucide-react'
-import Button from '@/components/ui/Button'
 import Card, { CardContent, CardHeader } from '@/components/ui/Card'
 import Input from '@/components/ui/Input'
 
@@ -31,7 +30,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-secondary py-12">
+    <div className="min-h-screen bg-secondary pt-[72px] py-12">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Navigation */}
         <div className="mb-8">
@@ -161,9 +160,12 @@ export default function ProfilePage() {
 
           {/* Save Button */}
           <div className="flex items-center gap-4">
-            <Button type="submit" size="lg">
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-foreground text-white text-base font-semibold rounded-full no-underline transition-all duration-200 hover:bg-[#333] hover:shadow-md hover:-translate-y-0.5"
+            >
               {saved ? 'Saved!' : 'Save Changes'}
-            </Button>
+            </button>
             {saved && (
               <span className="inline-flex items-center text-green-600 text-sm font-medium">
                 <CheckCircle className="w-4 h-4 mr-1" />

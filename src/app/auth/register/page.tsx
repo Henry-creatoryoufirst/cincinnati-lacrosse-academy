@@ -70,15 +70,15 @@ export default function RegisterPage() {
               <polyline points="22 4 12 14.01 9 11.01"/>
             </svg>
           </div>
-          <h2 className="text-[1.75rem] font-bold text-gray-950 mb-3">
+          <h2 className="text-[1.75rem] font-bold text-foreground mb-3">
             Check Your Email
           </h2>
           <p className="text-base text-gray-500 mb-8 leading-relaxed">
-            We&apos;ve sent a confirmation link to <strong className="text-gray-950">{email}</strong>. Please check your inbox and click the link to activate your account.
+            We&apos;ve sent a confirmation link to <strong className="text-foreground">{email}</strong>. Please check your inbox and click the link to activate your account.
           </p>
           <Link
             href="/auth/login"
-            className="inline-flex items-center gap-1.5 px-8 py-3.5 bg-white text-gray-950 text-[0.9375rem] font-semibold border-2 border-gray-200 rounded-xl no-underline transition-all hover:border-gray-300 hover:bg-gray-50"
+            className="inline-flex items-center gap-1.5 px-8 py-3.5 bg-white text-foreground text-[0.9375rem] font-semibold border-2 border-gray-200 rounded-full no-underline transition-all hover:border-gray-300 hover:bg-gray-50"
           >
             Back to Sign In
           </Link>
@@ -94,12 +94,12 @@ export default function RegisterPage() {
         <div className="text-center mb-10">
           <Link
             href="/"
-            className="inline-flex items-center justify-center w-14 h-14 bg-gray-950 rounded-2xl mb-6 no-underline"
+            className="inline-flex items-center justify-center w-14 h-14 bg-foreground rounded-2xl mb-6 no-underline"
           >
             <span className="text-white font-bold text-xl">CLA</span>
           </Link>
 
-          <h1 className="text-[2rem] font-bold text-gray-950 mb-2 tracking-tight">
+          <h1 className="text-[2rem] font-bold text-foreground mb-2 tracking-tight">
             <span className="italic">Join the Family</span>
           </h1>
 
@@ -141,7 +141,7 @@ export default function RegisterPage() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
-                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 focus:bg-white font-[inherit]"
+                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/10 focus:bg-white font-[inherit]"
                   />
                 </div>
               </div>
@@ -168,7 +168,7 @@ export default function RegisterPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 focus:bg-white font-[inherit]"
+                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/10 focus:bg-white font-[inherit]"
                   />
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function RegisterPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 focus:bg-white font-[inherit]"
+                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/10 focus:bg-white font-[inherit]"
                   />
                 </div>
               </div>
@@ -222,7 +222,7 @@ export default function RegisterPage() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 focus:bg-white font-[inherit]"
+                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/10 focus:bg-white font-[inherit]"
                   />
                 </div>
               </div>
@@ -234,13 +234,13 @@ export default function RegisterPage() {
                     type="checkbox"
                     checked={agreed}
                     onChange={(e) => setAgreed(e.target.checked)}
-                    className="w-[18px] h-[18px] rounded-[5px] border border-gray-300 mr-2.5 mt-px cursor-pointer accent-blue-600 shrink-0"
+                    className="w-[18px] h-[18px] rounded-[5px] border border-gray-300 mr-2.5 mt-px cursor-pointer accent-primary shrink-0"
                   />
                   <span className="text-[0.8125rem] text-gray-500 leading-normal">
                     I agree to the{' '}
-                    <Link href="/terms" className="text-blue-600 no-underline font-medium hover:underline">Terms of Service</Link>
+                    <Link href="/terms" className="text-primary no-underline font-medium hover:underline">Terms of Service</Link>
                     {' '}and{' '}
-                    <Link href="/privacy" className="text-blue-600 no-underline font-medium hover:underline">Privacy Policy</Link>
+                    <Link href="/privacy" className="text-primary no-underline font-medium hover:underline">Privacy Policy</Link>
                   </span>
                 </label>
               </div>
@@ -249,7 +249,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-4 px-6 bg-blue-600 text-white text-base font-semibold rounded-xl transition-all hover:bg-blue-700 hover:-translate-y-px disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(37,99,235,0.25)]"
+                className="w-full py-4 px-6 bg-foreground text-white text-base font-semibold rounded-full transition-all hover:bg-[#333] hover:-translate-y-px disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(37,99,235,0.25)]"
               >
                 {isLoading ? (
                   <>
@@ -281,7 +281,7 @@ export default function RegisterPage() {
                 Already have an account?{' '}
                 <Link
                   href="/auth/login"
-                  className="text-blue-600 no-underline font-semibold hover:underline"
+                  className="text-primary no-underline font-semibold hover:underline"
                 >
                   Sign in
                 </Link>
@@ -294,7 +294,7 @@ export default function RegisterPage() {
         <div className="text-center mt-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 no-underline transition-colors hover:text-gray-950"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 no-underline transition-colors hover:text-foreground"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m12 19-7-7 7-7"/>

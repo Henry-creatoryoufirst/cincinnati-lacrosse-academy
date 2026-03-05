@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft, CreditCard, DollarSign, Calendar, ExternalLink, Loader2, Receipt } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { formatPrice } from '@/lib/stripe'
-import Button from '@/components/ui/Button'
 import Card, { CardContent, CardHeader } from '@/components/ui/Card'
 
 interface Charge {
@@ -89,7 +88,7 @@ export default function BillingPage() {
     .reduce((sum, c) => sum + c.amount, 0)
 
   return (
-    <div className="min-h-screen bg-secondary py-12">
+    <div className="min-h-screen bg-secondary pt-[72px] py-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Navigation */}
         <div className="mb-8">
@@ -216,7 +215,7 @@ export default function BillingPage() {
               <CardContent>
                 {paymentMethod ? (
                   <>
-                    <div className="bg-gradient-to-br from-primary to-accent rounded-xl p-5 text-white mb-4">
+                    <div className="bg-gradient-to-b from-[#111827] to-[#0a0a0b] rounded-xl p-5 text-white mb-4">
                       <div className="flex justify-between items-start mb-8">
                         <CreditCard className="w-8 h-8" />
                         <span className="text-sm font-medium uppercase">{paymentMethod.brand}</span>
@@ -229,9 +228,8 @@ export default function BillingPage() {
                         <span>{String(paymentMethod.expMonth).padStart(2, '0')}/{String(paymentMethod.expYear).slice(-2)}</span>
                       </div>
                     </div>
-                    <Button
-                      variant="outline"
-                      className="w-full"
+                    <button
+                      className="w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 border-[1.5px] border-border text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={handleUpdatePayment}
                       disabled={portalLoading}
                     >
@@ -239,15 +237,14 @@ export default function BillingPage() {
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       ) : null}
                       Update Payment Method
-                    </Button>
+                    </button>
                   </>
                 ) : (
                   <div className="text-center py-6">
                     <CreditCard className="w-10 h-10 text-muted mx-auto mb-2" />
                     <p className="text-sm text-muted mb-4">No payment method on file.</p>
-                    <Button
-                      variant="outline"
-                      className="w-full"
+                    <button
+                      className="w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 border-[1.5px] border-border text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={handleUpdatePayment}
                       disabled={portalLoading}
                     >
@@ -255,7 +252,7 @@ export default function BillingPage() {
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       ) : null}
                       Add Payment Method
-                    </Button>
+                    </button>
                   </div>
                 )}
               </CardContent>

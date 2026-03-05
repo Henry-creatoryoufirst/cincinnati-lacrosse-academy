@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { Calendar, CreditCard, User, Clock, ArrowRight, CheckCircle, ShieldCheck, ChevronRight, HelpCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
@@ -15,7 +14,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   const resolvedParams = await searchParams
 
-  // Fetch profile (admin check + membership)
   const { data: profile } = await supabase
     .from('profiles')
     .select('role, membership_status, membership_plan')
@@ -24,7 +22,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   const isAdmin = profile?.role === 'admin'
 
-  // Fetch upcoming bookings with event data
   const { data: upcomingBookings } = await supabase
     .from('bookings')
     .select(`
@@ -46,14 +43,12 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     .order('created_at', { ascending: false })
     .limit(5)
 
-  // Fetch membership
   const { data: membership } = await supabase
     .from('memberships')
     .select('*')
     .eq('user_id', user.id)
     .single()
 
-  // Count attended sessions
   const { count: sessionsAttended } = await supabase
     .from('bookings')
     .select('id', { count: 'exact', head: true })
@@ -64,82 +59,81 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
   const bookings: Array<{ id: string; status: string; amount_paid: number; event_id: string; events: unknown }> = upcomingBookings || []
   const membershipActive = profile?.membership_status === 'active'
 
+  const cardStyle = {
+    background: '#fff',
+    borderRadius: '12px',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.03)',
+  } as const
+
   return (
-    <div className="min-h-screen bg-gray-100 pt-[72px]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div style={{ minHeight: '100vh', background: '#f4f5f7', paddingTop: '72px' }}>
+      <div style={{ maxWidth: '1080px', margin: '0 auto', padding: '40px 24px 80px' }}>
 
         {/* Success Banners */}
         {resolvedParams?.booking === 'success' && (
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-6 flex items-center">
-            <CheckCircle className="w-5 h-5 text-green-600 mr-3 flex-shrink-0" />
-            <p className="text-green-700 font-medium text-sm">Booking confirmed! You&apos;re all set.</p>
+          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px', padding: '14px 18px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ color: '#16a34a', fontSize: '1rem' }}>✓</span>
+            <p style={{ color: '#15803d', fontSize: '0.875rem', fontWeight: 500, margin: 0 }}>Booking confirmed! You&apos;re all set.</p>
           </div>
         )}
         {resolvedParams?.subscription === 'success' && (
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-6 flex items-center">
-            <CheckCircle className="w-5 h-5 text-green-600 mr-3 flex-shrink-0" />
-            <p className="text-green-700 font-medium text-sm">Membership activated! Welcome to the family.</p>
+          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px', padding: '14px 18px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ color: '#16a34a', fontSize: '1rem' }}>✓</span>
+            <p style={{ color: '#15803d', fontSize: '0.875rem', fontWeight: 500, margin: 0 }}>Membership activated! Welcome to the family.</p>
           </div>
         )}
 
-        {/* Welcome Header */}
-        <div className="mb-8 sm:mb-10">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-1">
+        {/* Welcome */}
+        <div style={{ marginBottom: '32px' }}>
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0a0a0a', letterSpacing: '-0.02em', marginBottom: '4px' }}>
             Welcome back, {firstName}
           </h1>
-          <p className="text-sm sm:text-base text-gray-500">
+          <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: 0 }}>
             Manage your bookings, membership, and account settings.
           </p>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10">
+        {/* Stats Row */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '32px' }}>
           {[
-            { icon: Calendar, label: 'Upcoming', value: String(bookings.length), color: 'text-blue-600', bg: 'bg-blue-50' },
-            { icon: CheckCircle, label: 'Membership', value: membershipActive ? 'Active' : 'None', color: membershipActive ? 'text-green-600' : 'text-gray-400', bg: membershipActive ? 'bg-green-50' : 'bg-gray-100' },
-            { icon: Clock, label: 'Attended', value: String(sessionsAttended || 0), color: 'text-purple-600', bg: 'bg-purple-50' },
-            { icon: CreditCard, label: 'Plan', value: membership?.plan_id ? membership.plan_id.charAt(0).toUpperCase() + membership.plan_id.slice(1) : 'Free', color: 'text-cyan-600', bg: 'bg-cyan-50' },
+            { label: 'Upcoming', value: String(bookings.length), emoji: '📅' },
+            { label: 'Membership', value: membershipActive ? 'Active' : 'None', emoji: '✓' },
+            { label: 'Attended', value: String(sessionsAttended || 0), emoji: '⏱' },
+            { label: 'Plan', value: membership?.plan_id ? membership.plan_id.charAt(0).toUpperCase() + membership.plan_id.slice(1) : 'Free', emoji: '💳' },
           ].map((stat) => (
-            <div
-              key={stat.label}
-              className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 shadow-sm min-w-0"
-            >
-              <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl ${stat.bg} flex items-center justify-center mb-3 sm:mb-4`}>
-                <stat.icon className={`w-5 h-5 ${stat.color}`} />
-              </div>
-              <p className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-tight truncate">
+            <div key={stat.label} style={{ ...cardStyle, padding: '20px' }}>
+              <p style={{ fontSize: '0.8125rem', color: '#9ca3af', marginBottom: '8px' }}>{stat.label}</p>
+              <p style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0a0a0a', letterSpacing: '-0.02em', margin: 0 }}>
                 {stat.value}
-              </p>
-              <p className="text-xs text-gray-500 mt-1 truncate">
-                {stat.label}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* Main Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
 
-          {/* Upcoming Events — Main Column */}
-          <div className="lg:col-span-2 space-y-6 lg:space-y-8 min-w-0">
+          {/* Left Column */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
-            {/* Upcoming Events Card */}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="px-5 sm:px-6 py-4 sm:py-5 border-b border-gray-100 flex items-center justify-between">
-                <h2 className="text-base sm:text-lg font-semibold text-gray-900">
+            {/* Upcoming Events */}
+            <div style={cardStyle}>
+              <div style={{ padding: '18px 20px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h2 style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#0a0a0a', margin: 0 }}>
                   Upcoming Events
                 </h2>
                 <Link
                   href="/dashboard/bookings"
-                  className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                  style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#6b7280', textDecoration: 'none' }}
                 >
-                  View All <ArrowRight className="w-3.5 h-3.5" />
+                  View All →
                 </Link>
               </div>
 
-              <div className="p-2">
+              <div style={{ padding: '8px' }}>
                 {bookings.length > 0 ? (
                   <div>
-                    {bookings.map((booking, index) => {
+                    {bookings.map((booking) => {
                       const evt = booking.events as unknown as {
                         id: string; title: string; start_date: string;
                         end_date: string; location: string; event_type: string
@@ -148,37 +142,38 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                       return (
                         <div
                           key={booking.id}
-                          className={`flex items-center justify-between p-4 rounded-xl ${
-                            index === 0 ? 'bg-gray-50' : ''
-                          } ${index < bookings.length - 1 ? 'mb-1' : ''}`}
+                          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', borderRadius: '8px' }}
                         >
-                          <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                              <Calendar className="w-5 h-5 text-blue-600" />
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                            <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: '#f0f5ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0 }}>
+                              📅
                             </div>
                             <div>
-                              <h3 className="text-sm font-semibold text-gray-900 mb-0.5">
+                              <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0a0a0a', marginBottom: '2px' }}>
                                 {evt.title}
-                              </h3>
-                              <p className="text-xs text-gray-500">
+                              </p>
+                              <p style={{ fontSize: '0.75rem', color: '#9ca3af', margin: 0 }}>
                                 {new Date(evt.start_date).toLocaleDateString('en-US', {
                                   month: 'short', day: 'numeric', year: 'numeric'
                                 })}
-                                {' \u00B7 '}
+                                {' · '}
                                 {new Date(evt.start_date).toLocaleTimeString('en-US', {
                                   hour: 'numeric', minute: '2-digit'
                                 })}
-                              </p>
-                              <p className="text-xs text-gray-400">
-                                {evt.location}
+                                {evt.location && ` · ${evt.location}`}
                               </p>
                             </div>
                           </div>
-                          <span className={`px-3 py-1 rounded-full text-xs font-semibold capitalize tracking-wide ${
-                            booking.status === 'confirmed'
-                              ? 'bg-green-50 text-green-700'
-                              : 'bg-yellow-50 text-yellow-700'
-                          }`}>
+                          <span style={{
+                            padding: '4px 10px',
+                            borderRadius: '20px',
+                            fontSize: '0.6875rem',
+                            fontWeight: 600,
+                            textTransform: 'capitalize',
+                            letterSpacing: '0.02em',
+                            background: booking.status === 'confirmed' ? '#f0fdf4' : '#fefce8',
+                            color: booking.status === 'confirmed' ? '#15803d' : '#a16207',
+                          }}>
                             {booking.status}
                           </span>
                         </div>
@@ -186,12 +181,21 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                     })}
                   </div>
                 ) : (
-                  <div className="text-center py-12 px-6">
-                    <Calendar className="w-10 h-10 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500 mb-4 text-sm">No upcoming events</p>
+                  <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+                    <p style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '16px' }}>No upcoming events</p>
                     <Link
                       href="/events"
-                      className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        padding: '9px 20px',
+                        background: '#0a0a0a',
+                        color: '#fff',
+                        fontSize: '0.8125rem',
+                        fontWeight: 600,
+                        borderRadius: '8px',
+                        textDecoration: 'none',
+                      }}
                     >
                       Browse Events
                     </Link>
@@ -200,31 +204,31 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
               </div>
             </div>
 
-            {/* Quick Actions — Grid */}
+            {/* Quick Actions */}
             <div>
-              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
+              <h2 style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: '12px' }}>
                 Quick Actions
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 {[
-                  ...(isAdmin ? [{ href: '/dashboard/admin', icon: ShieldCheck, label: 'Admin Dashboard', sublabel: 'Manage site', color: 'text-red-600', bg: 'bg-red-50' }] : []),
-                  { href: '/events', icon: Calendar, label: 'Book Event', sublabel: 'Browse & register', color: 'text-blue-600', bg: 'bg-blue-50' },
-                  { href: '/dashboard/profile', icon: User, label: 'Edit Profile', sublabel: 'Update your info', color: 'text-purple-600', bg: 'bg-purple-50' },
-                  { href: '/dashboard/billing', icon: CreditCard, label: 'Billing', sublabel: 'View history', color: 'text-cyan-600', bg: 'bg-cyan-50' },
+                  ...(isAdmin ? [{ href: '/dashboard/admin', label: 'Admin Dashboard', sublabel: 'Manage site', emoji: '🛡️' }] : []),
+                  { href: '/events', label: 'Book Event', sublabel: 'Browse & register', emoji: '📅' },
+                  { href: '/dashboard/profile', label: 'Edit Profile', sublabel: 'Update your info', emoji: '👤' },
+                  { href: '/dashboard/billing', label: 'Billing', sublabel: 'View history', emoji: '💳' },
                 ].map((action) => (
                   <Link
                     key={action.href}
                     href={action.href}
-                    className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-5 flex items-center gap-3.5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+                    style={{ ...cardStyle, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}
                   >
-                    <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl ${action.bg} flex items-center justify-center flex-shrink-0`}>
-                      <action.icon className={`w-5 h-5 ${action.color}`} />
+                    <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', flexShrink: 0 }}>
+                      {action.emoji}
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-gray-900 truncate">
+                    <div>
+                      <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#0a0a0a', marginBottom: '1px' }}>
                         {action.label}
                       </p>
-                      <p className="text-xs text-gray-400 truncate">
+                      <p style={{ fontSize: '0.75rem', color: '#9ca3af', margin: 0 }}>
                         {action.sublabel}
                       </p>
                     </div>
@@ -234,33 +238,33 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             </div>
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
+          {/* Right Sidebar */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-            {/* Membership Card */}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="px-6 py-5 border-b border-gray-100">
-                <h2 className="text-lg font-semibold text-gray-900">
+            {/* Membership */}
+            <div style={cardStyle}>
+              <div style={{ padding: '18px 20px', borderBottom: '1px solid #f0f0f0' }}>
+                <h2 style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#0a0a0a', margin: 0 }}>
                   Membership
                 </h2>
               </div>
-              <div className="p-6">
+              <div style={{ padding: '20px' }}>
                 {membershipActive && membership ? (
                   <>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm text-gray-500">Plan</span>
-                      <span className="text-sm font-semibold text-gray-900 capitalize">{membership.plan_id}</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      <span style={{ fontSize: '0.8125rem', color: '#6b7280' }}>Plan</span>
+                      <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#0a0a0a', textTransform: 'capitalize' }}>{membership.plan_id}</span>
                     </div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm text-gray-500">Status</span>
-                      <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 text-green-700 capitalize">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      <span style={{ fontSize: '0.8125rem', color: '#6b7280' }}>Status</span>
+                      <span style={{ padding: '2px 8px', borderRadius: '20px', fontSize: '0.6875rem', fontWeight: 600, background: '#f0fdf4', color: '#15803d', textTransform: 'capitalize' }}>
                         {membership.status}
                       </span>
                     </div>
                     {membership.current_period_end && (
-                      <div className="flex items-center justify-between mb-6">
-                        <span className="text-sm text-gray-500">Next Billing</span>
-                        <span className="text-sm font-semibold text-gray-900">
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+                        <span style={{ fontSize: '0.8125rem', color: '#6b7280' }}>Next Billing</span>
+                        <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#0a0a0a' }}>
                           {new Date(membership.current_period_end).toLocaleDateString('en-US', {
                             month: 'short', day: 'numeric', year: 'numeric'
                           })}
@@ -269,43 +273,58 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                     )}
                   </>
                 ) : (
-                  <div className="text-center py-4">
-                    <p className="text-sm text-gray-500 mb-4">No active membership</p>
+                  <div style={{ textAlign: 'center', padding: '8px 0 16px' }}>
+                    <p style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '16px' }}>No active membership</p>
                   </div>
                 )}
 
                 <Link
                   href={membershipActive ? '/dashboard/membership' : '/membership'}
-                  className="flex items-center justify-center gap-1.5 w-full py-3 border-2 border-blue-600 rounded-xl text-blue-600 font-semibold text-sm hover:bg-blue-50 transition-colors"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    padding: '10px 16px',
+                    background: '#0a0a0a',
+                    color: '#fff',
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                  }}
                 >
                   {membershipActive ? 'Manage Membership' : 'View Plans'}
-                  <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
             </div>
 
-            {/* Need Help? */}
-            <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 rounded-2xl p-7 text-white relative overflow-hidden">
-              <div className="absolute -top-5 -right-5 w-24 h-24 rounded-full bg-white/10" />
-              <div className="absolute -bottom-8 -left-3 w-20 h-20 rounded-full bg-white/5" />
-
-              <div className="relative z-10">
-                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-4">
-                  <HelpCircle className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Need Help?
-                </h3>
-                <p className="text-sm text-white/80 mb-5 leading-relaxed">
-                  Have questions about your account or upcoming events?
-                </p>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-white text-blue-600 rounded-lg text-sm font-semibold hover:bg-blue-50 transition-colors"
-                >
-                  Contact Support
-                </Link>
-              </div>
+            {/* Need Help */}
+            <div style={{ ...cardStyle, padding: '20px' }}>
+              <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#0a0a0a', marginBottom: '6px' }}>
+                Need Help?
+              </p>
+              <p style={{ fontSize: '0.8125rem', color: '#6b7280', lineHeight: 1.5, marginBottom: '16px' }}>
+                Questions about your account or upcoming events?
+              </p>
+              <Link
+                href="/contact"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                  padding: '10px 16px',
+                  background: '#f5f5f5',
+                  color: '#0a0a0a',
+                  fontSize: '0.8125rem',
+                  fontWeight: 600,
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                }}
+              >
+                Contact Support
+              </Link>
             </div>
           </div>
         </div>

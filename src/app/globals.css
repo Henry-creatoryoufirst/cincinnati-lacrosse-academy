@@ -193,19 +193,18 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--foreground);
 }
 
-h1 {
+/* Only apply large heading sizes inside designated layout classes.
+   Pages using Tailwind classes manage their own sizing. */
+.section-header h1 {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
   letter-spacing: -0.03em;
 }
 
-h2 {
+.section-header h2 {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 600;
-}
-
-h3 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.03em;
 }
 
 p {
@@ -265,13 +264,14 @@ p {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 32px;
+  padding: 12px 28px;
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   border-radius: var(--radius-full);
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   text-decoration: none;
 }
 
@@ -309,8 +309,8 @@ p {
 }
 
 .btn-lg {
-  padding: 18px 40px;
-  font-size: 1rem;
+  padding: 14px 36px;
+  font-size: 0.9375rem;
 }
 
 .btn-sm {
@@ -1124,11 +1124,11 @@ p {
 }
 
 .btn:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-1px);
 }
 
 .btn:active {
-  transform: translateY(0) scale(0.98);
+  transform: translateY(0);
 }
 
 .btn-primary:hover,

@@ -5,18 +5,6 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 
-// Session type for future Supabase integration
-type Session = {
-  id: string
-  date: string
-  time: string
-  location: string
-  spotsAvailable: number
-}
-
-// Placeholder for future sessions - will be fetched from Supabase
-const upcomingSessions: Session[] = []
-
 export default function GetStartedPage() {
   const [showBrettContact, setShowBrettContact] = useState(false)
   const [showRemoteContact, setShowRemoteContact] = useState(false)
@@ -33,53 +21,20 @@ export default function GetStartedPage() {
             fill
             sizes="33vw"
             priority
-            style={{ objectFit: 'cover', objectPosition: 'center' }}
+            className="object-cover object-center"
           />
           {/* Subtle edge gradient */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to left, rgba(10,10,11,0.3) 0%, transparent 30%)',
-            pointerEvents: 'none'
-          }} />
+          <div className="absolute inset-0 bg-gradient-to-l from-[rgba(10,10,11,0.3)] to-transparent pointer-events-none" />
         </div>
 
         {/* Center Text Panel */}
-        <div className="triptych-header-center" style={{
-          background: 'linear-gradient(180deg, #111827 0%, #0a0a0b 100%)',
-          position: 'relative'
-        }}>
+        <div className="triptych-header-center bg-gradient-to-b from-[#111827] to-[#0a0a0b] relative">
           {/* Radial glow behind text */}
-          <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '400px',
-            height: '400px',
-            background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%)',
-            pointerEvents: 'none'
-          }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_60%)] pointer-events-none" />
 
           {/* Edge lines */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            width: '1px',
-            background: 'linear-gradient(to bottom, transparent 10%, rgba(255,255,255,0.08) 50%, transparent 90%)',
-            pointerEvents: 'none'
-          }} />
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            right: 0,
-            width: '1px',
-            background: 'linear-gradient(to bottom, transparent 10%, rgba(255,255,255,0.08) 50%, transparent 90%)',
-            pointerEvents: 'none'
-          }} />
+          <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-white/[0.08] to-transparent pointer-events-none" />
+          <div className="absolute top-0 bottom-0 right-0 w-px bg-gradient-to-b from-transparent via-white/[0.08] to-transparent pointer-events-none" />
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -88,19 +43,7 @@ export default function GetStartedPage() {
           >
             <Link
               href="/"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                color: 'rgba(255,255,255,0.35)',
-                fontSize: '0.8125rem',
-                textDecoration: 'none',
-                marginBottom: '48px',
-                transition: 'color 0.2s ease',
-                letterSpacing: '0.03em'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
-              onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.35)'}
+              className="inline-flex items-center gap-1.5 text-white/35 text-[0.8125rem] no-underline mb-12 transition-colors duration-200 tracking-[0.03em] hover:text-white/80"
             >
               <span>←</span> Back to Home
             </Link>
@@ -111,11 +54,9 @@ export default function GetStartedPage() {
             initial={{ scaleX: 0, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="w-[48px] h-[2px] mb-7"
             style={{
-              width: '48px',
-              height: '2px',
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-              marginBottom: '28px'
+              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)'
             }}
           />
 
@@ -123,12 +64,8 @@ export default function GetStartedPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="text-[clamp(2.25rem,4vw,3.25rem)] font-bold tracking-[-0.02em] mb-5 leading-[1.1]"
             style={{
-              fontSize: 'clamp(2.25rem, 4vw, 3.25rem)',
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-              marginBottom: '20px',
-              lineHeight: 1.1,
               background: 'linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -143,13 +80,7 @@ export default function GetStartedPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              fontSize: '1.125rem',
-              color: 'rgba(255,255,255,0.45)',
-              fontWeight: 400,
-              letterSpacing: '0.04em',
-              marginBottom: '32px'
-            }}
+            className="text-lg text-white/45 font-normal tracking-[0.04em] mb-8"
           >
             Three ways to train with us
           </motion.p>
@@ -159,23 +90,12 @@ export default function GetStartedPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.8 }}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '8px'
-            }}
+            className="flex flex-col items-center gap-2"
           >
             <motion.div
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              style={{
-                width: '20px',
-                height: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
+              className="w-5 h-5 flex items-center justify-center"
             >
               <svg
                 width="16"
@@ -201,136 +121,74 @@ export default function GetStartedPage() {
             fill
             sizes="33vw"
             priority
-            style={{ objectFit: 'cover', objectPosition: 'top' }}
+            className="object-cover object-top"
           />
           {/* Subtle edge gradient */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to right, rgba(10,10,11,0.3) 0%, transparent 30%)',
-            pointerEvents: 'none'
-          }} />
+          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(10,10,11,0.3)] to-transparent pointer-events-none" />
         </div>
       </section>
 
       {/* Cards Section - Completely separate with solid white background */}
       <section className="get-started-cards">
         <div className="container">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '28px'
-          }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
 
             {/* Card 1: Weekend Training */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.08)' }}
               style={{
-                background: 'white',
-                borderRadius: '20px',
+                background: '#fff',
+                borderRadius: '16px',
                 overflow: 'hidden',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
                 display: 'flex',
                 flexDirection: 'column',
-                cursor: 'pointer'
+                boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
               }}
             >
-              {/* Image */}
-              <div style={{
-                position: 'relative',
-                height: '220px',
-                overflow: 'hidden'
-              }}>
+              <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
                 <Image
                   src="/images/weekend-training-card.jpg"
                   alt="Weekend training session"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: 'cover' }}
+                  className="object-cover"
                 />
-                {/* Gradient fade to white */}
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to bottom, transparent 40%, rgba(255,255,255,0.5) 70%, white 100%)',
-                  pointerEvents: 'none'
-                }} />
               </div>
 
-              {/* Content */}
-              <div style={{
-                padding: '24px 28px 32px',
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-                <h2 style={{
-                  fontSize: '1.5rem',
-                  fontWeight: 700,
-                  marginBottom: '12px',
-                  letterSpacing: '-0.02em',
-                  color: '#0a0a0a'
-                }}>
+              <div style={{ padding: '24px 24px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <p style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#6b7280', marginBottom: '6px' }}>
+                  At The Barn
+                </p>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0a0a0a', letterSpacing: '-0.02em', marginBottom: '8px' }}>
                   Weekend Training
                 </h2>
-
-                <p style={{
-                  color: '#6b7280',
-                  lineHeight: 1.65,
-                  fontSize: '0.9375rem',
-                  marginBottom: '24px'
-                }}>
-                  Join our weekend sessions at The Barn. High-intensity skill development with world-class coaching.
+                <p style={{ fontSize: '0.875rem', lineHeight: 1.6, color: '#6b7280', marginBottom: '16px' }}>
+                  High-intensity skill development with world-class coaching. Drop-in sessions every weekend.
+                </p>
+                <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#0a0a0a', marginBottom: '0' }}>
+                  $40 <span style={{ fontWeight: 400, color: '#9ca3af' }}>/ session</span>
                 </p>
 
-                <div style={{ marginBottom: '24px' }}>
-                  <span style={{
-                    fontSize: '2.25rem',
-                    fontWeight: 700,
-                    color: '#0a0a0a',
-                    letterSpacing: '-0.02em'
-                  }}>$40</span>
-                  <span style={{
-                    fontSize: '0.9375rem',
-                    fontWeight: 400,
-                    color: '#9ca3af',
-                    marginLeft: '6px'
-                  }}>per session</span>
-                </div>
-
-                {upcomingSessions.length > 0 && (
-                  <p style={{
-                    fontSize: '0.8125rem',
-                    color: '#16a34a',
-                    marginBottom: '20px',
-                    fontWeight: 500
-                  }}>
-                    {upcomingSessions.length} session{upcomingSessions.length !== 1 ? 's' : ''} available
-                  </p>
-                )}
-
-                <div style={{ marginTop: 'auto' }}>
+                <div style={{ marginTop: 'auto', paddingTop: '20px' }}>
                   <Link
                     href="/get-started/sessions"
                     style={{
-                      display: 'inline-flex',
+                      display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       width: '100%',
-                      padding: '16px 24px',
-                      background: '#2563EB',
-                      color: 'white',
-                      fontSize: '0.9375rem',
+                      padding: '11px 20px',
+                      background: '#0a0a0a',
+                      color: '#fff',
+                      fontSize: '0.8125rem',
                       fontWeight: 600,
-                      borderRadius: '12px',
+                      letterSpacing: '-0.01em',
+                      borderRadius: '8px',
                       textDecoration: 'none',
-                      transition: 'background 0.2s ease'
+                      border: 'none',
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = '#1d4ed8'}
-                    onMouseLeave={(e) => e.currentTarget.style.background = '#2563EB'}
                   >
                     View Sessions
                   </Link>
@@ -343,132 +201,67 @@ export default function GetStartedPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.08)' }}
               style={{
-                background: 'white',
-                borderRadius: '20px',
+                background: '#fff',
+                borderRadius: '16px',
                 overflow: 'hidden',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
                 display: 'flex',
                 flexDirection: 'column',
-                cursor: 'pointer'
+                boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
               }}
             >
-              {/* Image */}
-              <div style={{
-                position: 'relative',
-                height: '220px',
-                overflow: 'hidden'
-              }}>
+              <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
                 <Image
                   src="/images/strength-training-card.jpg"
                   alt="Strength training"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: 'cover', objectPosition: '50% 35%' }}
+                  className="object-cover object-[50%_35%]"
                 />
-                {/* Gradient fade to white */}
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to bottom, transparent 40%, rgba(255,255,255,0.5) 70%, white 100%)',
-                  pointerEvents: 'none'
-                }} />
               </div>
 
-              {/* Content */}
-              <div style={{
-                padding: '24px 28px 32px',
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-                <div style={{ marginBottom: '8px' }}>
-                  <span style={{
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
-                    color: '#dc2626'
-                  }}>with Valiant Strength</span>
-                </div>
-
-                <h2 style={{
-                  fontSize: '1.5rem',
-                  fontWeight: 700,
-                  marginBottom: '12px',
-                  letterSpacing: '-0.02em',
-                  color: '#0a0a0a'
-                }}>
+              <div style={{ padding: '24px 24px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <p style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#dc2626', marginBottom: '6px' }}>
+                  With Valiant Strength
+                </p>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0a0a0a', letterSpacing: '-0.02em', marginBottom: '8px' }}>
                   Strength Training
                 </h2>
-
-                <p style={{
-                  color: '#6b7280',
-                  lineHeight: 1.65,
-                  fontSize: '0.9375rem',
-                  marginBottom: '24px'
-                }}>
-                  Train with Brett. Programming designed to build complete athletes—strong, explosive, and dynamic.
+                <p style={{ fontSize: '0.875rem', lineHeight: 1.6, color: '#6b7280', marginBottom: '16px' }}>
+                  Train with Brett. Programming designed to build complete athletes — strong, explosive, and dynamic.
                 </p>
 
                 {showBrettContact && (
-                  <div style={{
-                    background: '#fef2f2',
-                    borderRadius: '10px',
-                    padding: '16px',
-                    marginBottom: '20px'
-                  }}>
-                    <p style={{ fontSize: '0.8125rem', color: '#6b7280', marginBottom: '6px' }}>
+                  <div style={{ background: '#fef2f2', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
+                    <p style={{ fontSize: '0.8125rem', color: '#6b7280', marginBottom: '4px' }}>
                       Call or text Brett:
                     </p>
-                    <a
-                      href="tel:+19372321141"
-                      style={{
-                        fontSize: '1.25rem',
-                        fontWeight: 700,
-                        color: '#0a0a0a',
-                        textDecoration: 'none'
-                      }}
-                    >
+                    <a href="tel:+19372321141" style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0a0a0a', textDecoration: 'none' }}>
                       (937) 232-1141
                     </a>
                   </div>
                 )}
 
-                <div style={{ marginTop: 'auto' }}>
+                <div style={{ marginTop: 'auto', paddingTop: '20px' }}>
                   <button
                     onClick={() => setShowBrettContact(!showBrettContact)}
                     style={{
-                      display: 'inline-flex',
+                      display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       width: '100%',
-                      padding: '16px 24px',
-                      background: showBrettContact ? '#fee2e2' : 'white',
-                      color: showBrettContact ? '#dc2626' : '#0a0a0a',
-                      fontSize: '0.9375rem',
+                      padding: '11px 20px',
+                      background: showBrettContact ? '#fef2f2' : '#0a0a0a',
+                      color: showBrettContact ? '#dc2626' : '#fff',
+                      fontSize: '0.8125rem',
                       fontWeight: 600,
-                      borderRadius: '12px',
-                      border: '2px solid',
-                      borderColor: showBrettContact ? '#fecaca' : '#e5e7eb',
+                      letterSpacing: '-0.01em',
+                      borderRadius: '8px',
+                      border: showBrettContact ? '1px solid #fecaca' : 'none',
                       cursor: 'pointer',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!showBrettContact) {
-                        e.currentTarget.style.borderColor = '#d1d5db'
-                        e.currentTarget.style.background = '#f9fafb'
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!showBrettContact) {
-                        e.currentTarget.style.borderColor = '#e5e7eb'
-                        e.currentTarget.style.background = 'white'
-                      }
                     }}
                   >
-                    {showBrettContact ? 'Hide Contact Info' : 'Get in Touch'}
+                    {showBrettContact ? 'Hide Contact' : 'Get in Touch'}
                   </button>
                 </div>
               </div>
@@ -479,153 +272,67 @@ export default function GetStartedPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.08)' }}
               style={{
-                background: 'white',
-                borderRadius: '20px',
+                background: '#fff',
+                borderRadius: '16px',
                 overflow: 'hidden',
-                boxShadow: '0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
                 display: 'flex',
                 flexDirection: 'column',
-                cursor: 'pointer'
+                boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)',
               }}
             >
-              {/* Image */}
-              <div style={{
-                position: 'relative',
-                height: '220px',
-                overflow: 'hidden'
-              }}>
+              <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
                 <Image
                   src="/images/remote-training-card.jpg"
                   alt="Remote lacrosse training"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: 'cover' }}
+                  className="object-cover"
                 />
-                {/* Gradient fade to white */}
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to bottom, transparent 40%, rgba(255,255,255,0.5) 70%, white 100%)',
-                  pointerEvents: 'none'
-                }} />
               </div>
 
-              {/* Content */}
-              <div style={{
-                padding: '24px 28px 32px',
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column'
-              }}>
-                <div style={{ marginBottom: '8px' }}>
-                  <span style={{
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
-                    color: '#7c3aed'
-                  }}>with Henry & Harrison</span>
-                </div>
-
-                <h2 style={{
-                  fontSize: '1.5rem',
-                  fontWeight: 700,
-                  marginBottom: '12px',
-                  letterSpacing: '-0.02em',
-                  color: '#0a0a0a'
-                }}>
+              <div style={{ padding: '24px 24px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <p style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#7c3aed', marginBottom: '6px' }}>
+                  With Henry &amp; Harrison
+                </p>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0a0a0a', letterSpacing: '-0.02em', marginBottom: '8px' }}>
                   Remote Lacrosse Training
                 </h2>
-
-                <p style={{
-                  color: '#6b7280',
-                  lineHeight: 1.65,
-                  fontSize: '0.9375rem',
-                  marginBottom: '16px'
-                }}>
-                  Work one-on-one to increase skill, training plans, and IQ. Film breakdown, wall ball, shooting, and dodging advice. Whatever it takes to help you pursue your dream.
+                <p style={{ fontSize: '0.875rem', lineHeight: 1.6, color: '#6b7280', marginBottom: '16px' }}>
+                  Personalized 1-on-1 coaching. Film breakdown, wall ball, shooting, and dodging advice to take your game to the next level.
                 </p>
 
-                <div style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  background: '#f3f4f6',
-                  padding: '8px 12px',
-                  borderRadius: '8px',
-                  marginBottom: '24px',
-                  alignSelf: 'flex-start'
-                }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22 4 12 14.01 9 11.01"/>
-                  </svg>
-                  <span style={{
-                    fontSize: '0.8125rem',
-                    fontWeight: 600,
-                    color: '#4b5563'
-                  }}>Personalized 1-on-1 coaching</span>
-                </div>
-
                 {showRemoteContact && (
-                  <div style={{
-                    background: '#f5f3ff',
-                    borderRadius: '10px',
-                    padding: '16px',
-                    marginBottom: '20px'
-                  }}>
-                    <p style={{ fontSize: '0.8125rem', color: '#6b7280', marginBottom: '6px' }}>
-                      Call or text Henry & Harrison:
+                  <div style={{ background: '#f5f3ff', borderRadius: '8px', padding: '12px 14px', marginBottom: '12px' }}>
+                    <p style={{ fontSize: '0.8125rem', color: '#6b7280', marginBottom: '4px' }}>
+                      Call or text Henry &amp; Harrison:
                     </p>
-                    <a
-                      href="tel:+15134445199"
-                      style={{
-                        fontSize: '1.25rem',
-                        fontWeight: 700,
-                        color: '#0a0a0a',
-                        textDecoration: 'none'
-                      }}
-                    >
+                    <a href="tel:+15134445199" style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0a0a0a', textDecoration: 'none' }}>
                       (513) 444-5199
                     </a>
                   </div>
                 )}
 
-                <div style={{ marginTop: 'auto' }}>
+                <div style={{ marginTop: 'auto', paddingTop: '20px' }}>
                   <button
                     onClick={() => setShowRemoteContact(!showRemoteContact)}
                     style={{
-                      display: 'inline-flex',
+                      display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       width: '100%',
-                      padding: '16px 24px',
-                      background: showRemoteContact ? '#ede9fe' : 'white',
-                      color: showRemoteContact ? '#7c3aed' : '#0a0a0a',
-                      fontSize: '0.9375rem',
+                      padding: '11px 20px',
+                      background: showRemoteContact ? '#f5f3ff' : '#0a0a0a',
+                      color: showRemoteContact ? '#7c3aed' : '#fff',
+                      fontSize: '0.8125rem',
                       fontWeight: 600,
-                      borderRadius: '12px',
-                      border: '2px solid',
-                      borderColor: showRemoteContact ? '#ddd6fe' : '#e5e7eb',
+                      letterSpacing: '-0.01em',
+                      borderRadius: '8px',
+                      border: showRemoteContact ? '1px solid #ddd6fe' : 'none',
                       cursor: 'pointer',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!showRemoteContact) {
-                        e.currentTarget.style.borderColor = '#d1d5db'
-                        e.currentTarget.style.background = '#f9fafb'
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!showRemoteContact) {
-                        e.currentTarget.style.borderColor = '#e5e7eb'
-                        e.currentTarget.style.background = 'white'
-                      }
                     }}
                   >
-                    {showRemoteContact ? 'Hide Contact Info' : 'Get in Touch'}
+                    {showRemoteContact ? 'Hide Contact' : 'Get in Touch'}
                   </button>
                 </div>
               </div>

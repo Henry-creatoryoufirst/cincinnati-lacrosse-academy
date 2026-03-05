@@ -116,46 +116,30 @@ function TestimonialsSection() {
 
   return (
     <section
-      style={{
-        background: '#111827',
-        padding: '80px 0',
-        position: 'relative',
-        overflow: 'hidden'
-      }}
+      className="bg-[#111827] py-20 relative overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Noise texture overlay */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        opacity: 0.03,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        pointerEvents: 'none'
-      }} />
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+        }}
+      />
 
-      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+      <div className="container relative z-[1]">
         {/* Section label */}
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <span style={{
-            fontSize: '0.6875rem',
-            fontWeight: 600,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: '#2563EB'
-          }}>Testimonials</span>
+        <div className="text-center mb-8">
+          <span className="text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-primary">Testimonials</span>
         </div>
 
         {/* Testimonial carousel */}
-        <div style={{
-          position: 'relative',
-          maxWidth: '900px',
-          margin: '0 auto',
-          minHeight: '280px'
-        }}>
+        <div className="relative max-w-[900px] mx-auto min-h-[280px]">
           {TESTIMONIALS.map((testimonial, index) => (
             <div
               key={index}
+              className="text-center transition-[opacity,transform] duration-[600ms] ease-in-out"
               style={{
                 position: index === activeIndex ? 'relative' : 'absolute',
                 top: 0,
@@ -163,42 +147,21 @@ function TestimonialsSection() {
                 right: 0,
                 opacity: index === activeIndex ? 1 : 0,
                 transform: index === activeIndex ? 'translateY(0)' : 'translateY(20px)',
-                transition: 'opacity 600ms ease, transform 600ms ease',
-                pointerEvents: index === activeIndex ? 'auto' : 'none',
-                textAlign: 'center'
+                pointerEvents: index === activeIndex ? 'auto' : 'none'
               }}
             >
               {/* Large quotation mark */}
-              <div style={{
-                fontSize: '6rem',
-                lineHeight: 1,
-                color: 'rgba(37, 99, 235, 0.15)',
-                fontFamily: 'Georgia, serif',
-                marginBottom: '-32px',
-                userSelect: 'none'
-              }}>
-                "
+              <div className="text-[6rem] leading-none text-[rgba(37,99,235,0.15)] font-[Georgia,serif] -mb-8 select-none">
+                &ldquo;
               </div>
 
               {/* Quote */}
-              <blockquote style={{
-                fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
-                fontWeight: 400,
-                color: 'white',
-                lineHeight: 1.6,
-                letterSpacing: '-0.01em',
-                marginBottom: '24px',
-                fontStyle: 'normal'
-              }}>
+              <blockquote className="text-[clamp(1.25rem,2.5vw,1.5rem)] font-normal text-white leading-[1.6] tracking-[-0.01em] mb-6 not-italic">
                 {testimonial.quote}
               </blockquote>
 
               {/* Attribution */}
-              <p style={{
-                fontSize: '1rem',
-                fontWeight: 500,
-                color: 'rgba(255, 255, 255, 0.6)'
-              }}>
+              <p className="text-base font-medium text-white/60">
                 — {testimonial.attribution}
               </p>
             </div>
@@ -206,26 +169,16 @@ function TestimonialsSection() {
         </div>
 
         {/* Navigation dots */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '12px',
-          marginTop: '28px'
-        }}>
+        <div className="flex justify-center gap-3 mt-7">
           {TESTIMONIALS.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               aria-label={`Go to testimonial ${index + 1}`}
+              className="h-2 rounded-full border-none cursor-pointer transition-all duration-[400ms] ease-in-out p-0"
               style={{
                 width: index === activeIndex ? '32px' : '8px',
-                height: '8px',
-                borderRadius: '4px',
-                background: index === activeIndex ? '#2563EB' : 'rgba(255, 255, 255, 0.3)',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 400ms ease',
-                padding: 0
+                background: index === activeIndex ? '#2563EB' : 'rgba(255, 255, 255, 0.3)'
               }}
             />
           ))}
@@ -239,59 +192,37 @@ export default function HomePage() {
   return (
     <main>
       {/* Hero Section */}
-      <section style={{
-        position: 'relative',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        overflow: 'hidden'
-      }}>
+      <section className="relative min-h-screen flex items-center overflow-hidden">
         {/* Background Photo */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0
-        }}>
+        <div className="absolute inset-0 z-0">
           <Image
             src="/images/community/top-banner.jpg"
             alt="Cincinnati Lacrosse Academy athletes"
             fill
             sizes="100vw"
             priority
-            style={{ objectFit: 'cover' }}
+            className="object-cover"
           />
           {/* Refined gradient overlay - dark left, transparent right */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(105deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.15) 70%, transparent 100%)'
-          }} />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(105deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.05) 100%)'
+            }}
+          />
           {/* Subtle vignette for cinematic depth */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            boxShadow: 'inset 0 0 200px 40px rgba(0,0,0,0.3)',
-            pointerEvents: 'none'
-          }} />
+          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_200px_40px_rgba(0,0,0,0.3)]" />
         </div>
 
         {/* Hero Content */}
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ maxWidth: '640px', paddingTop: '120px', paddingBottom: '80px' }}>
+        <div className="container relative z-[1]">
+          <div className="max-w-[640px] pt-[120px] pb-20">
             {/* Credential Badge - understated, earned */}
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                display: 'inline-block',
-                color: 'rgba(255,255,255,0.7)',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                marginBottom: '28px'
-              }}
+              className="inline-block text-white/70 text-xs font-medium tracking-[0.15em] uppercase mb-7"
             >
               50+ College Commits
             </motion.span>
@@ -301,13 +232,9 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[clamp(2.75rem,6vw,4rem)] font-bold tracking-[-0.025em] leading-[1.1] mb-6"
               style={{
-                color: 'white',
-                fontSize: 'clamp(2.75rem, 6vw, 4rem)',
-                fontWeight: 700,
-                letterSpacing: '-0.025em',
-                lineHeight: 1.1,
-                marginBottom: '24px',
+                color: '#ffffff',
                 textShadow: '0 4px 30px rgba(0,0,0,0.3)'
               }}
             >
@@ -319,14 +246,8 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                color: 'rgba(255,255,255,0.8)',
-                fontSize: 'clamp(1rem, 2vw, 1.125rem)',
-                fontWeight: 400,
-                lineHeight: 1.7,
-                marginBottom: '40px',
-                maxWidth: '540px'
-              }}
+              className="text-[clamp(1rem,2vw,1.125rem)] font-normal leading-[1.7] mb-10 max-w-[540px]"
+              style={{ color: 'rgba(255,255,255,0.85)' }}
             >
               World-class coaching. Relentless standards. But more importantly, young people who become confident, disciplined, and capable of carrying responsibility in sport and in life.
             </motion.p>
@@ -336,7 +257,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '20px' }}
+              className="flex flex-col items-start gap-5"
             >
               <Link
                 href="/get-started"
@@ -344,47 +265,25 @@ export default function HomePage() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '14px 32px',
-                  background: 'white',
+                  padding: '14px 36px',
+                  background: '#ffffff',
                   color: '#0a0a0a',
                   fontSize: '0.9375rem',
                   fontWeight: 600,
                   borderRadius: '9999px',
                   textDecoration: 'none',
-                  transition: 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)'
-                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.25)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)'
+                  letterSpacing: '-0.01em',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+                  transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
                 }}
               >
                 Get Started
               </Link>
               <a
                 href="#programs"
-                style={{
-                  color: 'rgba(255,255,255,0.6)',
-                  fontSize: '0.875rem',
-                  fontWeight: 500,
-                  textDecoration: 'none',
-                  transition: 'color 0.2s ease, gap 0.3s ease',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'rgba(255,255,255,0.9)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'rgba(255,255,255,0.6)'
-                }}
+                className="text-white/60 text-sm font-medium no-underline transition-all duration-200 inline-flex items-center gap-1.5 hover:text-white/90"
               >
-                View Programs <span style={{ transition: 'transform 0.3s ease' }}>→</span>
+                View Programs <span className="transition-transform duration-300">→</span>
               </a>
             </motion.div>
           </div>
@@ -392,19 +291,19 @@ export default function HomePage() {
       </section>
 
       {/* Community Photo Grid */}
-      <section className="section" style={{ paddingBottom: '48px' }}>
+      <section className="section pb-12">
         <div className="container">
           <div className="section-header">
             <span className="eyebrow">Our Community</span>
             <h2>More Than Training.<br />Join the Family.</h2>
             <p>
-              The Cincinnati Lacrosse Academy isn't just a place to train. It's a culture.
+              The Cincinnati Lacrosse Academy isn&apos;t just a place to train. It&apos;s a culture.
               A community of athletes who show up daily, hold the line together, and raise the standard.
             </p>
           </div>
 
           {/* Photo Marquee - Two rows scrolling in opposite directions */}
-          <div className="marquee" style={{ marginTop: '48px' }}>
+          <div className="marquee mt-12">
             {/* Row 1: Scrolls left */}
             <div className="marquee-row">
               <div className="marquee-track">
@@ -416,7 +315,7 @@ export default function HomePage() {
                       alt={photo.alt}
                       fill
                       sizes="200px"
-                      style={{ objectFit: 'cover' }}
+                      className="object-cover"
                     />
                   </div>
                 ))}
@@ -433,7 +332,7 @@ export default function HomePage() {
                       alt={photo.alt}
                       fill
                       sizes="200px"
-                      style={{ objectFit: 'cover' }}
+                      className="object-cover"
                     />
                   </div>
                 ))}
@@ -444,7 +343,7 @@ export default function HomePage() {
       </section>
 
       {/* Training Programs - Editorial Progression Layout */}
-      <section id="programs" style={{ padding: '48px 0 48px', scrollMarginTop: '80px' }}>
+      <section id="programs" className="py-12 scroll-mt-20">
         <div className="container">
           {/* Section Header */}
           <div className="section-header">
@@ -457,7 +356,7 @@ export default function HomePage() {
           </div>
 
           {/* Program Progression */}
-          <div style={{ marginTop: '32px' }}>
+          <div className="mt-8">
 
             {/* 01 - Development: Weekend Training & Memberships */}
             <div className="program-item">
@@ -468,7 +367,7 @@ export default function HomePage() {
                     alt="Weekend training session"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{ objectFit: 'cover' }}
+                    className="object-cover"
                   />
                 </div>
                 <motion.div
@@ -479,7 +378,7 @@ export default function HomePage() {
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
                 >
                   <motion.div
-                    style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '12px' }}
+                    className="flex items-baseline gap-4 mb-3"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -507,7 +406,7 @@ export default function HomePage() {
                     alt="Strength training with Brett"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{ objectFit: 'cover', objectPosition: 'top' }}
+                    className="object-cover object-top"
                   />
                 </div>
                 <motion.div
@@ -518,7 +417,7 @@ export default function HomePage() {
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
                 >
                   <motion.div
-                    style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '12px' }}
+                    className="flex items-baseline gap-4 mb-3"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -546,7 +445,7 @@ export default function HomePage() {
                     alt="Remote training assistance"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{ objectFit: 'cover' }}
+                    className="object-cover"
                   />
                 </div>
                 <motion.div
@@ -557,7 +456,7 @@ export default function HomePage() {
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
                 >
                   <motion.div
-                    style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '12px' }}
+                    className="flex items-baseline gap-4 mb-3"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -582,235 +481,109 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials - Cinematic */}
-      <div id="testimonials" style={{ scrollMarginTop: '80px' }}>
+      <div id="testimonials" className="scroll-mt-20">
         <TestimonialsSection />
       </div>
 
       {/* Beyond the Academy - Immersive Dark Section */}
-      <section id="beyond" style={{
-        background: '#0a0a0b',
-        padding: '100px 0 120px',
-        position: 'relative',
-        overflow: 'hidden',
-        scrollMarginTop: '80px'
-      }}>
+      <section id="beyond" className="bg-[#0a0a0b] pt-[100px] pb-[120px] relative overflow-hidden scroll-mt-20">
         {/* Subtle noise texture overlay */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          opacity: 0.03,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          pointerEvents: 'none'
-        }} />
+        <div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+          }}
+        />
 
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="container relative z-[1]">
           {/* Section Header */}
           <motion.div
-            style={{ textAlign: 'center', marginBottom: '64px' }}
+            className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span style={{
-              fontSize: '0.6875rem',
-              fontWeight: 500,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'rgba(255, 255, 255, 0.4)',
-              marginBottom: '16px',
-              display: 'block'
-            }}>Other Schertzinger Missions</span>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 4vw, 2.75rem)',
-              fontWeight: 600,
-              color: 'white',
-              letterSpacing: '-0.02em'
-            }}>Beyond the Academy</h2>
+            <span className="text-[0.6875rem] font-medium tracking-[0.2em] uppercase text-white/40 mb-4 block">Other Schertzinger Missions</span>
+            <h2 className="text-[clamp(2rem,4vw,2.75rem)] font-semibold text-white tracking-[-0.02em]">Beyond the Academy</h2>
           </motion.div>
 
           {/* Cards Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '32px'
-          }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* YouTube Card */}
-            <div
-              style={{
-                background: '#141416',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                minHeight: '420px',
-                cursor: 'pointer',
-                transition: 'transform 0.3s ease, box-shadow 0.4s ease'
-              }}
-              className="beyond-card"
-            >
+            <div className="beyond-card bg-[#141416] rounded-[20px] overflow-hidden flex flex-col min-h-[420px] cursor-pointer transition-[transform,box-shadow] duration-300 ease-in-out">
               {/* Image - extends 70-75% of card */}
-              <div style={{
-                position: 'relative',
-                height: '310px',
-                overflow: 'hidden'
-              }}>
+              <div className="relative h-[310px] overflow-hidden">
                 <Image
                   src="/images/youtube-banner.jpg"
                   alt="Cincinnati Lacrosse YouTube"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  style={{ objectFit: 'cover', objectPosition: 'top' }}
+                  className="object-cover object-top"
                 />
                 {/* Gradient fade - gradual cinematic blend */}
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(20,20,22,0.4) 65%, rgba(20,20,22,0.8) 80%, #141416 100%)',
-                  pointerEvents: 'none'
-                }} />
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(20,20,22,0.4) 65%, rgba(20,20,22,0.8) 80%, #141416 100%)'
+                  }}
+                />
               </div>
 
               {/* Content - anchored to bottom */}
-              <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                <span style={{
-                  fontSize: '0.6875rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  marginBottom: '12px'
-                }}>YouTube</span>
-                <h3 style={{
-                  fontSize: '1.375rem',
-                  fontWeight: 600,
-                  color: 'white',
-                  marginBottom: '10px',
-                  letterSpacing: '-0.01em'
-                }}>Follow the Story</h3>
-                <p style={{
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  lineHeight: 1.6,
-                  fontSize: '0.9375rem',
-                  marginBottom: '20px'
-                }}>
+              <div className="p-6 flex-1 flex flex-col justify-end">
+                <span className="text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-white/40 mb-3">YouTube</span>
+                <h3 className="text-[1.375rem] font-semibold text-white mb-2.5 tracking-[-0.01em]">Follow the Story</h3>
+                <p className="text-white/50 leading-[1.6] text-[0.9375rem] mb-5">
                   Behind the scenes, training content, and the journey of building something special.
                 </p>
                 <a
                   href="https://youtube.com/@theschertzingertwins?si=xNoJs0yxNOsK_snw"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    fontSize: '0.875rem',
-                    fontWeight: 500,
-                    color: '#3b82f6',
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
+                  className="text-sm font-medium text-blue-400 no-underline inline-flex items-center gap-1.5"
                 >
-                  Watch Now <span style={{ transition: 'transform 0.2s' }}>→</span>
+                  Watch Now <span className="transition-transform duration-200">→</span>
                 </a>
               </div>
             </div>
 
             {/* You.Prjct Card - Featured/Larger */}
             <div
-              className="beyond-card"
-              style={{
-                background: '#000000',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                minHeight: '420px',
-                position: 'relative',
-                cursor: 'pointer',
-                boxShadow: '0 0 100px 15px rgba(59, 130, 246, 0.2), 0 0 60px 8px rgba(139, 92, 246, 0.15), 0 0 160px 30px rgba(59, 130, 246, 0.1)'
-              }}
+              className="beyond-card bg-black rounded-[20px] overflow-hidden flex flex-col min-h-[420px] relative cursor-pointer shadow-[0_0_100px_15px_rgba(59,130,246,0.2),0_0_60px_8px_rgba(139,92,246,0.15),0_0_160px_30px_rgba(59,130,246,0.1)]"
             >
               {/* Prominent glow effect with subtle pulse */}
               <div
-                className="glow-pulse"
+                className="glow-pulse absolute top-[15%] left-1/2 -translate-x-1/2 w-[320px] h-[320px] blur-[60px] pointer-events-none"
                 style={{
-                  position: 'absolute',
-                  top: '15%',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: '320px',
-                  height: '320px',
-                  background: 'radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(139, 92, 246, 0.2) 40%, transparent 70%)',
-                  filter: 'blur(60px)',
-                  pointerEvents: 'none'
+                  background: 'radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(139, 92, 246, 0.2) 40%, transparent 70%)'
                 }}
               />
 
               {/* Phone mockup */}
-              <div
-                style={{
-                  position: 'relative',
-                  height: '260px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                  paddingTop: '24px',
-                  maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)'
-                }}
-              >
+              <div className="relative h-[260px] flex justify-center items-start pt-6" style={{ maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)' }}>
                 <Image
                   src="/images/youprjct-phone.png"
                   alt="You.Prjct app"
                   width={200}
                   height={400}
-                  style={{ height: '100%', width: 'auto', objectFit: 'contain' }}
+                  className="h-full w-auto object-contain"
                 />
               </div>
 
               {/* Content - anchored to bottom */}
-              <div style={{ padding: '24px 28px 28px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', position: 'relative', zIndex: 1 }}>
-                <span style={{
-                  fontSize: '0.6875rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: '#3b82f6',
-                  marginBottom: '12px'
-                }}>App</span>
-                <h3 style={{
-                  fontSize: '1.375rem',
-                  fontWeight: 600,
-                  color: 'white',
-                  marginBottom: '6px',
-                  letterSpacing: '-0.01em'
-                }}>You.Prjct</h3>
-                <p style={{
-                  color: 'rgba(255, 255, 255, 0.7)',
-                  fontSize: '1rem',
-                  marginBottom: '8px'
-                }}>Order Your Life.</p>
-                <p style={{
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  lineHeight: 1.6,
-                  fontSize: '0.875rem',
-                  marginBottom: '20px'
-                }}>
-                  Build discipline, track progress, become who you're meant to be.
+              <div className="px-7 pb-7 pt-6 flex-1 flex flex-col justify-end relative z-[1]">
+                <span className="text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-blue-400 mb-3">App</span>
+                <h3 className="text-[1.375rem] font-semibold text-white mb-1.5 tracking-[-0.01em]">You.Prjct</h3>
+                <p className="text-white/70 text-base mb-2">Order Your Life.</p>
+                <p className="text-white/40 leading-[1.6] text-sm mb-5">
+                  Build discipline, track progress, become who you&apos;re meant to be.
                 </p>
                 <a
                   href="https://youprjct.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    fontSize: '0.875rem',
-                    fontWeight: 500,
-                    color: '#3b82f6',
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
+                  className="text-sm font-medium text-blue-400 no-underline inline-flex items-center gap-1.5"
                 >
                   Download Free <span>→</span>
                 </a>
@@ -818,80 +591,30 @@ export default function HomePage() {
             </div>
 
             {/* Podcast Card */}
-            <div
-              className="beyond-card"
-              style={{
-                background: '#141416',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                padding: '28px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                minHeight: '420px',
-                cursor: 'pointer'
-              }}
-            >
+            <div className="beyond-card bg-[#141416] rounded-[20px] overflow-hidden p-7 flex flex-col items-center min-h-[420px] cursor-pointer">
               {/* Podcast cover - hero element, centered and prominent */}
-              <div
-                style={{
-                  width: '200px',
-                  height: '200px',
-                  borderRadius: '20px',
-                  overflow: 'hidden',
-                  boxShadow: '0 24px 64px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.3)',
-                  marginTop: '16px'
-                }}
-              >
+              <div className="w-[200px] h-[200px] rounded-[20px] overflow-hidden shadow-[0_24px_64px_rgba(0,0,0,0.5),0_8px_24px_rgba(0,0,0,0.3)] mt-4 relative">
                 <Image
                   src="/images/podcast-cover.png"
                   alt="The Infinite Game podcast"
                   fill
                   sizes="200px"
-                  style={{ objectFit: 'cover' }}
+                  className="object-cover"
                 />
               </div>
 
               {/* Content - anchored to bottom, full width for left alignment */}
-              <div style={{ marginTop: 'auto', width: '100%', textAlign: 'left' }}>
-                <span style={{
-                  fontSize: '0.6875rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  marginBottom: '12px',
-                  display: 'block'
-                }}>Podcast</span>
-                <h3 style={{
-                  fontSize: '1.375rem',
-                  fontWeight: 600,
-                  color: 'white',
-                  marginBottom: '12px',
-                  letterSpacing: '-0.01em'
-                }}>The Infinite Game</h3>
-                <p style={{
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  lineHeight: 1.7,
-                  fontSize: '0.875rem',
-                  fontStyle: 'italic',
-                  marginBottom: '20px'
-                }}>
+              <div className="mt-auto w-full text-left">
+                <span className="text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-white/40 mb-3 block">Podcast</span>
+                <h3 className="text-[1.375rem] font-semibold text-white mb-3 tracking-[-0.01em]">The Infinite Game</h3>
+                <p className="text-white/50 leading-[1.7] text-sm italic mb-5">
                   To play the infinite game is to live as both masterpiece and work in progress, never finished, always invited further.
                 </p>
                 <a
                   href="https://podcasts.apple.com/us/podcast/the-infinite-game-podcast/id1657820186"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    fontSize: '0.875rem',
-                    fontWeight: 500,
-                    color: '#3b82f6',
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
+                  className="text-sm font-medium text-blue-400 no-underline inline-flex items-center gap-1.5"
                 >
                   Listen Now <span>→</span>
                 </a>
@@ -902,12 +625,8 @@ export default function HomePage() {
       </section>
 
       {/* Final photo strip */}
-      <section style={{ padding: '0', overflow: 'hidden' }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(6, 1fr)',
-          gap: '4px'
-        }}>
+      <section className="p-0 overflow-hidden">
+        <div className="grid grid-cols-6 gap-1">
           {[
             'dsc07755.jpg',
             'dsc01757.jpg',
@@ -916,13 +635,13 @@ export default function HomePage() {
             'dsc00046-2.jpg',
             'dsc01692-3.jpg'
           ].map((photo, index) => (
-            <div key={index} style={{ position: 'relative', height: '200px' }}>
+            <div key={index} className="relative h-[200px]">
               <Image
                 src={`/images/community/${photo}`}
                 alt="Community moment"
                 fill
                 sizes="(max-width: 768px) 50vw, 16vw"
-                style={{ objectFit: 'cover' }}
+                className="object-cover"
               />
             </div>
           ))}
@@ -933,11 +652,28 @@ export default function HomePage() {
       <section className="section">
         <div className="container text-center">
           <h2>Start Your Journey</h2>
-          <p style={{ fontSize: '1.25rem', maxWidth: '560px', margin: '16px auto 40px' }}>
+          <p className="text-xl max-w-[560px] mx-auto mt-4 mb-10">
             Join hundreds of athletes who are taking their game to the next level
             with Cincinnati Lacrosse Academy.
           </p>
-          <Link href="/get-started" className="btn btn-primary btn-lg">
+          <Link
+            href="/get-started"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '14px 36px',
+              background: '#1A1A1A',
+              color: '#ffffff',
+              fontSize: '0.9375rem',
+              fontWeight: 600,
+              borderRadius: '9999px',
+              textDecoration: 'none',
+              letterSpacing: '-0.01em',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+              transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+            }}
+          >
             Get Started
           </Link>
         </div>

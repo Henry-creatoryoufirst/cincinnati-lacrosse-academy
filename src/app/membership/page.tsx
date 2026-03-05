@@ -76,7 +76,7 @@ export default function MembershipPage() {
       const response = await fetch('/api/stripe/create-subscription', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priceId }),
+        body: JSON.stringify({ planId: priceId }),
       })
 
       const data = await response.json()
@@ -95,14 +95,14 @@ export default function MembershipPage() {
   }
 
   return (
-    <main style={{ paddingTop: '72px' }}>
+    <main className="pt-[72px]">
       {/* Hero */}
       <section className="section">
         <div className="container">
-          <div className="section-header" style={{ marginBottom: '48px' }}>
+          <div className="section-header mb-12">
             <span className="eyebrow">Membership</span>
-            <h1 style={{ marginTop: '16px' }}>Invest in Your Development</h1>
-            <p style={{ fontSize: '1.25rem', maxWidth: '600px', margin: '16px auto 0' }}>
+            <h1 className="mt-4">Invest in Your Development</h1>
+            <p className="text-xl max-w-[600px] mx-auto mt-4">
               Join Cincinnati Lacrosse Academy and get consistent, structured training
               that accelerates your growth as a player.
             </p>
@@ -111,7 +111,7 @@ export default function MembershipPage() {
       </section>
 
       {/* Pricing Grid */}
-      <section style={{ paddingBottom: '100px' }}>
+      <section className="pb-[100px]">
         <div className="container">
           <div className="pricing-grid">
             {plans.map((plan) => (
@@ -120,7 +120,7 @@ export default function MembershipPage() {
                 className={`pricing-card ${plan.popular ? 'featured' : ''}`}
               >
                 <h3 className="pricing-name">{plan.name}</h3>
-                <p style={{ color: 'var(--foreground-muted)', marginBottom: '24px' }}>
+                <p className="text-muted mb-6">
                   {plan.description}
                 </p>
                 <div className="pricing-price">
@@ -136,8 +136,7 @@ export default function MembershipPage() {
                 <button
                   onClick={() => handleSubscribe(plan.priceId)}
                   disabled={loading === plan.priceId}
-                  className={`btn ${plan.popular ? 'btn-primary' : 'btn-secondary'}`}
-                  style={{ width: '100%' }}
+                  className={`btn ${plan.popular ? 'btn-primary' : 'btn-secondary'} w-full`}
                 >
                   {loading === plan.priceId ? 'Processing...' : 'Get Started'}
                 </button>
@@ -221,7 +220,7 @@ export default function MembershipPage() {
             <h2>Common Questions</h2>
           </div>
 
-          <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+          <div className="max-w-[720px] mx-auto">
             {[
               {
                 q: 'Can I cancel anytime?',
@@ -246,15 +245,12 @@ export default function MembershipPage() {
             ].map((item, index) => (
               <div
                 key={index}
-                style={{
-                  padding: '24px 0',
-                  borderBottom: '1px solid var(--border)',
-                }}
+                className="py-6 border-b border-border"
               >
-                <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '8px' }}>
+                <h3 className="text-lg font-semibold mb-2">
                   {item.q}
                 </h3>
-                <p style={{ color: 'var(--foreground-muted)' }}>{item.a}</p>
+                <p className="text-muted">{item.a}</p>
               </div>
             ))}
           </div>
@@ -262,10 +258,10 @@ export default function MembershipPage() {
       </section>
 
       {/* CTA */}
-      <section className="section" style={{ background: 'var(--foreground)', color: 'white' }}>
+      <section className="section bg-foreground text-white">
         <div className="container text-center">
-          <h2 style={{ color: 'white', marginBottom: '16px' }}>Ready to Commit?</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.25rem', maxWidth: '500px', margin: '0 auto 32px' }}>
+          <h2 className="text-3xl sm:text-4xl text-white mb-4">Ready to Commit?</h2>
+          <p className="text-white/70 text-xl max-w-[500px] mx-auto mb-8">
             Start training with the best. Your development begins today.
           </p>
           <Link
@@ -274,8 +270,21 @@ export default function MembershipPage() {
               e.preventDefault()
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
-            className="btn btn-lg"
-            style={{ background: 'white', color: 'var(--foreground)' }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '14px 36px',
+              background: '#ffffff',
+              color: '#1A1A1A',
+              fontSize: '0.9375rem',
+              fontWeight: 600,
+              borderRadius: '9999px',
+              textDecoration: 'none',
+              letterSpacing: '-0.01em',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+              transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+            }}
           >
             Choose Your Plan
           </Link>

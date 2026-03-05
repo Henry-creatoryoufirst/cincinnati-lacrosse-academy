@@ -35,6 +35,64 @@ const EVENT_TYPE_OPTIONS = [
   { value: 'scrimmage', label: 'Scrimmage' },
 ] as const
 
+interface QuickPreset {
+  label: string
+  emoji: string
+  data: Partial<EventFormData>
+  ageGroupInput: string
+}
+
+const QUICK_PRESETS: QuickPreset[] = [
+  {
+    label: 'Weekend Training',
+    emoji: '🥍',
+    data: {
+      title: 'Weekend Training Session',
+      description: 'Weekend training session focused on skill development, game IQ, and competitive play. All skill levels welcome.',
+      event_type: 'training',
+      location: 'CLA Training Center',
+      max_participants: 30,
+      price: 40,
+      member_price: 0,
+      skill_levels: ['beginner', 'intermediate', 'advanced'],
+      age_groups: ['8-14', '15-18'],
+    },
+    ageGroupInput: '8-14, 15-18',
+  },
+  {
+    label: 'Saturday Camp',
+    emoji: '🏕️',
+    data: {
+      title: 'Saturday Skills Camp',
+      description: 'Full-day camp covering stick skills, shooting, defense, and live play. Lunch included.',
+      event_type: 'camp',
+      location: 'CLA Training Center',
+      max_participants: 40,
+      price: 75,
+      member_price: 60,
+      skill_levels: ['beginner', 'intermediate', 'advanced'],
+      age_groups: ['10-14', '15-18'],
+    },
+    ageGroupInput: '10-14, 15-18',
+  },
+  {
+    label: 'Scrimmage',
+    emoji: '🏟️',
+    data: {
+      title: 'Weekend Scrimmage',
+      description: 'Competitive scrimmage play. Great way to get live reps and apply what you have been working on in training.',
+      event_type: 'scrimmage',
+      location: 'CLA Training Center',
+      max_participants: 40,
+      price: 25,
+      member_price: 0,
+      skill_levels: ['intermediate', 'advanced', 'elite'],
+      age_groups: ['12-18'],
+    },
+    ageGroupInput: '12-18',
+  },
+]
+
 const initialFormData: EventFormData = {
   title: '',
   description: '',
@@ -151,6 +209,15 @@ export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
       .map((g) => g.trim())
       .filter(Boolean)
     setFormData((prev) => ({ ...prev, age_groups: groups }))
+  }
+
+  function applyPreset(preset: QuickPreset) {
+    setFormData((prev) => ({
+      ...prev,
+      ...preset.data,
+    }))
+    setAgeGroupInput(preset.ageGroupInput)
+    setError(null)
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -270,6 +337,42 @@ export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
               marginBottom: '20px'
             }}>
               {error}
+            </div>
+          )}
+
+          {/* Quick Presets - only show when creating new */}
+          {!isEditMode && (
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ ...labelStyle, marginBottom: '10px' }}>Quick Start</label>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {QUICK_PRESETS.map((preset) => (
+                  <button
+                    key={preset.label}
+                    type="button"
+                    onClick={() => applyPreset(preset)}
+                    style={{
+                      padding: '10px 18px',
+                      borderRadius: '10px',
+                      fontSize: '0.8125rem',
+                      fontWeight: 500,
+                      border: '1px solid var(--border)',
+                      background: 'var(--background-secondary)',
+                      color: 'var(--foreground)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    <span>{preset.emoji}</span>
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+              <p style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)', marginTop: '8px' }}>
+                Pick a preset to pre-fill the form, then just set the date and adjust as needed.
+              </p>
             </div>
           )}
 

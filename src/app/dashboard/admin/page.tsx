@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import EventList from '@/components/admin/EventList'
+import SubscriberList from '@/components/admin/SubscriberList'
 import type { Event } from '@/lib/types'
 
 export default async function AdminDashboardPage() {
@@ -45,46 +46,40 @@ export default async function AdminDashboardPage() {
     .select('id', { count: 'exact', head: true })
   const totalBookings = totalBookingsResult.count || 0
 
+  // Fetch subscriber count (gracefully handle if table doesn't exist)
+  let totalSubscribers = 0
+  try {
+    const subscriberCountResult = await supabase
+      .from('email_subscribers')
+      .select('id', { count: 'exact', head: true })
+    totalSubscribers = subscriberCountResult.count || 0
+  } catch {
+    // Table may not exist yet - that's fine
+    totalSubscribers = 0
+  }
+
   // Get first name for greeting
   const firstName = profile.full_name?.split(' ')[0] || 'Admin'
 
   return (
-    <main style={{ paddingTop: '72px', minHeight: '100vh', background: 'var(--background-secondary)' }}>
-      <div className="container" style={{ paddingTop: '48px', paddingBottom: '80px' }}>
+    <main className="pt-[72px] min-h-screen bg-secondary">
+      <div className="container pt-12 pb-20">
 
         {/* Header */}
-        <div style={{ marginBottom: '48px' }}>
-          <p style={{
-            fontSize: '0.6875rem',
-            fontWeight: 600,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: 'var(--accent)',
-            marginBottom: '8px'
-          }}>
+        <div className="mb-12">
+          <p className="text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-accent mb-2">
             Admin Dashboard
           </p>
-          <h1 style={{
-            fontSize: 'clamp(1.75rem, 4vw, 2.25rem)',
-            fontWeight: 600,
-            letterSpacing: '-0.02em',
-            color: 'var(--foreground)',
-            marginBottom: '8px'
-          }}>
+          <h1 className="text-[clamp(1.75rem,4vw,2.25rem)] font-semibold tracking-[-0.02em] text-foreground mb-2">
             Welcome back, {firstName}
           </h1>
-          <p style={{ color: 'var(--foreground-muted)', fontSize: '1rem' }}>
+          <p className="text-muted text-base">
             Manage your events, training sessions, and bookings.
           </p>
         </div>
 
         {/* Stats Cards */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '20px',
-          marginBottom: '48px'
-        }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 mb-12">
           <StatCard
             value={totalEvents}
             label="Total Events"
@@ -105,10 +100,18 @@ export default async function AdminDashboardPage() {
             label="Bookings"
             color="#7c3aed"
           />
+          <StatCard
+            value={totalSubscribers}
+            label="Subscribers"
+            color="#d97706"
+          />
         </div>
 
         {/* Events Management */}
         <EventList events={allEvents} />
+
+        {/* Email Subscribers Management */}
+        <SubscriberList />
       </div>
     </main>
   )
@@ -116,37 +119,19 @@ export default async function AdminDashboardPage() {
 
 function StatCard({ value, label, color }: { value: number; label: string; color: string }) {
   return (
-    <div style={{
-      background: 'var(--background)',
-      borderRadius: '16px',
-      border: '1px solid var(--border)',
-      padding: '24px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '16px'
-    }}>
-      <div style={{
-        width: '48px',
-        height: '48px',
-        borderRadius: '12px',
-        background: `${color}10`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <span style={{
-          fontSize: '1.25rem',
-          fontWeight: 700,
-          color: color
-        }}>
+    <div className="bg-background rounded-2xl border border-border p-6 flex items-center gap-4">
+      <div
+        className="w-12 h-12 rounded-xl flex items-center justify-center"
+        style={{ background: `${color}10` }}
+      >
+        <span
+          className="text-xl font-bold"
+          style={{ color: color }}
+        >
           {value}
         </span>
       </div>
-      <span style={{
-        fontSize: '0.9375rem',
-        color: 'var(--foreground-muted)',
-        fontWeight: 500
-      }}>
+      <span className="text-[0.9375rem] text-muted font-medium">
         {label}
       </span>
     </div>

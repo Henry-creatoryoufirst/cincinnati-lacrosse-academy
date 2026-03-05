@@ -175,7 +175,7 @@ export async function PUT(request: NextRequest) {
   return NextResponse.json({ event })
 }
 
-// DELETE /api/admin/events — Soft delete (deactivate) an event (id in query param)
+// DELETE /api/admin/events — Permanently delete an event (id in query param)
 export async function DELETE(request: NextRequest) {
   const auth = await verifyAdmin()
   if (!auth.authorized) return auth.response
@@ -190,17 +190,23 @@ export async function DELETE(request: NextRequest) {
     )
   }
 
+  // Delete associated bookings first to avoid foreign key constraint violations
+  await auth.supabase
+    .from('bookings')
+    .delete()
+    .eq('event_id', id)
+
   const { error } = await auth.supabase
     .from('events')
-    .update({ is_active: false })
+    .delete()
     .eq('id', id)
 
   if (error) {
     return NextResponse.json(
-      { error: 'Failed to deactivate event', details: error.message },
+      { error: 'Failed to delete event', details: error.message },
       { status: 500 }
     )
   }
 
-  return NextResponse.json({ message: 'Event deactivated successfully' })
+  return NextResponse.json({ message: 'Event deleted successfully' })
 }

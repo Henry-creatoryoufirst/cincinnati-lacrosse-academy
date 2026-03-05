@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft, CheckCircle, Star, Zap, Crown, Loader2, ExternalLink } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { formatPrice, MEMBERSHIP_PLANS } from '@/lib/stripe'
-import Button from '@/components/ui/Button'
 import Card, { CardContent, CardHeader } from '@/components/ui/Card'
 
 const statusStyles: Record<string, string> = {
@@ -17,9 +16,9 @@ const statusStyles: Record<string, string> = {
 }
 
 const planIcons: Record<string, { icon: typeof Star; bg: string; color: string }> = {
-  monthly: { icon: Star, bg: 'bg-gray-100', color: 'text-gray-600' },
-  quarterly: { icon: Zap, bg: 'bg-primary/10', color: 'text-primary' },
-  annual: { icon: Crown, bg: 'bg-yellow-100', color: 'text-yellow-600' },
+  starter: { icon: Star, bg: 'bg-gray-100', color: 'text-gray-600' },
+  pro: { icon: Zap, bg: 'bg-primary/10', color: 'text-primary' },
+  elite: { icon: Crown, bg: 'bg-yellow-100', color: 'text-yellow-600' },
 }
 
 interface MembershipRow {
@@ -103,7 +102,7 @@ export default function MembershipPage() {
     : null
 
   return (
-    <div className="min-h-screen bg-secondary py-12">
+    <div className="min-h-screen bg-secondary pt-[72px] py-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Navigation */}
         <div className="mb-8">
@@ -152,10 +151,10 @@ export default function MembershipPage() {
                     {formatPrice(activePlan.price)}
                     <span className="text-sm font-normal text-muted">/{activePlan.interval}</span>
                   </p>
-                  <Button
+                  <button
                     onClick={handleManage}
-                    variant="outline"
                     disabled={actionLoading === 'manage'}
+                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 border-[1.5px] border-border text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {actionLoading === 'manage' ? (
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -163,7 +162,7 @@ export default function MembershipPage() {
                       <ExternalLink className="w-4 h-4 mr-2" />
                     )}
                     Manage Subscription
-                  </Button>
+                  </button>
                 </div>
               </div>
             </CardContent>
@@ -185,7 +184,7 @@ export default function MembershipPage() {
         <div className="grid md:grid-cols-3 gap-6">
           {Object.values(MEMBERSHIP_PLANS).map((plan) => {
             const isCurrent = membership?.plan_id === plan.id
-            const iconCfg = planIcons[plan.id] || planIcons.monthly
+            const iconCfg = planIcons[plan.id] || planIcons.starter
             const Icon = iconCfg.icon
             return (
               <Card key={plan.id} className={`${isCurrent ? 'ring-2 ring-primary' : ''} ${plan.popular ? 'relative' : ''}`}>
@@ -221,13 +220,15 @@ export default function MembershipPage() {
                     ))}
                   </ul>
                   {isCurrent ? (
-                    <Button variant="outline" className="w-full" disabled>
+                    <button
+                      disabled
+                      className="w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 border-[1.5px] border-border text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
                       Current Plan
-                    </Button>
+                    </button>
                   ) : membership ? (
-                    <Button
-                      variant="outline"
-                      className="w-full"
+                    <button
+                      className="w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 border-[1.5px] border-border text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={handleManage}
                       disabled={actionLoading === 'manage'}
                     >
@@ -235,11 +236,13 @@ export default function MembershipPage() {
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       ) : null}
                       Change Plan
-                    </Button>
+                    </button>
                   ) : (
-                    <Button
-                      variant={plan.popular ? 'primary' : 'outline'}
-                      className="w-full"
+                    <button
+                      className={`w-full ${plan.popular
+                        ? 'inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-foreground text-white text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:bg-[#333] hover:shadow-md hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed'
+                        : 'inline-flex items-center justify-center gap-2 px-7 py-3.5 border-[1.5px] border-border text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed'
+                      }`}
                       onClick={() => handleSubscribe(plan.id)}
                       disabled={actionLoading === plan.id}
                     >
@@ -247,7 +250,7 @@ export default function MembershipPage() {
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       ) : null}
                       Subscribe
-                    </Button>
+                    </button>
                   )}
                 </CardContent>
               </Card>

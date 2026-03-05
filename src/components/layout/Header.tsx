@@ -63,38 +63,28 @@ export default function Header() {
       <header className="nav">
         <div className="nav-container">
           {/* Wordmark */}
-          <Link href="/" className="nav-logo" style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            gap: '10px',
-            textDecoration: 'none',
-            zIndex: 60
-          }}>
-            <span style={{
-              fontSize: '1.0625rem',
-              fontWeight: 600,
-              letterSpacing: '-0.01em',
-              color: 'white'
-            }}>Cincinnati Lacrosse Academy</span>
-            <span className="nav-tagline" style={{
-              fontSize: '0.6875rem',
-              fontWeight: 400,
-              color: 'rgba(255,255,255,0.5)',
-              letterSpacing: '0.02em'
-            }}>A Schertzinger Company</span>
+          <Link href="/" className="nav-logo flex items-baseline gap-2.5 no-underline z-[60]">
+            <span className="text-[1.0625rem] font-semibold tracking-[-0.01em] text-white">Cincinnati Lacrosse Academy</span>
+            <span className="nav-tagline text-[0.6875rem] font-normal text-white/50 tracking-[0.02em]">A Schertzinger Company</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             {user ? (
               <Link
                 href="/dashboard"
                 style={{
                   color: 'rgba(255,255,255,0.7)',
-                  fontSize: '0.875rem',
+                  fontSize: '0.8125rem',
                   fontWeight: 500,
                   textDecoration: 'none',
-                  transition: 'color 0.2s ease'
+                  letterSpacing: '0.01em',
+                  padding: '6px 14px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  background: 'rgba(255,255,255,0.06)',
+                  backdropFilter: 'blur(8px)',
+                  transition: 'all 0.2s ease',
                 }}
               >
                 Account
@@ -104,10 +94,16 @@ export default function Header() {
                 href="/auth/login"
                 style={{
                   color: 'rgba(255,255,255,0.7)',
-                  fontSize: '0.875rem',
+                  fontSize: '0.8125rem',
                   fontWeight: 500,
                   textDecoration: 'none',
-                  transition: 'color 0.2s ease'
+                  letterSpacing: '0.01em',
+                  padding: '6px 14px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  background: 'rgba(255,255,255,0.06)',
+                  backdropFilter: 'blur(8px)',
+                  transition: 'all 0.2s ease',
                 }}
               >
                 Sign In
@@ -118,14 +114,16 @@ export default function Header() {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                padding: '10px 20px',
-                background: 'white',
+                padding: '8px 20px',
+                background: '#fff',
                 color: '#0a0a0a',
                 fontSize: '0.8125rem',
                 fontWeight: 600,
+                letterSpacing: '-0.01em',
                 borderRadius: '9999px',
                 textDecoration: 'none',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.1)',
+                transition: 'all 0.2s ease',
               }}
             >
               Get Started
@@ -134,58 +132,22 @@ export default function Header() {
 
           {/* Mobile Hamburger Button */}
           <button
-            className="mobile-menu-button"
+            className="mobile-menu-button hidden flex-col justify-center items-center w-11 h-11 bg-transparent border-none cursor-pointer p-2.5 z-[60] relative"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileMenuOpen}
-            style={{
-              display: 'none',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '44px',
-              height: '44px',
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '10px',
-              zIndex: 60,
-              position: 'relative'
-            }}
           >
             <span
-              style={{
-                display: 'block',
-                width: '22px',
-                height: '2px',
-                background: 'white',
-                borderRadius: '2px',
-                transition: 'transform 0.3s ease, opacity 0.3s ease',
-                transform: mobileMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none'
-              }}
+              className="block w-[22px] h-0.5 bg-white rounded-[2px] transition-all duration-300"
+              style={{ transform: mobileMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none' }}
             />
             <span
-              style={{
-                display: 'block',
-                width: '22px',
-                height: '2px',
-                background: 'white',
-                borderRadius: '2px',
-                margin: '5px 0',
-                transition: 'opacity 0.3s ease',
-                opacity: mobileMenuOpen ? 0 : 1
-              }}
+              className="block w-[22px] h-0.5 bg-white rounded-[2px] my-[5px] transition-opacity duration-300"
+              style={{ opacity: mobileMenuOpen ? 0 : 1 }}
             />
             <span
-              style={{
-                display: 'block',
-                width: '22px',
-                height: '2px',
-                background: 'white',
-                borderRadius: '2px',
-                transition: 'transform 0.3s ease, opacity 0.3s ease',
-                transform: mobileMenuOpen ? 'rotate(-45deg) translate(5px, -5px)' : 'none'
-              }}
+              className="block w-[22px] h-0.5 bg-white rounded-[2px] transition-all duration-300"
+              style={{ transform: mobileMenuOpen ? 'rotate(-45deg) translate(5px, -5px)' : 'none' }}
             />
           </button>
         </div>
@@ -193,54 +155,24 @@ export default function Header() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className="mobile-menu-overlay"
-        style={{
-          position: 'fixed',
-          inset: 0,
-          background: '#0a0a0b',
-          zIndex: 50,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          opacity: mobileMenuOpen ? 1 : 0,
-          visibility: mobileMenuOpen ? 'visible' : 'hidden',
-          transition: 'opacity 0.3s ease, visibility 0.3s ease',
-          padding: '24px'
-        }}
+        className="mobile-menu-overlay fixed inset-0 bg-[#0a0a0b] z-50 flex flex-col justify-center items-center p-6 transition-all duration-300"
+        style={{ opacity: mobileMenuOpen ? 1 : 0, visibility: mobileMenuOpen ? 'visible' : 'hidden' }}
       >
         {/* Close area at top for tapping outside links */}
         <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '100px'
-          }}
+          className="absolute top-0 left-0 right-0 h-[100px]"
           onClick={() => setMobileMenuOpen(false)}
         />
 
-        <nav style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '8px',
-          transform: mobileMenuOpen ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'transform 0.3s ease 0.1s'
-        }}>
+        <nav
+          className="flex flex-col items-center gap-2 transition-transform duration-300 delay-100"
+          style={{ transform: mobileMenuOpen ? 'translateY(0)' : 'translateY(20px)' }}
+        >
           {/* Home */}
           <Link
             href="/"
             onClick={handleLinkClick}
-            style={{
-              fontSize: '1.5rem',
-              fontWeight: 500,
-              color: 'white',
-              textDecoration: 'none',
-              padding: '16px 32px',
-              transition: 'color 0.2s ease'
-            }}
+            className="text-2xl font-medium text-white no-underline px-8 py-4 transition-colors duration-200 hover:text-white/70"
           >
             Home
           </Link>
@@ -249,16 +181,7 @@ export default function Header() {
           {pathname === '/' ? (
             <button
               onClick={() => scrollToSection('programs')}
-              style={{
-                fontSize: '1.5rem',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.7)',
-                background: 'none',
-                border: 'none',
-                padding: '16px 32px',
-                cursor: 'pointer',
-                transition: 'color 0.2s ease'
-              }}
+              className="text-2xl font-medium text-white/70 bg-transparent border-none px-8 py-4 cursor-pointer transition-colors duration-200 hover:text-white"
             >
               Programs
             </button>
@@ -266,14 +189,7 @@ export default function Header() {
             <Link
               href="/#programs"
               onClick={handleLinkClick}
-              style={{
-                fontSize: '1.5rem',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.7)',
-                textDecoration: 'none',
-                padding: '16px 32px',
-                transition: 'color 0.2s ease'
-              }}
+              className="text-2xl font-medium text-white/70 no-underline px-8 py-4 transition-colors duration-200 hover:text-white"
             >
               Programs
             </Link>
@@ -283,16 +199,7 @@ export default function Header() {
           {pathname === '/' ? (
             <button
               onClick={() => scrollToSection('testimonials')}
-              style={{
-                fontSize: '1.5rem',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.7)',
-                background: 'none',
-                border: 'none',
-                padding: '16px 32px',
-                cursor: 'pointer',
-                transition: 'color 0.2s ease'
-              }}
+              className="text-2xl font-medium text-white/70 bg-transparent border-none px-8 py-4 cursor-pointer transition-colors duration-200 hover:text-white"
             >
               Testimonials
             </button>
@@ -300,14 +207,7 @@ export default function Header() {
             <Link
               href="/#testimonials"
               onClick={handleLinkClick}
-              style={{
-                fontSize: '1.5rem',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.7)',
-                textDecoration: 'none',
-                padding: '16px 32px',
-                transition: 'color 0.2s ease'
-              }}
+              className="text-2xl font-medium text-white/70 no-underline px-8 py-4 transition-colors duration-200 hover:text-white"
             >
               Testimonials
             </Link>
@@ -317,16 +217,7 @@ export default function Header() {
           {pathname === '/' ? (
             <button
               onClick={() => scrollToSection('beyond')}
-              style={{
-                fontSize: '1.5rem',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.7)',
-                background: 'none',
-                border: 'none',
-                padding: '16px 32px',
-                cursor: 'pointer',
-                transition: 'color 0.2s ease'
-              }}
+              className="text-2xl font-medium text-white/70 bg-transparent border-none px-8 py-4 cursor-pointer transition-colors duration-200 hover:text-white"
             >
               Beyond the Academy
             </button>
@@ -334,40 +225,21 @@ export default function Header() {
             <Link
               href="/#beyond"
               onClick={handleLinkClick}
-              style={{
-                fontSize: '1.5rem',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.7)',
-                textDecoration: 'none',
-                padding: '16px 32px',
-                transition: 'color 0.2s ease'
-              }}
+              className="text-2xl font-medium text-white/70 no-underline px-8 py-4 transition-colors duration-200 hover:text-white"
             >
               Beyond the Academy
             </Link>
           )}
 
           {/* Divider */}
-          <div style={{
-            width: '60px',
-            height: '1px',
-            background: 'rgba(255,255,255,0.15)',
-            margin: '16px 0'
-          }} />
+          <div className="w-[60px] h-px bg-white/15 my-4" />
 
           {/* Sign In / Account */}
           {user ? (
             <Link
               href="/dashboard"
               onClick={handleLinkClick}
-              style={{
-                fontSize: '1.25rem',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.7)',
-                textDecoration: 'none',
-                padding: '12px 32px',
-                transition: 'color 0.2s ease'
-              }}
+              className="text-xl font-medium text-white/70 no-underline px-8 py-3 transition-colors duration-200 hover:text-white"
             >
               Account
             </Link>
@@ -375,14 +247,7 @@ export default function Header() {
             <Link
               href="/auth/login"
               onClick={handleLinkClick}
-              style={{
-                fontSize: '1.25rem',
-                fontWeight: 500,
-                color: 'rgba(255,255,255,0.7)',
-                textDecoration: 'none',
-                padding: '12px 32px',
-                transition: 'color 0.2s ease'
-              }}
+              className="text-xl font-medium text-white/70 no-underline px-8 py-3 transition-colors duration-200 hover:text-white"
             >
               Sign In
             </Link>
@@ -396,15 +261,15 @@ export default function Header() {
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '16px 40px',
+              padding: '14px 36px',
               marginTop: '16px',
-              background: 'white',
+              background: '#fff',
               color: '#0a0a0a',
-              fontSize: '1rem',
+              fontSize: '0.9375rem',
               fontWeight: 600,
               borderRadius: '9999px',
               textDecoration: 'none',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+              boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
             }}
           >
             Get Started

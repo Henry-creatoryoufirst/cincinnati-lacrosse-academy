@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Users, Target, Award, Heart, ArrowRight } from 'lucide-react'
-import Button from '@/components/ui/Button'
 import Card, { CardContent } from '@/components/ui/Card'
 
 const values = [
@@ -58,13 +57,13 @@ const stats = [
 
 export default function AboutPage() {
   return (
-    <>
+    <main className="pt-[72px]">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary to-accent text-white py-20">
+      <section className="bg-gradient-to-b from-[#111827] to-[#0a0a0b] text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">About Cincinnati Lacrosse Academy</h1>
-            <p className="text-xl text-cyan-100">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">About Cincinnati Lacrosse Academy</h1>
+            <p className="text-xl text-white/70">
               Founded in 2014, Cincinnati Lacrosse Academy has grown from a small training program to the region&apos;s premier lacrosse development organization. Our mission is to grow the sport of lacrosse in Greater Cincinnati while developing players of character.
             </p>
           </div>
@@ -228,27 +227,29 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary to-accent text-white">
+      <section className="py-20 bg-foreground text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Join the CLA Family</h2>
-          <p className="text-xl text-cyan-100 mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Join the CLA Family</h2>
+          <p className="text-xl text-white/45 mb-8">
             Whether you&apos;re just starting out or looking to take your game to the next level, we have a program for you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/register">
-              <Button size="lg" className="bg-white text-primary hover:bg-cyan-50">
-                Get Started
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
+            <Link
+              href="/auth/register"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:bg-gray-100 hover:-translate-y-0.5"
+            >
+              Get Started
+              <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
-            <Link href="/contact">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                Contact Us
-              </Button>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center px-8 py-4 border-[1.5px] border-white/30 text-white text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-white/60 hover:bg-white/10"
+            >
+              Contact Us
             </Link>
           </div>
         </div>
       </section>
-    </>
+    </main>
   )
 }

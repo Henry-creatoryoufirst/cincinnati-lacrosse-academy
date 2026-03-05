@@ -45,12 +45,12 @@ function LoginForm() {
         <div className="text-center mb-10">
           <Link
             href="/"
-            className="inline-flex items-center justify-center w-14 h-14 bg-[#0a0a0a] rounded-2xl mb-6 no-underline"
+            className="inline-flex items-center justify-center w-14 h-14 bg-foreground rounded-2xl mb-6 no-underline"
           >
             <span className="text-white font-bold text-xl">CLA</span>
           </Link>
 
-          <h1 className="text-[2rem] font-bold text-[#0a0a0a] mb-2 tracking-tight">
+          <h1 className="text-[2rem] font-bold text-foreground mb-2 tracking-tight">
             <span className="italic">Welcome Back</span>
           </h1>
 
@@ -92,7 +92,7 @@ function LoginForm() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 focus:bg-white"
+                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/10 focus:bg-white"
                   />
                 </div>
               </div>
@@ -119,7 +119,7 @@ function LoginForm() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 focus:bg-white"
+                    className="w-full pl-12 pr-4 py-3.5 text-base border border-gray-200 rounded-xl bg-gray-50 text-gray-900 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/10 focus:bg-white"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ function LoginForm() {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-[18px] h-[18px] rounded-[5px] border border-gray-300 mr-2.5 cursor-pointer accent-blue-600"
+                    className="w-[18px] h-[18px] rounded-[5px] border border-gray-300 mr-2.5 cursor-pointer accent-primary"
                   />
                   <span className="text-sm text-gray-500">
                     Remember me
@@ -140,7 +140,7 @@ function LoginForm() {
 
                 <Link
                   href="/auth/forgot-password"
-                  className="text-sm text-blue-600 no-underline font-medium hover:underline"
+                  className="text-sm text-primary no-underline font-medium hover:underline"
                 >
                   Forgot password?
                 </Link>
@@ -150,7 +150,7 @@ function LoginForm() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-4 px-6 bg-blue-600 text-white text-base font-semibold rounded-xl transition-all hover:bg-blue-700 hover:-translate-y-px disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(37,99,235,0.25)]"
+                className="w-full py-4 px-6 bg-foreground text-white text-base font-semibold rounded-full transition-all hover:bg-[#333] hover:-translate-y-px disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(37,99,235,0.25)]"
               >
                 {isLoading ? (
                   <>
@@ -194,7 +194,7 @@ function LoginForm() {
                 Don&apos;t have an account?{' '}
                 <Link
                   href="/auth/register"
-                  className="text-blue-600 no-underline font-semibold hover:underline"
+                  className="text-primary no-underline font-semibold hover:underline"
                 >
                   Sign up
                 </Link>
@@ -207,7 +207,7 @@ function LoginForm() {
         <div className="text-center mt-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 no-underline transition-colors hover:text-[#0a0a0a]"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 no-underline transition-colors hover:text-foreground"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m12 19-7-7 7-7"/>
@@ -225,7 +225,7 @@ export default function LoginPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white">
-        <div className="w-10 h-10 border-[3px] border-gray-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-[3px] border-gray-200 border-t-primary rounded-full animate-spin" />
       </div>
     }>
       <LoginForm />

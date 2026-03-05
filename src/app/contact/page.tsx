@@ -92,11 +92,14 @@ export default function ContactPage() {
 
           <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-white/40 to-transparent mx-auto mb-7" />
 
-          <h1 className="text-[clamp(2.25rem,4vw,3.25rem)] font-bold tracking-tight leading-[1.1] bg-gradient-to-b from-white to-white/85 bg-clip-text text-transparent mb-4">
+          <h1
+            className="text-[clamp(2.25rem,4vw,3.25rem)] font-bold tracking-tight leading-[1.1] mb-4"
+            style={{ color: '#ffffff' }}
+          >
             Contact Us
           </h1>
 
-          <p className="text-lg text-white/45 font-normal max-w-[440px] mx-auto">
+          <p className="text-lg font-normal max-w-[440px] mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>
             We&apos;d love to hear from you
           </p>
         </div>

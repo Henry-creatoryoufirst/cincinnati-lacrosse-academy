@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { ArrowLeft, Calendar, MapPin, Clock, Plus, RefreshCw } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
-import Button from '@/components/ui/Button'
 import Card, { CardContent } from '@/components/ui/Card'
 
 export const dynamic = 'force-dynamic'
@@ -44,7 +43,7 @@ export default async function BookingsPage() {
   const hasBookings = upcoming.length > 0 || past.length > 0
 
   return (
-    <div className="min-h-screen bg-secondary py-12">
+    <div className="min-h-screen bg-secondary pt-[72px] py-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
@@ -57,11 +56,12 @@ export default async function BookingsPage() {
               <h1 className="text-3xl font-bold text-foreground">My Bookings</h1>
               <p className="text-muted mt-1">Manage your upcoming and past event bookings.</p>
             </div>
-            <Link href="/events">
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Book Event
-              </Button>
+            <Link
+              href="/events"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-foreground text-white text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:bg-[#333] hover:shadow-md hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Book Event
             </Link>
           </div>
         </div>
@@ -72,8 +72,11 @@ export default async function BookingsPage() {
               <Calendar className="w-16 h-16 text-muted mx-auto mb-4" />
               <h2 className="text-xl font-semibold text-foreground mb-2">No bookings yet</h2>
               <p className="text-muted mb-6">You haven&apos;t booked any events. Browse our upcoming events to get started.</p>
-              <Link href="/events">
-                <Button size="lg">Browse Events</Button>
+              <Link
+                href="/events"
+                className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-foreground text-white text-base font-semibold rounded-full no-underline transition-all duration-200 hover:bg-[#333] hover:shadow-md hover:-translate-y-0.5"
+              >
+                Browse Events
               </Link>
             </CardContent>
           </Card>
@@ -97,7 +100,7 @@ export default async function BookingsPage() {
                             <div className="w-1.5 h-full min-h-[60px] rounded-full bg-primary flex-shrink-0 hidden sm:block" />
                             <div>
                               <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-semibold text-foreground">{evt.title}</h3>
+                                <h3 className="text-base font-semibold text-foreground">{evt.title}</h3>
                                 <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${statusStyles[booking.status] || 'bg-gray-100 text-gray-700'}`}>
                                   {booking.status}
                                 </span>
@@ -156,7 +159,7 @@ export default async function BookingsPage() {
                             <div className="w-1.5 h-full min-h-[60px] rounded-full bg-gray-300 flex-shrink-0 hidden sm:block" />
                             <div>
                               <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-semibold text-foreground">{evt.title}</h3>
+                                <h3 className="text-base font-semibold text-foreground">{evt.title}</h3>
                                 <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${statusStyles[booking.status] || 'bg-gray-100 text-gray-700'}`}>
                                   {booking.status}
                                 </span>
@@ -176,11 +179,12 @@ export default async function BookingsPage() {
                             </div>
                           </div>
                           <div className="flex-shrink-0">
-                            <Link href="/events">
-                              <Button variant="outline" size="sm">
-                                <RefreshCw className="w-4 h-4 mr-1" />
-                                Book Again
-                              </Button>
+                            <Link
+                              href="/events"
+                              className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 border-[1.5px] border-border text-foreground text-sm font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary"
+                            >
+                              <RefreshCw className="w-4 h-4 mr-1" />
+                              Book Again
                             </Link>
                           </div>
                         </CardContent>

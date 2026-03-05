@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import { Calendar, MapPin, Users, Clock, ArrowLeft, CheckCircle, AlertCircle, Mail, Phone } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { formatPrice } from '@/lib/stripe'
-import Button from '@/components/ui/Button'
 import Card, { CardContent, CardHeader } from '@/components/ui/Card'
 
 export const dynamic = 'force-dynamic'
@@ -77,7 +76,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const capacityPercent = Math.round((eventData.current_participants / eventData.max_participants) * 100)
 
   return (
-    <>
+    <div className="pt-[72px]">
       {/* Back Navigation */}
       <div className="bg-secondary py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -89,7 +88,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       </div>
 
       {/* Event Hero Header */}
-      <section className="bg-gradient-to-br from-primary to-accent text-white py-16">
+      <section className="bg-gradient-to-b from-[#111827] to-[#0a0a0b] text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Event Info */}
@@ -98,13 +97,13 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 {eventData.event_type}
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">{eventData.title}</h1>
-              <p className="text-xl text-cyan-100 mb-8">{eventData.description}</p>
+              <p className="text-xl text-white/70 mb-8">{eventData.description}</p>
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="flex items-center">
                   <Calendar className="w-5 h-5 mr-3 flex-shrink-0" />
                   <div>
-                    <p className="text-sm text-cyan-200">Date</p>
+                    <p className="text-sm text-white/50">Date</p>
                     <p className="font-medium">{formatDate(eventData.start_date)}</p>
                     {eventData.start_date !== eventData.end_date && (
                       <p className="font-medium">to {formatDate(eventData.end_date)}</p>
@@ -114,15 +113,15 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 <div className="flex items-center">
                   <MapPin className="w-5 h-5 mr-3 flex-shrink-0" />
                   <div>
-                    <p className="text-sm text-cyan-200">Location</p>
+                    <p className="text-sm text-white/50">Location</p>
                     <p className="font-medium">{eventData.location}</p>
-                    {eventData.address && <p className="text-sm text-cyan-200">{eventData.address}</p>}
+                    {eventData.address && <p className="text-sm text-white/80">{eventData.address}</p>}
                   </div>
                 </div>
                 <div className="flex items-center">
                   <Users className="w-5 h-5 mr-3 flex-shrink-0" />
                   <div>
-                    <p className="text-sm text-cyan-200">Capacity</p>
+                    <p className="text-sm text-white/50">Capacity</p>
                     <p className="font-medium">
                       {isSoldOut ? 'Sold Out' : `${spotsLeft} spots remaining`}
                     </p>
@@ -131,7 +130,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 <div className="flex items-center">
                   <Clock className="w-5 h-5 mr-3 flex-shrink-0" />
                   <div>
-                    <p className="text-sm text-cyan-200">Ages</p>
+                    <p className="text-sm text-white/50">Ages</p>
                     <p className="font-medium">{eventData.age_groups?.join(', ') || 'All ages'}</p>
                   </div>
                 </div>
@@ -170,7 +169,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                         <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
                         <p className="text-lg font-semibold text-red-500">Sold Out</p>
                         <p className="text-sm text-muted mt-2">Join the waitlist to be notified of cancellations.</p>
-                        <Button className="w-full mt-4" variant="outline">Join Waitlist</Button>
+                        <button className="inline-flex items-center justify-center w-full px-8 py-4 border-[1.5px] border-border text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary mt-4">
+                          Join Waitlist
+                        </button>
                       </div>
                     ) : (
                       <>
@@ -194,10 +195,11 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                           )}
                         </div>
 
-                        <Link href={`/events/${eventData.id}/book`}>
-                          <Button className="w-full" size="lg">
-                            Book Now
-                          </Button>
+                        <Link
+                          href={`/events/${eventData.id}/book`}
+                          className="inline-flex items-center justify-center w-full px-8 py-4 bg-foreground text-white text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:bg-[#333] hover:shadow-md hover:-translate-y-0.5"
+                        >
+                          Book Now
                         </Link>
 
                         <p className="text-xs text-muted text-center mt-4">
@@ -284,8 +286,11 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                       (513) 555-0123
                     </div>
                   </div>
-                  <Link href="/contact">
-                    <Button variant="outline" className="w-full">Contact Us</Button>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center justify-center w-full px-8 py-4 border-[1.5px] border-border text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary"
+                  >
+                    Contact Us
                   </Link>
                 </CardContent>
               </Card>
@@ -293,6 +298,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }

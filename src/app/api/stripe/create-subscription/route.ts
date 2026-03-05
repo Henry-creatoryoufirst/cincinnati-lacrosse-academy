@@ -53,8 +53,8 @@ export async function POST(request: NextRequest) {
             },
             unit_amount: plan.price * 100, // Convert to cents
             recurring: {
-              interval: plan.interval === 'quarter' ? 'month' : plan.interval,
-              interval_count: plan.interval === 'quarter' ? 3 : 1,
+              interval: plan.interval,
+              interval_count: 1,
             },
           },
           quantity: 1,

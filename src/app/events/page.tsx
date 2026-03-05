@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Calendar, MapPin, Users } from 'lucide-react'
-import Button from '@/components/ui/Button'
 import Card, { CardContent } from '@/components/ui/Card'
 import { formatPrice } from '@/lib/stripe'
 import { createClient } from '@/lib/supabase/server'
@@ -64,52 +63,21 @@ export default async function EventsPage() {
   return (
     <main className="min-h-screen bg-secondary pt-[72px]">
       {/* Hero Section */}
-      <section
-        className="relative overflow-hidden text-center"
-        style={{
-          background: 'linear-gradient(180deg, #111827 0%, #0a0a0b 100%)',
-          padding: '64px 24px 80px',
-        }}
-      >
+      <section className="relative overflow-hidden text-center bg-gradient-to-b from-[#111827] to-[#0a0a0b] px-6 pt-16 pb-20">
         {/* Subtle radial glow */}
-        <div
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-          style={{
-            width: '600px',
-            height: '600px',
-            background: 'radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 60%)',
-          }}
-        />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(37,99,235,0.08)_0%,transparent_60%)]" />
 
         <div className="relative z-10 mx-auto max-w-5xl">
-          <div
-            className="mx-auto mb-7"
-            style={{
-              width: '48px',
-              height: '2px',
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-            }}
-          />
+          <div className="mx-auto mb-7 w-[48px] h-[2px] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
 
           <h1
-            className="mb-4 font-bold tracking-tight"
-            style={{
-              fontSize: 'clamp(2.25rem, 4vw, 3.25rem)',
-              letterSpacing: '-0.02em',
-              lineHeight: 1.1,
-              background: 'linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
+            className="mb-4 font-bold text-[clamp(2.25rem,4vw,3.25rem)] tracking-[-0.02em] leading-[1.1]"
+            style={{ color: '#ffffff' }}
           >
             Upcoming Events
           </h1>
 
-          <p
-            className="mx-auto max-w-xl text-lg font-normal"
-            style={{ color: 'rgba(255,255,255,0.45)' }}
-          >
+          <p className="mx-auto max-w-xl text-lg font-normal" style={{ color: 'rgba(255,255,255,0.7)' }}>
             Browse and book our training sessions, camps, clinics, and tournaments.
           </p>
         </div>
@@ -133,12 +101,18 @@ export default async function EventsPage() {
                   Check back soon — new training sessions, camps, and clinics are added regularly.
                 </p>
 
-                <div className="flex flex-wrap items-center justify-center gap-3">
-                  <Link href="/get-started/sessions">
-                    <Button>View Training Sessions</Button>
+                <div className="flex flex-wrap items-center justify-center gap-4">
+                  <Link
+                    href="/get-started/sessions"
+                    className="inline-flex items-center justify-center px-8 py-4 bg-foreground text-white text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:bg-[#333] hover:shadow-md hover:-translate-y-0.5"
+                  >
+                    View Training Sessions
                   </Link>
-                  <Link href="/contact">
-                    <Button variant="outline">Contact Us</Button>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center justify-center px-8 py-4 border-[1.5px] border-border text-foreground text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:border-foreground hover:bg-secondary"
+                  >
+                    Contact Us
                   </Link>
                 </div>
               </div>
@@ -197,8 +171,11 @@ export default async function EventsPage() {
                           <p className="text-sm text-green-600">{formatPrice(event.member_price)} for members</p>
                         )}
                       </div>
-                      <Link href={`/events/${event.id}/book`}>
-                        <Button size="sm">Book Now</Button>
+                      <Link
+                        href={`/events/${event.id}/book`}
+                        className="inline-flex items-center justify-center px-5 py-2.5 bg-foreground text-white text-sm font-semibold rounded-full no-underline transition-all duration-200 hover:bg-[#333] hover:shadow-md"
+                      >
+                        Book Now
                       </Link>
                     </div>
                   </CardContent>
@@ -219,8 +196,11 @@ export default async function EventsPage() {
             <p className="mb-8 text-lg text-muted">
               Contact us to learn about private coaching, team training, or custom events.
             </p>
-            <Link href="/contact">
-              <Button size="lg">Contact Us</Button>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center px-10 py-4 bg-foreground text-white text-base font-semibold rounded-full no-underline transition-all duration-200 hover:bg-[#333] hover:shadow-md hover:-translate-y-0.5"
+            >
+              Contact Us
             </Link>
           </div>
         </section>
