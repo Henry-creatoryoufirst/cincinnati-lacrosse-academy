@@ -41,7 +41,7 @@ interface QuickPreset {
 
 const PRESETS: QuickPreset[] = [
   {
-    label: 'Training',
+    label: 'HS/MS Training',
     type: 'training',
     emoji: '🥍',
     color: '#0891B2',
