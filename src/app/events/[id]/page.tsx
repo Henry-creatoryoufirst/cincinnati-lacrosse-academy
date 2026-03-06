@@ -203,11 +203,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                         </Link>
 
                         <p className="text-xs text-muted text-center mt-4">
-                          Not a member?{' '}
-                          <Link href="/membership" className="text-primary hover:underline">
-                            Join now
-                          </Link>{' '}
-                          to save on this and future events.
+                          Secure checkout powered by Stripe.
                         </p>
                       </>
                     )}

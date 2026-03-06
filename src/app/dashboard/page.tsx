@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
 
-export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ booking?: string; subscription?: string }> }) {
+export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ booking?: string }> }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -16,7 +16,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('role, membership_status, membership_plan')
+    .select('role')
     .eq('user_id', user.id)
     .single()
 
@@ -43,12 +43,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     .order('created_at', { ascending: false })
     .limit(5)
 
-  const { data: membership } = await supabase
-    .from('memberships')
-    .select('*')
-    .eq('user_id', user.id)
-    .single()
-
   const { count: sessionsAttended } = await supabase
     .from('bookings')
     .select('id', { count: 'exact', head: true })
@@ -57,7 +51,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   const firstName = user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0] || 'Athlete'
   const bookings: Array<{ id: string; status: string; amount_paid: number; event_id: string; events: unknown }> = upcomingBookings || []
-  const membershipActive = profile?.membership_status === 'active'
 
   const cardStyle = {
     background: '#fff',
@@ -76,13 +69,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             <p style={{ color: '#15803d', fontSize: '0.875rem', fontWeight: 500, margin: 0 }}>Booking confirmed! You&apos;re all set.</p>
           </div>
         )}
-        {resolvedParams?.subscription === 'success' && (
-          <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '10px', padding: '14px 18px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ color: '#16a34a', fontSize: '1rem' }}>✓</span>
-            <p style={{ color: '#15803d', fontSize: '0.875rem', fontWeight: 500, margin: 0 }}>Membership activated! Welcome to the family.</p>
-          </div>
-        )}
-
         {/* Welcome */}
         <div style={{ marginBottom: '32px' }}>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0a0a0a', letterSpacing: '-0.02em', marginBottom: '4px' }}>
@@ -94,12 +80,10 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
         </div>
 
         {/* Stats Row */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '32px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginBottom: '32px' }}>
           {[
             { label: 'Upcoming', value: String(bookings.length), emoji: '📅' },
-            { label: 'Membership', value: membershipActive ? 'Active' : 'None', emoji: '✓' },
             { label: 'Attended', value: String(sessionsAttended || 0), emoji: '⏱' },
-            { label: 'Plan', value: membership?.plan_id ? membership.plan_id.charAt(0).toUpperCase() + membership.plan_id.slice(1) : 'Free', emoji: '💳' },
           ].map((stat) => (
             <div key={stat.label} style={{ ...cardStyle, padding: '20px' }}>
               <p style={{ fontSize: '0.8125rem', color: '#9ca3af', marginBottom: '8px' }}>{stat.label}</p>
@@ -110,10 +94,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           ))}
         </div>
 
-        {/* Main Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
+        {/* Main Content */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
-          {/* Left Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
             {/* Upcoming Events */}
@@ -214,7 +197,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                   ...(isAdmin ? [{ href: '/dashboard/admin', label: 'Admin Dashboard', sublabel: 'Manage site', emoji: '🛡️' }] : []),
                   { href: '/events', label: 'Book Event', sublabel: 'Browse & register', emoji: '📅' },
                   { href: '/dashboard/profile', label: 'Edit Profile', sublabel: 'Update your info', emoji: '👤' },
-                  { href: '/dashboard/billing', label: 'Billing', sublabel: 'View history', emoji: '💳' },
                 ].map((action) => (
                   <Link
                     key={action.href}
@@ -238,95 +220,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
             </div>
           </div>
 
-          {/* Right Sidebar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-
-            {/* Membership */}
-            <div style={cardStyle}>
-              <div style={{ padding: '18px 20px', borderBottom: '1px solid #f0f0f0' }}>
-                <h2 style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#0a0a0a', margin: 0 }}>
-                  Membership
-                </h2>
-              </div>
-              <div style={{ padding: '20px' }}>
-                {membershipActive && membership ? (
-                  <>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                      <span style={{ fontSize: '0.8125rem', color: '#6b7280' }}>Plan</span>
-                      <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#0a0a0a', textTransform: 'capitalize' }}>{membership.plan_id}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                      <span style={{ fontSize: '0.8125rem', color: '#6b7280' }}>Status</span>
-                      <span style={{ padding: '2px 8px', borderRadius: '20px', fontSize: '0.6875rem', fontWeight: 600, background: '#f0fdf4', color: '#15803d', textTransform: 'capitalize' }}>
-                        {membership.status}
-                      </span>
-                    </div>
-                    {membership.current_period_end && (
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                        <span style={{ fontSize: '0.8125rem', color: '#6b7280' }}>Next Billing</span>
-                        <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#0a0a0a' }}>
-                          {new Date(membership.current_period_end).toLocaleDateString('en-US', {
-                            month: 'short', day: 'numeric', year: 'numeric'
-                          })}
-                        </span>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div style={{ textAlign: 'center', padding: '8px 0 16px' }}>
-                    <p style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '16px' }}>No active membership</p>
-                  </div>
-                )}
-
-                <Link
-                  href={membershipActive ? '/dashboard/membership' : '/membership'}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '100%',
-                    padding: '10px 16px',
-                    background: '#0a0a0a',
-                    color: '#fff',
-                    fontSize: '0.8125rem',
-                    fontWeight: 600,
-                    borderRadius: '8px',
-                    textDecoration: 'none',
-                  }}
-                >
-                  {membershipActive ? 'Manage Membership' : 'View Plans'}
-                </Link>
-              </div>
-            </div>
-
-            {/* Need Help */}
-            <div style={{ ...cardStyle, padding: '20px' }}>
-              <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#0a0a0a', marginBottom: '6px' }}>
-                Need Help?
-              </p>
-              <p style={{ fontSize: '0.8125rem', color: '#6b7280', lineHeight: 1.5, marginBottom: '16px' }}>
-                Questions about your account or upcoming events?
-              </p>
-              <Link
-                href="/contact"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  padding: '10px 16px',
-                  background: '#f5f5f5',
-                  color: '#0a0a0a',
-                  fontSize: '0.8125rem',
-                  fontWeight: 600,
-                  borderRadius: '8px',
-                  textDecoration: 'none',
-                }}
-              >
-                Contact Support
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
     </div>

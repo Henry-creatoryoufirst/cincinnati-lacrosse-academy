@@ -577,19 +577,6 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
                     </span>
                   </div>
 
-                  {!isMember && event.member_price != null && event.member_price < event.price && (
-                    <div style={{
-                      marginTop: '16px', padding: '12px 14px', borderRadius: '10px',
-                      background: '#F0FDF4', border: '1px solid #BBF7D0',
-                    }}>
-                      <p style={{ fontSize: '0.8125rem', color: '#166534', margin: 0, fontWeight: 500 }}>
-                        Members save {formatPrice(event.price - event.member_price)} on this event.{' '}
-                        <Link href="/membership" style={{ color: '#059669', fontWeight: 600, textDecoration: 'underline' }}>
-                          Join now
-                        </Link>
-                      </p>
-                    </div>
-                  )}
                 </div>
               </div>
 
