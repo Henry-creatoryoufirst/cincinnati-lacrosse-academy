@@ -68,10 +68,18 @@ export async function POST(request: NextRequest) {
 
     const price = event.price
 
+    // Delete any existing pending/cancelled booking so we can create fresh
+    if (existingBooking && ['pending', 'cancelled'].includes(existingBooking.status)) {
+      await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', existingBooking.id)
+    }
+
     // Create pending booking
     const { data: booking, error: bookingError } = await supabase
       .from('bookings')
-      .upsert({
+      .insert({
         user_id: user.id,
         event_id: eventId,
         participant_name: participantName,
@@ -82,7 +90,7 @@ export async function POST(request: NextRequest) {
         status: 'pending',
         payment_status: 'pending',
         amount_paid: price,
-      }, { onConflict: 'user_id,event_id' })
+      })
       .select()
       .single()
 
@@ -150,8 +158,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: session.url, bookingId: booking.id })
   } catch (error) {
     console.error('Booking creation error:', error)
+    const message = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { error: 'Failed to process booking' },
+      { error: `Failed to process booking: ${message}` },
       { status: 500 }
     )
   }
