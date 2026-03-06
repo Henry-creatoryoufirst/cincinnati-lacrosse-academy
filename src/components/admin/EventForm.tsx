@@ -80,17 +80,17 @@ const PRESETS: QuickPreset[] = [
     defaultDuration: 2,
   },
   {
-    label: 'Clinic',
+    label: 'Youth Clinic',
     type: 'clinic',
     emoji: '🎯',
     color: '#7C3AED',
-    description: 'Position-specific clinic with focused drills and coaching.',
+    description: 'Youth clinic with focused drills, stick skills, and coaching fundamentals.',
     price: 35,
     memberPrice: 0,
     maxParticipants: 20,
-    skillLevels: ['intermediate', 'advanced'],
-    ageGroups: ['10-18'],
-    defaultDuration: 2,
+    skillLevels: ['beginner', 'intermediate'],
+    ageGroups: ['8-14'],
+    defaultDuration: 1.5,
   },
 ]
 
