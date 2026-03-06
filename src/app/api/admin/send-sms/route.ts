@@ -159,5 +159,6 @@ export async function POST(request: NextRequest) {
     message: `SMS broadcast complete: ${results.sent} sent, ${results.failed} failed`,
     configured: true,
     ...results,
+    ...(results.errors.length > 0 ? { errorDetails: results.errors } : {}),
   })
 }

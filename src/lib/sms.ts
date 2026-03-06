@@ -19,8 +19,19 @@ export class TwilioProvider {
     return !!(this.accountSid && this.authToken && this.fromNumber)
   }
 
+  private formatE164(phone: string): string {
+    const digits = phone.replace(/\D/g, '')
+    if (digits.startsWith('1') && digits.length === 11) return `+${digits}`
+    if (digits.length === 10) return `+1${digits}`
+    return phone.startsWith('+') ? phone : `+${digits}`
+  }
+
   async sendSms(to: string, body: string): Promise<SmsResult> {
     const url = `https://api.twilio.com/2010-04-01/Accounts/${this.accountSid}/Messages.json`
+    const toFormatted = this.formatE164(to)
+    const fromFormatted = this.formatE164(this.fromNumber)
+
+    console.log(`[SMS] Sending to ${toFormatted} from ${fromFormatted}`)
 
     const response = await fetch(url, {
       method: 'POST',
@@ -29,18 +40,21 @@ export class TwilioProvider {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        To: `+1${to}`,
-        From: this.fromNumber,
+        To: toFormatted,
+        From: fromFormatted,
         Body: body,
       }),
     })
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Unknown error' }))
-      return { success: false, error: error.message || 'Failed to send SMS' }
+      const errorData = await response.json().catch(() => ({}))
+      const errorMsg = errorData.message || errorData.error_message || `HTTP ${response.status}: ${response.statusText}`
+      console.error(`[SMS] Failed to send to ${toFormatted}:`, errorMsg, errorData)
+      return { success: false, error: errorMsg }
     }
 
     const data = await response.json()
+    console.log(`[SMS] Sent successfully to ${toFormatted}, SID: ${data.sid}`)
     return { success: true, messageId: data.sid }
   }
 }

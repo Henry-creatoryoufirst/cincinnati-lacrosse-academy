@@ -19,6 +19,7 @@ export default function SmsBroadcast() {
     configured?: boolean
     phoneNumbers?: string[]
     recipientCount?: number
+    errorDetails?: string[]
   } | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [phoneCount, setPhoneCount] = useState(0)
@@ -231,9 +232,27 @@ export default function SmsBroadcast() {
             </p>
 
             {result.configured && result.sent !== undefined && (
-              <p style={{ fontSize: '0.8125rem', color: '#065F46' }}>
-                {result.sent} sent, {result.failed} failed
-              </p>
+              <>
+                <p style={{ fontSize: '0.8125rem', color: '#065F46' }}>
+                  {result.sent} sent, {result.failed} failed
+                </p>
+                {result.errorDetails && result.errorDetails.length > 0 && (
+                  <div style={{
+                    marginTop: '8px',
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    background: '#FEF2F2',
+                    border: '1px solid #FEE2E2',
+                    fontSize: '0.75rem',
+                    color: '#DC2626',
+                    lineHeight: 1.6
+                  }}>
+                    {result.errorDetails.map((err, i) => (
+                      <div key={i}>{err}</div>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
 
             {!result.configured && result.phoneNumbers && (
