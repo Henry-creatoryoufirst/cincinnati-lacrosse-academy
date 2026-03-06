@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Event is sold out' }, { status: 409 })
     }
 
-    // Check for duplicate booking — only block if already confirmed/attended
+    // Check for existing booking
     const { data: existingBooking } = await supabase
       .from('bookings')
       .select('id, status')
@@ -52,6 +52,7 @@ export async function POST(request: NextRequest) {
       .eq('event_id', eventId)
       .single()
 
+    // Block if already confirmed/attended
     if (existingBooking && ['confirmed', 'attended'].includes(existingBooking.status)) {
       return NextResponse.json(
         { error: 'You already have a booking for this event' },
@@ -68,36 +69,47 @@ export async function POST(request: NextRequest) {
 
     const price = event.price
 
-    // Delete any existing pending/cancelled booking so we can create fresh
-    if (existingBooking && ['pending', 'cancelled'].includes(existingBooking.status)) {
-      await supabase
-        .from('bookings')
-        .delete()
-        .eq('id', existingBooking.id)
+    const bookingFields = {
+      user_id: user.id,
+      event_id: eventId,
+      participant_name: participantName,
+      participant_age: participantAge || null,
+      emergency_contact_name: emergencyContactName || null,
+      emergency_contact_phone: emergencyContactPhone || null,
+      medical_notes: medicalNotes || null,
+      status: 'pending' as const,
+      payment_status: 'pending' as const,
+      amount_paid: price,
     }
 
-    // Create pending booking
-    const { data: booking, error: bookingError } = await supabase
-      .from('bookings')
-      .insert({
-        user_id: user.id,
-        event_id: eventId,
-        participant_name: participantName,
-        participant_age: participantAge || null,
-        emergency_contact_name: emergencyContactName || null,
-        emergency_contact_phone: emergencyContactPhone || null,
-        medical_notes: medicalNotes || null,
-        status: 'pending',
-        payment_status: 'pending',
-        amount_paid: price,
-      })
-      .select()
-      .single()
+    let booking
+    let bookingError
+
+    if (existingBooking) {
+      // Update existing pending/cancelled booking
+      const result = await supabase
+        .from('bookings')
+        .update(bookingFields)
+        .eq('id', existingBooking.id)
+        .select()
+        .single()
+      booking = result.data
+      bookingError = result.error
+    } else {
+      // Create new booking
+      const result = await supabase
+        .from('bookings')
+        .insert(bookingFields)
+        .select()
+        .single()
+      booking = result.data
+      bookingError = result.error
+    }
 
     if (bookingError || !booking) {
       console.error('Booking creation error:', bookingError)
       return NextResponse.json(
-        { error: 'Failed to create booking' },
+        { error: `Failed to create booking: ${bookingError?.message || 'Unknown error'}` },
         { status: 500 }
       )
     }
@@ -128,6 +140,9 @@ export async function POST(request: NextRequest) {
         .eq('user_id', user.id)
     }
 
+    // Build success/cancel URLs — use request origin if NEXT_PUBLIC_APP_URL is not set
+    const appUrl = (process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin).trim()
+
     // Create Stripe checkout session with dynamic price_data
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -146,8 +161,8 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?booking=success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/events/${eventId}`,
+      success_url: `${appUrl}/dashboard?booking=success`,
+      cancel_url: `${appUrl}/events/${eventId}`,
       metadata: {
         user_id: user.id,
         event_id: eventId,
