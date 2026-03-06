@@ -1169,14 +1169,14 @@ img {
   opacity: 1;
 }
 
-/* Beyond the Academy card hover states */
-.beyond-card {
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.beyond-card:hover {
-  transform: translateY(-6px);
+/* Beyond the Academy cards - responsive 3-column grid */
+@media (min-width: 768px) {
+  .beyond-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .footer-grid-responsive {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
 }
 
 /* Glow pulse animation for You.Prjct card */

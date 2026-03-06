@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { email, name, source } = body
+    const { email, name, source, phone } = body
 
     if (!email || typeof email !== 'string') {
       return NextResponse.json(
@@ -71,6 +71,17 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Phone validation (US format, optional)
+    if (phone && typeof phone === 'string') {
+      const cleaned = phone.replace(/\D/g, '')
+      if (cleaned.length !== 10 && cleaned.length !== 11) {
+        return NextResponse.json(
+          { error: 'Please enter a valid US phone number' },
+          { status: 400 }
+        )
+      }
+    }
+
     const supabase = await createClient()
 
     const { data: subscriber, error } = await supabase
@@ -78,6 +89,7 @@ export async function POST(request: NextRequest) {
       .insert({
         email: email.toLowerCase().trim(),
         name: name ?? null,
+        phone: phone ? String(phone).replace(/\D/g, '').slice(-10) : null,
         source: source ?? 'website',
       })
       .select()
@@ -130,7 +142,7 @@ export async function GET(request: NextRequest) {
 
   // Return CSV download if requested
   if (format === 'csv') {
-    const headers = ['id', 'email', 'name', 'source', 'is_active', 'created_at']
+    const headers = ['id', 'email', 'name', 'phone', 'source', 'is_active', 'created_at']
     const csvRows = [headers.join(',')]
 
     for (const sub of subscribers ?? []) {

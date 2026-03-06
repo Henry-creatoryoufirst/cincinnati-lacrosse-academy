@@ -103,10 +103,10 @@ export default async function EventsPage() {
 
                 <div className="flex flex-wrap items-center justify-center gap-4">
                   <Link
-                    href="/get-started/sessions"
+                    href="/"
                     className="inline-flex items-center justify-center px-8 py-4 bg-foreground text-white text-[0.9375rem] font-semibold rounded-full no-underline transition-all duration-200 hover:bg-[#333] hover:shadow-md hover:-translate-y-0.5"
                   >
-                    View Training Sessions
+                    Back to Home
                   </Link>
                   <Link
                     href="/contact"

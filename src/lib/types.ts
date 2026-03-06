@@ -56,6 +56,16 @@ export interface Booking {
   event?: Event
 }
 
+export interface EmailSubscriber {
+  id: string
+  email: string
+  name?: string | null
+  phone?: string | null
+  source?: string | null
+  is_active: boolean
+  created_at: string
+}
+
 export interface Membership {
   id: string
   user_id: string

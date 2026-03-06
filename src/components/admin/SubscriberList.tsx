@@ -6,9 +6,17 @@ interface Subscriber {
   id: string
   email: string
   name?: string | null
+  phone?: string | null
   source?: string | null
   is_active: boolean
   created_at: string
+}
+
+function formatPhoneDisplay(phone: string): string {
+  if (phone.length === 10) {
+    return `(${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6)}`
+  }
+  return phone
 }
 
 export default function SubscriberList() {
@@ -18,6 +26,7 @@ export default function SubscriberList() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const [phonesCopied, setPhonesCopied] = useState(false)
 
   // Compose section state
   const [subject, setSubject] = useState('')
@@ -86,6 +95,28 @@ export default function SubscriberList() {
       document.body.removeChild(textarea)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
+  async function handleCopyPhones() {
+    const activePhones = subscribers
+      .filter(s => s.is_active && s.phone)
+      .map(s => formatPhoneDisplay(s.phone!))
+      .join(', ')
+
+    try {
+      await navigator.clipboard.writeText(activePhones)
+      setPhonesCopied(true)
+      setTimeout(() => setPhonesCopied(false), 2000)
+    } catch {
+      const textarea = document.createElement('textarea')
+      textarea.value = activePhones
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
+      setPhonesCopied(true)
+      setTimeout(() => setPhonesCopied(false), 2000)
     }
   }
 
@@ -186,6 +217,30 @@ export default function SubscriberList() {
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
             </svg>
             {copied ? 'Copied!' : 'Copy All Emails'}
+          </button>
+          <button
+            onClick={handleCopyPhones}
+            disabled={subscribers.filter(s => s.is_active && s.phone).length === 0}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '12px 24px',
+              fontSize: '0.9375rem',
+              fontWeight: 500,
+              borderRadius: '9999px',
+              border: '1px solid var(--border)',
+              cursor: subscribers.filter(s => s.is_active && s.phone).length === 0 ? 'not-allowed' : 'pointer',
+              background: 'transparent',
+              color: phonesCopied ? '#059669' : 'var(--foreground)',
+              transition: 'all 0.2s ease',
+              opacity: subscribers.filter(s => s.is_active && s.phone).length === 0 ? 0.5 : 1
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            {phonesCopied ? 'Copied!' : 'Copy All Phones'}
           </button>
           <button
             onClick={handleExportCSV}
@@ -628,6 +683,14 @@ function SubscriberRow({
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
               {subscriber.name}
+            </span>
+          )}
+          {subscriber.phone && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              {formatPhoneDisplay(subscriber.phone)}
             </span>
           )}
           {subscriber.source && (

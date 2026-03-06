@@ -25,87 +25,99 @@ interface EventFormData {
   age_groups: string[]
 }
 
-const SKILL_LEVEL_OPTIONS = ['beginner', 'intermediate', 'advanced', 'elite'] as const
-
-const EVENT_TYPE_OPTIONS = [
-  { value: 'training', label: 'Training Session' },
-  { value: 'camp', label: 'Camp' },
-  { value: 'tournament', label: 'Tournament' },
-  { value: 'clinic', label: 'Clinic' },
-  { value: 'scrimmage', label: 'Scrimmage' },
-] as const
-
 interface QuickPreset {
   label: string
+  type: 'training' | 'camp' | 'tournament' | 'clinic' | 'scrimmage'
   emoji: string
-  data: Partial<EventFormData>
-  ageGroupInput: string
+  color: string
+  description: string
+  price: number
+  memberPrice: number
+  maxParticipants: number
+  skillLevels: string[]
+  ageGroups: string[]
+  defaultDuration: number
 }
 
-const QUICK_PRESETS: QuickPreset[] = [
+const PRESETS: QuickPreset[] = [
   {
-    label: 'Weekend Training',
+    label: 'Training',
+    type: 'training',
     emoji: '🥍',
-    data: {
-      title: 'Weekend Training Session',
-      description: 'Weekend training session focused on skill development, game IQ, and competitive play. All skill levels welcome.',
-      event_type: 'training',
-      location: 'CLA Training Center',
-      max_participants: 30,
-      price: 40,
-      member_price: 0,
-      skill_levels: ['beginner', 'intermediate', 'advanced'],
-      age_groups: ['8-14', '15-18'],
-    },
-    ageGroupInput: '8-14, 15-18',
+    color: '#0891B2',
+    description: 'Training session focused on skill development, game IQ, and competitive play. All skill levels welcome.',
+    price: 40,
+    memberPrice: 0,
+    maxParticipants: 30,
+    skillLevels: ['beginner', 'intermediate', 'advanced'],
+    ageGroups: ['8-14', '15-18'],
+    defaultDuration: 2,
   },
   {
-    label: 'Saturday Camp',
+    label: 'Camp',
+    type: 'camp',
     emoji: '🏕️',
-    data: {
-      title: 'Saturday Skills Camp',
-      description: 'Full-day camp covering stick skills, shooting, defense, and live play. Lunch included.',
-      event_type: 'camp',
-      location: 'CLA Training Center',
-      max_participants: 40,
-      price: 75,
-      member_price: 60,
-      skill_levels: ['beginner', 'intermediate', 'advanced'],
-      age_groups: ['10-14', '15-18'],
-    },
-    ageGroupInput: '10-14, 15-18',
+    color: '#2563EB',
+    description: 'Full-day camp covering stick skills, shooting, defense, and live play. Lunch included.',
+    price: 75,
+    memberPrice: 60,
+    maxParticipants: 40,
+    skillLevels: ['beginner', 'intermediate', 'advanced'],
+    ageGroups: ['10-14', '15-18'],
+    defaultDuration: 6,
   },
   {
     label: 'Scrimmage',
+    type: 'scrimmage',
     emoji: '🏟️',
-    data: {
-      title: 'Weekend Scrimmage',
-      description: 'Competitive scrimmage play. Great way to get live reps and apply what you have been working on in training.',
-      event_type: 'scrimmage',
-      location: 'CLA Training Center',
-      max_participants: 40,
-      price: 25,
-      member_price: 0,
-      skill_levels: ['intermediate', 'advanced', 'elite'],
-      age_groups: ['12-18'],
-    },
-    ageGroupInput: '12-18',
+    color: '#EA580C',
+    description: 'Competitive scrimmage play. Great way to get live reps and apply what you\'ve been working on.',
+    price: 25,
+    memberPrice: 0,
+    maxParticipants: 40,
+    skillLevels: ['intermediate', 'advanced', 'elite'],
+    ageGroups: ['12-18'],
+    defaultDuration: 2,
+  },
+  {
+    label: 'Clinic',
+    type: 'clinic',
+    emoji: '🎯',
+    color: '#7C3AED',
+    description: 'Position-specific clinic with focused drills and coaching.',
+    price: 35,
+    memberPrice: 0,
+    maxParticipants: 20,
+    skillLevels: ['intermediate', 'advanced'],
+    ageGroups: ['10-18'],
+    defaultDuration: 2,
   },
 ]
 
-const initialFormData: EventFormData = {
-  title: '',
-  description: '',
-  event_type: 'training',
-  start_date: '',
-  end_date: '',
-  location: '',
-  address: '',
-  max_participants: 30,
-  price: 0,
-  member_price: 0,
-  skill_levels: [],
-  age_groups: [],
+const DEFAULT_LOCATION = 'CLA Training Center'
+
+const TIME_OPTIONS = [
+  '7:00 AM', '7:30 AM',
+  '8:00 AM', '8:30 AM',
+  '9:00 AM', '9:30 AM',
+  '10:00 AM', '10:30 AM',
+  '11:00 AM', '11:30 AM',
+  '12:00 PM', '12:30 PM',
+  '1:00 PM', '1:30 PM',
+  '2:00 PM', '2:30 PM',
+  '3:00 PM', '3:30 PM',
+  '4:00 PM', '4:30 PM',
+  '5:00 PM', '5:30 PM',
+  '6:00 PM', '6:30 PM',
+  '7:00 PM',
+]
+
+function timeTo24(timeStr: string): string {
+  const [time, period] = timeStr.split(' ')
+  let [hours, minutes] = time.split(':').map(Number)
+  if (period === 'PM' && hours !== 12) hours += 12
+  if (period === 'AM' && hours === 12) hours = 0
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
 }
 
 function formatDateTimeLocal(dateString: string): string {
@@ -114,137 +126,144 @@ function formatDateTimeLocal(dateString: string): string {
     if (isNaN(date.getTime())) return ''
     const pad = (n: number) => n.toString().padStart(2, '0')
     return [
-      date.getFullYear(),
-      '-',
-      pad(date.getMonth() + 1),
-      '-',
-      pad(date.getDate()),
-      'T',
-      pad(date.getHours()),
-      ':',
-      pad(date.getMinutes()),
+      date.getFullYear(), '-', pad(date.getMonth() + 1), '-', pad(date.getDate()),
+      'T', pad(date.getHours()), ':', pad(date.getMinutes()),
     ].join('')
   } catch {
     return ''
   }
 }
 
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '12px 16px',
-  fontSize: '0.9375rem',
-  border: '1px solid var(--border)',
-  borderRadius: '12px',
-  background: 'var(--background)',
-  color: 'var(--foreground)',
-  outline: 'none',
-  transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
-}
-
-const labelStyle: React.CSSProperties = {
-  display: 'block',
-  fontSize: '0.8125rem',
-  fontWeight: 500,
-  color: 'var(--foreground)',
-  marginBottom: '8px'
+function to12Hour(h: number, m: number): string {
+  const period = h >= 12 ? 'PM' : 'AM'
+  const hour = h % 12 || 12
+  return `${hour}:${m.toString().padStart(2, '0')} ${period}`
 }
 
 export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
   const router = useRouter()
-  const [formData, setFormData] = useState<EventFormData>(initialFormData)
-  const [ageGroupInput, setAgeGroupInput] = useState('')
+  const isEditMode = !!event
+
+  // Simple state
+  const [selectedPreset, setSelectedPreset] = useState<QuickPreset | null>(null)
+  const [date, setDate] = useState('')
+  const [time, setTime] = useState('10:00 AM')
+  const [showAdvanced, setShowAdvanced] = useState(false)
+
+  // Advanced overrides (hidden by default)
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [price, setPrice] = useState(40)
+  const [memberPrice, setMemberPrice] = useState(0)
+  const [maxParticipants, setMaxParticipants] = useState(30)
+  const [duration, setDuration] = useState(2)
+  const [location, setLocation] = useState(DEFAULT_LOCATION)
+
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const isEditMode = !!event
-
+  // Reset when opening
   useEffect(() => {
+    if (!isOpen) return
+
     if (event) {
-      setFormData({
-        title: event.title,
-        description: event.description,
-        event_type: event.event_type,
-        start_date: formatDateTimeLocal(event.start_date),
-        end_date: formatDateTimeLocal(event.end_date),
-        location: event.location,
-        address: event.address || '',
-        max_participants: event.max_participants,
-        price: event.price,
-        member_price: event.member_price || 0,
-        skill_levels: event.skill_levels || [],
-        age_groups: event.age_groups || [],
-      })
-      setAgeGroupInput((event.age_groups || []).join(', '))
+      // Edit mode: populate from event
+      const d = new Date(event.start_date)
+      const endD = new Date(event.end_date)
+      const pad = (n: number) => n.toString().padStart(2, '0')
+      setDate(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`)
+      setTime(to12Hour(d.getHours(), d.getMinutes()))
+      setTitle(event.title)
+      setDescription(event.description)
+      setPrice(event.price)
+      setMemberPrice(event.member_price || 0)
+      setMaxParticipants(event.max_participants)
+      setLocation(event.location)
+      const dur = (endD.getTime() - d.getTime()) / (1000 * 60 * 60)
+      setDuration(dur > 0 ? dur : 2)
+      setShowAdvanced(true)
+      // Try to match a preset
+      const match = PRESETS.find(p => p.type === event.event_type)
+      setSelectedPreset(match || PRESETS[0])
     } else {
-      setFormData(initialFormData)
-      setAgeGroupInput('')
+      // New mode: reset everything
+      setSelectedPreset(PRESETS[0])
+      setDate('')
+      setTime('10:00 AM')
+      setTitle('')
+      setDescription('')
+      setPrice(PRESETS[0].price)
+      setMemberPrice(PRESETS[0].memberPrice)
+      setMaxParticipants(PRESETS[0].maxParticipants)
+      setDuration(PRESETS[0].defaultDuration)
+      setLocation(DEFAULT_LOCATION)
+      setShowAdvanced(false)
     }
     setError(null)
   }, [event, isOpen])
 
-  function handleInputChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) {
-    const { name, value, type } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'number' ? parseFloat(value) || 0 : value,
-    }))
-  }
-
-  function handleSkillLevelToggle(level: string) {
-    setFormData((prev) => ({
-      ...prev,
-      skill_levels: prev.skill_levels.includes(level)
-        ? prev.skill_levels.filter((l) => l !== level)
-        : [...prev.skill_levels, level],
-    }))
-  }
-
-  function handleAgeGroupChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value
-    setAgeGroupInput(value)
-    const groups = value
-      .split(',')
-      .map((g) => g.trim())
-      .filter(Boolean)
-    setFormData((prev) => ({ ...prev, age_groups: groups }))
-  }
-
-  function applyPreset(preset: QuickPreset) {
-    setFormData((prev) => ({
-      ...prev,
-      ...preset.data,
-    }))
-    setAgeGroupInput(preset.ageGroupInput)
+  function selectPreset(preset: QuickPreset) {
+    setSelectedPreset(preset)
+    setTitle('')
+    setDescription('')
+    setPrice(preset.price)
+    setMemberPrice(preset.memberPrice)
+    setMaxParticipants(preset.maxParticipants)
+    setDuration(preset.defaultDuration)
     setError(null)
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
+    if (!selectedPreset || !date) return
+
     setIsLoading(true)
     setError(null)
+
+    const time24 = timeTo24(time)
+    const startDate = `${date}T${time24}`
+    const startH = parseInt(time24.split(':')[0])
+    const startM = parseInt(time24.split(':')[1])
+    const totalMinutes = startH * 60 + startM + duration * 60
+    const endH = Math.floor(totalMinutes / 60)
+    const endM = totalMinutes % 60
+    const endDate = `${date}T${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`
+
+    const payload: EventFormData = {
+      title: title || selectedPreset.label,
+      description: description || selectedPreset.description,
+      event_type: selectedPreset.type,
+      start_date: startDate,
+      end_date: endDate,
+      location,
+      address: '',
+      max_participants: maxParticipants,
+      price,
+      member_price: memberPrice,
+      skill_levels: selectedPreset.skillLevels,
+      age_groups: selectedPreset.ageGroups,
+    }
 
     try {
       const url = '/api/admin/events'
       const method = isEditMode ? 'PUT' : 'POST'
-      const payload = isEditMode ? { id: event!.id, ...formData } : formData
+      const body = isEditMode ? { id: event!.id, ...payload } : payload
 
-      const response = await fetch(url, {
+      const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(body),
       })
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}))
-        throw new Error(data.error || 'Failed to ' + (isEditMode ? 'update' : 'create') + ' event')
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Failed to save')
       }
 
       onClose()
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
+      setError(err instanceof Error ? err.message : 'Something went wrong')
     } finally {
       setIsLoading(false)
     }
@@ -252,16 +271,17 @@ export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
 
   if (!isOpen) return null
 
+  const canSubmit = selectedPreset && date && !isLoading
+
   return (
     <div style={{
       position: 'fixed',
       inset: 0,
       zIndex: 50,
-      overflowY: 'auto',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '16px'
+      padding: '16px',
     }}>
       {/* Backdrop */}
       <div
@@ -269,7 +289,7 @@ export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
           position: 'fixed',
           inset: 0,
           background: 'rgba(0, 0, 0, 0.5)',
-          backdropFilter: 'blur(4px)'
+          backdropFilter: 'blur(4px)',
         }}
         onClick={onClose}
       />
@@ -278,337 +298,443 @@ export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
       <div style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '640px',
-        background: 'var(--background)',
+        maxWidth: '480px',
+        background: '#ffffff',
         borderRadius: '20px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        overflow: 'hidden',
       }}>
         {/* Header */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '24px',
-          borderBottom: '1px solid var(--border)'
+          padding: '20px 24px',
+          borderBottom: '1px solid #E5E7EB',
         }}>
           <h2 style={{
-            fontSize: '1.25rem',
+            fontSize: '1.125rem',
             fontWeight: 600,
-            color: 'var(--foreground)',
-            margin: 0
+            color: '#1A1A1A',
+            margin: 0,
           }}>
-            {isEditMode ? 'Edit Event' : 'Create New Event'}
+            {isEditMode ? 'Edit Session' : 'New Session'}
           </h2>
           <button
             onClick={onClose}
             style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '10px',
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
               border: 'none',
-              background: 'var(--background-secondary)',
+              background: '#F3F4F6',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--foreground-muted)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} style={{
-          padding: '24px',
-          maxHeight: '70vh',
-          overflowY: 'auto'
-        }}>
+        <form onSubmit={handleSubmit} style={{ padding: '24px' }}>
           {error && (
             <div style={{
-              padding: '14px 16px',
+              padding: '12px 16px',
               background: '#FEF2F2',
               border: '1px solid #FEE2E2',
-              borderRadius: '12px',
+              borderRadius: '10px',
               color: '#DC2626',
-              fontSize: '0.875rem',
-              marginBottom: '20px'
+              fontSize: '0.8125rem',
+              marginBottom: '20px',
             }}>
               {error}
             </div>
           )}
 
-          {/* Quick Presets - only show when creating new */}
-          {!isEditMode && (
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ ...labelStyle, marginBottom: '10px' }}>Quick Start</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {QUICK_PRESETS.map((preset) => (
+          {/* Step 1: Type */}
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '0.6875rem',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: '#9CA3AF',
+              marginBottom: '10px',
+            }}>
+              What type?
+            </label>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+              {PRESETS.map((preset) => {
+                const selected = selectedPreset?.type === preset.type
+                return (
                   <button
-                    key={preset.label}
+                    key={preset.type}
                     type="button"
-                    onClick={() => applyPreset(preset)}
+                    onClick={() => selectPreset(preset)}
                     style={{
-                      padding: '10px 18px',
-                      borderRadius: '10px',
-                      fontSize: '0.8125rem',
-                      fontWeight: 500,
-                      border: '1px solid var(--border)',
-                      background: 'var(--background-secondary)',
-                      color: 'var(--foreground)',
+                      padding: '12px 8px',
+                      borderRadius: '12px',
+                      border: selected ? `2px solid ${preset.color}` : '2px solid #E5E7EB',
+                      background: selected ? `${preset.color}0A` : '#ffffff',
                       cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
+                      textAlign: 'center',
+                      transition: 'all 0.15s',
                     }}
                   >
-                    <span>{preset.emoji}</span>
-                    {preset.label}
+                    <div style={{ fontSize: '1.25rem', marginBottom: '4px' }}>{preset.emoji}</div>
+                    <div style={{
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: selected ? preset.color : '#374151',
+                    }}>
+                      {preset.label}
+                    </div>
+                    <div style={{ fontSize: '0.6875rem', color: '#9CA3AF', marginTop: '2px' }}>
+                      ${preset.price}
+                    </div>
                   </button>
-                ))}
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Step 2: Date */}
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '0.6875rem',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: '#9CA3AF',
+              marginBottom: '10px',
+            }}>
+              When?
+            </label>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div>
+                <label style={{
+                  display: 'block',
+                  fontSize: '0.75rem',
+                  fontWeight: 500,
+                  color: '#6B7280',
+                  marginBottom: '6px',
+                }}>
+                  Date
+                </label>
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '11px 14px',
+                    fontSize: '0.875rem',
+                    borderRadius: '10px',
+                    border: '1px solid #E5E7EB',
+                    background: '#F9FAFB',
+                    color: '#1A1A1A',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    boxSizing: 'border-box',
+                  }}
+                />
               </div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)', marginTop: '8px' }}>
-                Pick a preset to pre-fill the form, then just set the date and adjust as needed.
-              </p>
+              <div>
+                <label style={{
+                  display: 'block',
+                  fontSize: '0.75rem',
+                  fontWeight: 500,
+                  color: '#6B7280',
+                  marginBottom: '6px',
+                }}>
+                  Start Time
+                </label>
+                <select
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '11px 14px',
+                    fontSize: '0.875rem',
+                    borderRadius: '10px',
+                    border: '1px solid #E5E7EB',
+                    background: '#F9FAFB',
+                    color: '#1A1A1A',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    boxSizing: 'border-box',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {TIME_OPTIONS.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Summary line */}
+          {selectedPreset && date && (
+            <div style={{
+              padding: '14px 16px',
+              background: '#F0FDF4',
+              borderRadius: '10px',
+              marginBottom: '20px',
+              fontSize: '0.8125rem',
+              color: '#065F46',
+              lineHeight: 1.5,
+            }}>
+              <strong>{title || selectedPreset.label}</strong> on{' '}
+              {new Date(date + 'T12:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+              {' '}at {time} &middot; {duration}hr &middot; ${price} &middot; {maxParticipants} spots
             </div>
           )}
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {/* Title */}
-            <div>
-              <label style={labelStyle}>Event Title *</label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleInputChange}
-                placeholder="e.g. Saturday Training Session"
-                required
-                style={inputStyle}
-              />
-            </div>
-
-            {/* Description */}
-            <div>
-              <label style={labelStyle}>Description *</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                placeholder="Describe the event, what players will learn, etc."
-                rows={3}
-                required
-                style={{ ...inputStyle, resize: 'vertical', minHeight: '80px' }}
-              />
-            </div>
-
-            {/* Event Type */}
-            <div>
-              <label style={labelStyle}>Event Type *</label>
-              <select
-                name="event_type"
-                value={formData.event_type}
-                onChange={handleInputChange}
-                required
-                style={inputStyle}
-              >
-                {EVENT_TYPE_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Dates */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-              <div>
-                <label style={labelStyle}>Start Date & Time *</label>
-                <input
-                  type="datetime-local"
-                  name="start_date"
-                  value={formData.start_date}
-                  onChange={handleInputChange}
-                  required
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>End Date & Time *</label>
-                <input
-                  type="datetime-local"
-                  name="end_date"
-                  value={formData.end_date}
-                  onChange={handleInputChange}
-                  required
-                  style={inputStyle}
-                />
-              </div>
-            </div>
-
-            {/* Location */}
-            <div>
-              <label style={labelStyle}>Location *</label>
-              <input
-                type="text"
-                name="location"
-                value={formData.location}
-                onChange={handleInputChange}
-                placeholder="e.g. CLA Training Center"
-                required
-                style={inputStyle}
-              />
-            </div>
-
-            {/* Address */}
-            <div>
-              <label style={labelStyle}>Address</label>
-              <input
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                placeholder="e.g. 123 Lacrosse Way, Cincinnati, OH"
-                style={inputStyle}
-              />
-            </div>
-
-            {/* Capacity & Pricing */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
-              <div>
-                <label style={labelStyle}>Max Participants *</label>
-                <input
-                  type="number"
-                  name="max_participants"
-                  min={1}
-                  value={formData.max_participants}
-                  onChange={handleInputChange}
-                  required
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Price ($) *</label>
-                <input
-                  type="number"
-                  name="price"
-                  min={0}
-                  step={0.01}
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  required
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>Member Price ($)</label>
-                <input
-                  type="number"
-                  name="member_price"
-                  min={0}
-                  step={0.01}
-                  value={formData.member_price}
-                  onChange={handleInputChange}
-                  style={inputStyle}
-                />
-              </div>
-            </div>
-
-            {/* Skill Levels */}
-            <div>
-              <label style={labelStyle}>Skill Levels</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {SKILL_LEVEL_OPTIONS.map((level) => {
-                  const isSelected = formData.skill_levels.includes(level)
-                  return (
-                    <button
-                      key={level}
-                      type="button"
-                      onClick={() => handleSkillLevelToggle(level)}
-                      style={{
-                        padding: '8px 16px',
-                        borderRadius: '9999px',
-                        fontSize: '0.8125rem',
-                        fontWeight: 500,
-                        border: isSelected ? 'none' : '1px solid var(--border)',
-                        background: isSelected ? 'var(--accent)' : 'transparent',
-                        color: isSelected ? 'white' : 'var(--foreground)',
-                        cursor: 'pointer',
-                        textTransform: 'capitalize',
-                        transition: 'all 0.2s ease'
-                      }}
-                    >
-                      {level}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Age Groups */}
-            <div>
-              <label style={labelStyle}>Age Groups</label>
-              <input
-                type="text"
-                name="age_groups"
-                value={ageGroupInput}
-                onChange={handleAgeGroupChange}
-                placeholder="e.g. 8-11, 12-14, 15-18"
-                style={inputStyle}
-              />
-              <p style={{ fontSize: '0.75rem', color: 'var(--foreground-muted)', marginTop: '6px' }}>
-                Separate multiple age groups with commas
-              </p>
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            gap: '12px',
-            marginTop: '28px',
-            paddingTop: '20px',
-            borderTop: '1px solid var(--border)'
-          }}>
-            <button
-              type="button"
-              onClick={onClose}
+          {/* Advanced toggle */}
+          <button
+            type="button"
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '0',
+              border: 'none',
+              background: 'none',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              color: '#9CA3AF',
+              cursor: 'pointer',
+              marginBottom: showAdvanced ? '16px' : '24px',
+            }}
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               style={{
-                padding: '12px 24px',
-                fontSize: '0.9375rem',
-                fontWeight: 500,
-                borderRadius: '9999px',
-                border: '1px solid var(--border)',
-                background: 'transparent',
-                color: 'var(--foreground)',
-                cursor: 'pointer'
+                transform: showAdvanced ? 'rotate(90deg)' : 'rotate(0deg)',
+                transition: 'transform 0.15s',
               }}
             >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isLoading}
-              style={{
-                padding: '12px 24px',
-                fontSize: '0.9375rem',
-                fontWeight: 500,
-                borderRadius: '9999px',
-                border: 'none',
-                background: 'var(--foreground)',
-                color: 'var(--background)',
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                opacity: isLoading ? 0.6 : 1
-              }}
-            >
-              {isLoading ? 'Saving...' : isEditMode ? 'Update Event' : 'Create Event'}
-            </button>
-          </div>
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+            Customize details
+          </button>
+
+          {/* Advanced fields */}
+          {showAdvanced && (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '14px',
+              marginBottom: '24px',
+              padding: '16px',
+              background: '#F9FAFB',
+              borderRadius: '12px',
+              border: '1px solid #E5E7EB',
+            }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#6B7280', marginBottom: '6px' }}>
+                  Title
+                </label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder={selectedPreset?.label || 'Session title'}
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    fontSize: '0.875rem',
+                    borderRadius: '10px',
+                    border: '1px solid #E5E7EB',
+                    background: '#ffffff',
+                    color: '#1A1A1A',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#6B7280', marginBottom: '6px' }}>
+                  Description
+                </label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder={selectedPreset?.description || 'Describe the session...'}
+                  rows={2}
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    fontSize: '0.875rem',
+                    borderRadius: '10px',
+                    border: '1px solid #E5E7EB',
+                    background: '#ffffff',
+                    color: '#1A1A1A',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    boxSizing: 'border-box',
+                    resize: 'vertical',
+                  }}
+                />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#6B7280', marginBottom: '6px' }}>
+                    Price ($)
+                  </label>
+                  <input
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(parseFloat(e.target.value) || 0)}
+                    min={0}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      fontSize: '0.875rem',
+                      borderRadius: '10px',
+                      border: '1px solid #E5E7EB',
+                      background: '#ffffff',
+                      color: '#1A1A1A',
+                      outline: 'none',
+                      fontFamily: 'inherit',
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#6B7280', marginBottom: '6px' }}>
+                    Spots
+                  </label>
+                  <input
+                    type="number"
+                    value={maxParticipants}
+                    onChange={(e) => setMaxParticipants(parseInt(e.target.value) || 1)}
+                    min={1}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      fontSize: '0.875rem',
+                      borderRadius: '10px',
+                      border: '1px solid #E5E7EB',
+                      background: '#ffffff',
+                      color: '#1A1A1A',
+                      outline: 'none',
+                      fontFamily: 'inherit',
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#6B7280', marginBottom: '6px' }}>
+                    Hours
+                  </label>
+                  <input
+                    type="number"
+                    value={duration}
+                    onChange={(e) => setDuration(parseFloat(e.target.value) || 1)}
+                    min={0.5}
+                    step={0.5}
+                    style={{
+                      width: '100%',
+                      padding: '10px 14px',
+                      fontSize: '0.875rem',
+                      borderRadius: '10px',
+                      border: '1px solid #E5E7EB',
+                      background: '#ffffff',
+                      color: '#1A1A1A',
+                      outline: 'none',
+                      fontFamily: 'inherit',
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#6B7280', marginBottom: '6px' }}>
+                  Location
+                </label>
+                <input
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    fontSize: '0.875rem',
+                    borderRadius: '10px',
+                    border: '1px solid #E5E7EB',
+                    background: '#ffffff',
+                    color: '#1A1A1A',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, color: '#6B7280', marginBottom: '6px' }}>
+                  Member Price ($)
+                </label>
+                <input
+                  type="number"
+                  value={memberPrice}
+                  onChange={(e) => setMemberPrice(parseFloat(e.target.value) || 0)}
+                  min={0}
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    fontSize: '0.875rem',
+                    borderRadius: '10px',
+                    border: '1px solid #E5E7EB',
+                    background: '#ffffff',
+                    color: '#1A1A1A',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={!canSubmit}
+            style={{
+              width: '100%',
+              padding: '14px',
+              fontSize: '0.9375rem',
+              fontWeight: 600,
+              borderRadius: '12px',
+              border: 'none',
+              background: canSubmit ? '#1A1A1A' : '#E5E7EB',
+              color: canSubmit ? '#ffffff' : '#9CA3AF',
+              cursor: canSubmit ? 'pointer' : 'not-allowed',
+              transition: 'all 0.15s',
+              fontFamily: 'inherit',
+            }}
+          >
+            {isLoading ? 'Saving...' : isEditMode ? 'Update Session' : 'Create Session'}
+          </button>
         </form>
       </div>
     </div>

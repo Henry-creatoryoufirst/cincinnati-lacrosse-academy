@@ -1,9 +1,9 @@
 'use client'
 
-import Link from 'next/link'
 import Image from 'next/image'
-import { useState, useEffect, useCallback } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { useState, useEffect, useCallback, FormEvent } from 'react'
+import { motion } from 'framer-motion'
+import WeeklyCalendarBar from '@/components/home/WeeklyCalendarBar'
 
 /**
  * Community photos split into two distinct sets for the marquee rows.
@@ -116,52 +116,96 @@ function TestimonialsSection() {
 
   return (
     <section
-      className="bg-[#111827] py-20 relative overflow-hidden"
+      style={{
+        background: '#111827',
+        padding: '80px 0',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Noise texture overlay */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.03,
+          pointerEvents: 'none',
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }}
       />
 
-      <div className="container relative z-[1]">
+      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         {/* Section label */}
-        <div className="text-center mb-8">
-          <span className="text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-primary">Testimonials</span>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <span
+            style={{
+              fontSize: '0.6875rem',
+              fontWeight: 600,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#60A5FA',
+            }}
+          >
+            Testimonials
+          </span>
         </div>
 
         {/* Testimonial carousel */}
-        <div className="relative max-w-[900px] mx-auto min-h-[280px]">
+        <div style={{ position: 'relative', maxWidth: '900px', margin: '0 auto', minHeight: '280px' }}>
           {TESTIMONIALS.map((testimonial, index) => (
             <div
               key={index}
-              className="text-center transition-[opacity,transform] duration-[600ms] ease-in-out"
               style={{
+                textAlign: 'center',
+                transition: 'opacity 600ms ease-in-out, transform 600ms ease-in-out',
                 position: index === activeIndex ? 'relative' : 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
                 opacity: index === activeIndex ? 1 : 0,
                 transform: index === activeIndex ? 'translateY(0)' : 'translateY(20px)',
-                pointerEvents: index === activeIndex ? 'auto' : 'none'
+                pointerEvents: index === activeIndex ? 'auto' : 'none',
               }}
             >
               {/* Large quotation mark */}
-              <div className="text-[6rem] leading-none text-[rgba(37,99,235,0.15)] font-[Georgia,serif] -mb-8 select-none">
+              <div
+                style={{
+                  fontSize: '6rem',
+                  lineHeight: 1,
+                  color: 'rgba(37,99,235,0.15)',
+                  fontFamily: 'Georgia, serif',
+                  marginBottom: '-32px',
+                  userSelect: 'none',
+                }}
+              >
                 &ldquo;
               </div>
 
               {/* Quote */}
-              <blockquote className="text-[clamp(1.25rem,2.5vw,1.5rem)] font-normal text-white leading-[1.6] tracking-[-0.01em] mb-6 not-italic">
+              <blockquote
+                style={{
+                  fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+                  fontWeight: 400,
+                  color: '#ffffff',
+                  lineHeight: 1.6,
+                  letterSpacing: '-0.01em',
+                  marginBottom: '24px',
+                  fontStyle: 'normal',
+                }}
+              >
                 {testimonial.quote}
               </blockquote>
 
               {/* Attribution */}
-              <p className="text-base font-medium text-white/60">
+              <p
+                style={{
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  color: 'rgba(255,255,255,0.6)',
+                }}
+              >
                 — {testimonial.attribution}
               </p>
             </div>
@@ -169,16 +213,21 @@ function TestimonialsSection() {
         </div>
 
         {/* Navigation dots */}
-        <div className="flex justify-center gap-3 mt-7">
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '28px' }}>
           {TESTIMONIALS.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               aria-label={`Go to testimonial ${index + 1}`}
-              className="h-2 rounded-full border-none cursor-pointer transition-all duration-[400ms] ease-in-out p-0"
               style={{
+                height: '8px',
+                borderRadius: '9999px',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                transition: 'all 400ms ease-in-out',
                 width: index === activeIndex ? '32px' : '8px',
-                background: index === activeIndex ? '#2563EB' : 'rgba(255, 255, 255, 0.3)'
+                background: index === activeIndex ? '#2563EB' : 'rgba(255, 255, 255, 0.3)',
               }}
             />
           ))}
@@ -189,10 +238,70 @@ function TestimonialsSection() {
 }
 
 export default function HomePage() {
+  const [heroForm, setHeroForm] = useState({ email: '', phone: '' })
+  const [heroStatus, setHeroStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [heroMessage, setHeroMessage] = useState('')
+
+  function formatPhoneInput(value: string): string {
+    const digits = value.replace(/\D/g, '').slice(0, 10)
+    if (digits.length === 0) return ''
+    if (digits.length <= 3) return `(${digits}`
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`
+  }
+
+  async function handleHeroSubmit(e: FormEvent) {
+    e.preventDefault()
+    setHeroStatus('loading')
+    setHeroMessage('')
+    try {
+      const res = await fetch('/api/subscribers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: heroForm.email,
+          phone: heroForm.phone ? heroForm.phone.replace(/\D/g, '') : undefined,
+          source: 'hero_cta',
+        }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Something went wrong.')
+      }
+      setHeroStatus('success')
+      setHeroForm({ email: '', phone: '' })
+    } catch (err: unknown) {
+      setHeroStatus('error')
+      setHeroMessage(err instanceof Error ? err.message : 'Something went wrong.')
+    }
+  }
+
+  const heroInputStyle: React.CSSProperties = {
+    padding: '12px 16px',
+    borderRadius: '10px',
+    background: 'rgba(255,255,255,0.1)',
+    border: '1px solid rgba(255,255,255,0.15)',
+    color: 'white',
+    fontSize: '0.875rem',
+    outline: 'none',
+    fontFamily: 'inherit',
+    boxSizing: 'border-box',
+    width: '100%',
+    backdropFilter: 'blur(8px)',
+  }
+
   return (
     <main>
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Hero Section — tightened: 85vh instead of min-h-screen */}
+      <section
+        style={{
+          position: 'relative',
+          minHeight: '85vh',
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden',
+        }}
+      >
         {/* Background Photo */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -216,13 +325,21 @@ export default function HomePage() {
 
         {/* Hero Content */}
         <div className="container relative z-[1]">
-          <div className="max-w-[640px] pt-[120px] pb-20">
+          <div style={{ maxWidth: '640px', paddingTop: '100px', paddingBottom: '60px' }}>
             {/* Credential Badge - understated, earned */}
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-block text-white/70 text-xs font-medium tracking-[0.15em] uppercase mb-7"
+              style={{
+                display: 'inline-block',
+                color: 'rgba(255,255,255,0.7)',
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                marginBottom: '28px',
+              }}
             >
               50+ College Commits
             </motion.span>
@@ -232,10 +349,14 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(2.75rem,6vw,4rem)] font-bold tracking-[-0.025em] leading-[1.1] mb-6"
               style={{
+                fontSize: 'clamp(2.75rem, 6vw, 4rem)',
+                fontWeight: 700,
+                letterSpacing: '-0.025em',
+                lineHeight: 1.1,
+                marginBottom: '24px',
                 color: '#ffffff',
-                textShadow: '0 4px 30px rgba(0,0,0,0.3)'
+                textShadow: '0 4px 30px rgba(0,0,0,0.3)',
               }}
             >
               Where Leaders<br />Are Formed
@@ -246,64 +367,141 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(1rem,2vw,1.125rem)] font-normal leading-[1.7] mb-10 max-w-[540px]"
-              style={{ color: 'rgba(255,255,255,0.85)' }}
+              style={{
+                fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+                fontWeight: 400,
+                lineHeight: 1.7,
+                marginBottom: '32px',
+                maxWidth: '540px',
+                color: 'rgba(255,255,255,0.85)',
+              }}
             >
               World-class coaching. Relentless standards. But more importantly, young people who become confident, disciplined, and capable of carrying responsibility in sport and in life.
             </motion.p>
 
-            {/* Single CTA */}
+            {/* Inline Contact Collection Form */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col items-start gap-5"
+              style={{ maxWidth: '480px' }}
             >
-              <Link
-                href="/get-started"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '14px 36px',
-                  background: '#ffffff',
-                  color: '#0a0a0a',
-                  fontSize: '0.9375rem',
-                  fontWeight: 600,
-                  borderRadius: '9999px',
-                  textDecoration: 'none',
-                  letterSpacing: '-0.01em',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-                  transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
-                }}
-              >
-                Get Started
-              </Link>
-              <a
-                href="#programs"
-                className="text-white/60 text-sm font-medium no-underline transition-all duration-200 inline-flex items-center gap-1.5 hover:text-white/90"
-              >
-                View Programs <span className="transition-transform duration-300">→</span>
-              </a>
+              {heroStatus === 'success' ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  <span style={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.9375rem', fontWeight: 500 }}>
+                    You&apos;re in. We&apos;ll keep you posted.
+                  </span>
+                </div>
+              ) : (
+                <form onSubmit={handleHeroSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <input
+                      type="email"
+                      required
+                      placeholder="Email address"
+                      value={heroForm.email}
+                      onChange={(e) => setHeroForm(prev => ({ ...prev, email: e.target.value }))}
+                      style={{ ...heroInputStyle, flex: 1 }}
+                    />
+                    <input
+                      type="tel"
+                      inputMode="numeric"
+                      placeholder="Phone (optional)"
+                      value={heroForm.phone}
+                      onChange={(e) => setHeroForm(prev => ({ ...prev, phone: formatPhoneInput(e.target.value) }))}
+                      style={{ ...heroInputStyle, flex: 1 }}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <button
+                      type="submit"
+                      disabled={heroStatus === 'loading'}
+                      style={{
+                        padding: '12px 28px',
+                        borderRadius: '9999px',
+                        background: '#ffffff',
+                        color: '#0a0a0a',
+                        fontSize: '0.875rem',
+                        fontWeight: 600,
+                        letterSpacing: '-0.01em',
+                        border: 'none',
+                        cursor: heroStatus === 'loading' ? 'not-allowed' : 'pointer',
+                        opacity: heroStatus === 'loading' ? 0.6 : 1,
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+                        transition: 'all 0.2s',
+                        fontFamily: 'inherit',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {heroStatus === 'loading' ? 'Joining...' : 'Get Started'}
+                    </button>
+                    <a
+                      href="#schedule"
+                      style={{
+                        color: 'rgba(255,255,255,0.5)',
+                        fontSize: '0.8125rem',
+                        fontWeight: 500,
+                        textDecoration: 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      View Schedule <span>&rarr;</span>
+                    </a>
+                  </div>
+                  {heroStatus === 'error' && (
+                    <p style={{ color: '#f87171', fontSize: '0.8125rem', marginTop: '2px' }}>{heroMessage}</p>
+                  )}
+                  <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.6875rem', marginTop: '2px' }}>
+                    Get notified about sessions and events. No spam.
+                  </p>
+                </form>
+              )}
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Community Photo Grid */}
-      <section className="section pb-12">
+      {/* Community Photo Grid — tightened: reduced top padding */}
+      <section style={{ padding: '48px 0 12px' }}>
         <div className="container">
-          <div className="section-header">
-            <span className="eyebrow">Our Community</span>
-            <h2>More Than Training.<br />Join the Family.</h2>
-            <p>
+          <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 40px' }}>
+            <span
+              style={{
+                display: 'block',
+                fontSize: '0.6875rem',
+                fontWeight: 600,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'var(--accent)',
+                marginBottom: '16px',
+              }}
+            >
+              Our Community
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                fontWeight: 600,
+                letterSpacing: '-0.03em',
+                marginBottom: '16px',
+              }}
+            >
+              More Than Training.<br />Join the Family.
+            </h2>
+            <p style={{ fontSize: '1.125rem', color: 'var(--foreground-secondary)', lineHeight: 1.7 }}>
               The Cincinnati Lacrosse Academy isn&apos;t just a place to train. It&apos;s a culture.
               A community of athletes who show up daily, hold the line together, and raise the standard.
             </p>
           </div>
 
           {/* Photo Marquee - Two rows scrolling in opposite directions */}
-          <div className="marquee mt-12">
+          <div className="marquee" style={{ marginTop: '32px' }}>
             {/* Row 1: Scrolls left */}
             <div className="marquee-row">
               <div className="marquee-track">
@@ -342,143 +540,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Training Programs - Editorial Progression Layout */}
-      <section id="programs" className="py-12 scroll-mt-20">
-        <div className="container">
-          {/* Section Header */}
-          <div className="section-header">
-            <span className="eyebrow">Programs</span>
-            <h2>Training That Translates</h2>
-            <p>
-              From youth development to college prep, every program is built on the same standard.
-              Intentional training that carries over to competition.
-            </p>
-          </div>
-
-          {/* Program Progression */}
-          <div className="mt-8">
-
-            {/* 01 - Development: Weekend Training & Memberships */}
-            <div className="program-item">
-              <div className="program-row">
-                <div className="program-image">
-                  <Image
-                    src="/images/community/dsc05410.jpg"
-                    alt="Weekend training session"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-                <motion.div
-                  className="program-content"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-                >
-                  <motion.div
-                    className="flex items-baseline gap-4 mb-3"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                  >
-                    <span className="program-number">01</span>
-                    <span className="program-label">Development</span>
-                  </motion.div>
-                  <h3 className="program-title">Weekend Training & Memberships</h3>
-                  <p className="program-description">
-                    Our weekend training sessions and summer membership programs. Consistent
-                    development for players committed to improving their game.
-                  </p>
-                  <Link href="/get-started" className="program-link">View Schedule →</Link>
-                </motion.div>
-              </div>
-            </div>
-
-            {/* 02 - Strength Training */}
-            <div className="program-item">
-              <div className="program-row program-row--reverse">
-                <div className="program-image">
-                  <Image
-                    src="/images/homepage-brett.jpg"
-                    alt="Strength training with Brett"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover object-top"
-                  />
-                </div>
-                <motion.div
-                  className="program-content"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-                >
-                  <motion.div
-                    className="flex items-baseline gap-4 mb-3"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                  >
-                    <span className="program-number">02</span>
-                    <span className="program-label">Strength</span>
-                  </motion.div>
-                  <h3 className="program-title">Strength Training</h3>
-                  <p className="program-description">
-                    Programming designed to build complete athletes—strong, explosive,
-                    and dynamic. Train like the best to compete with the best.
-                  </p>
-                  <Link href="/get-started" className="program-link">Train with Valiant →</Link>
-                </motion.div>
-              </div>
-            </div>
-
-            {/* 03 - Remote Assistance */}
-            <div className="program-item">
-              <div className="program-row">
-                <div className="program-image">
-                  <Image
-                    src="/images/remote-training-card.jpg"
-                    alt="Remote training assistance"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-                <motion.div
-                  className="program-content"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-                >
-                  <motion.div
-                    className="flex items-baseline gap-4 mb-3"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                  >
-                    <span className="program-number">03</span>
-                    <span className="program-label">Remote</span>
-                  </motion.div>
-                  <h3 className="program-title">Remote Assistance</h3>
-                  <p className="program-description">
-                    Helping players across the country develop—especially those without access
-                    to knowledgeable programs. Film analysis, training advice, and guidance
-                    to elevate your game from anywhere.
-                  </p>
-                  <Link href="/get-started" className="program-link">Get Started →</Link>
-                </motion.div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
+      {/* Weekly Training Schedule Calendar */}
+      <div id="schedule" style={{ scrollMarginTop: '80px' }}>
+        <WeeklyCalendarBar />
+      </div>
 
       {/* Testimonials - Cinematic */}
       <div id="testimonials" className="scroll-mt-20">
@@ -486,34 +551,94 @@ export default function HomePage() {
       </div>
 
       {/* Beyond the Academy - Immersive Dark Section */}
-      <section id="beyond" className="bg-[#0a0a0b] pt-[100px] pb-[120px] relative overflow-hidden scroll-mt-20">
+      <section
+        id="beyond"
+        style={{
+          background: '#0a0a0b',
+          padding: '100px 0 120px',
+          position: 'relative',
+          overflow: 'hidden',
+          scrollMarginTop: '80px',
+        }}
+      >
         {/* Subtle noise texture overlay */}
         <div
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+            position: 'absolute',
+            inset: 0,
+            opacity: 0.03,
+            pointerEvents: 'none',
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }}
         />
 
-        <div className="container relative z-[1]">
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           {/* Section Header */}
           <motion.div
-            className="text-center mb-16"
+            style={{ textAlign: 'center', marginBottom: '64px' }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="text-[0.6875rem] font-medium tracking-[0.2em] uppercase text-white/40 mb-4 block">Other Schertzinger Missions</span>
-            <h2 className="text-[clamp(2rem,4vw,2.75rem)] font-semibold text-white tracking-[-0.02em]">Beyond the Academy</h2>
+            <span
+              style={{
+                display: 'block',
+                fontSize: '0.6875rem',
+                fontWeight: 500,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'rgba(255,255,255,0.4)',
+                marginBottom: '16px',
+              }}
+            >
+              Other Schertzinger Missions
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 2.75rem)',
+                fontWeight: 600,
+                color: '#ffffff',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Beyond the Academy
+            </h2>
           </motion.div>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(1, 1fr)',
+              gap: '32px',
+            }}
+            className="beyond-grid"
+          >
             {/* YouTube Card */}
-            <div className="beyond-card bg-[#141416] rounded-[20px] overflow-hidden flex flex-col min-h-[420px] cursor-pointer transition-[transform,box-shadow] duration-300 ease-in-out">
-              {/* Image - extends 70-75% of card */}
-              <div className="relative h-[310px] overflow-hidden">
+            <motion.a
+              href="https://youtube.com/@theschertzingertwins?si=xNoJs0yxNOsK_snw"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.6, delay: 0, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                background: '#141416',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '420px',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                transition: 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
+              whileHover={{ y: -6 }}
+            >
+              {/* Image */}
+              <div style={{ position: 'relative', height: '310px', overflow: 'hidden' }}>
                 <Image
                   src="/images/youtube-banner.jpg"
                   alt="Cincinnati Lacrosse YouTube"
@@ -521,79 +646,223 @@ export default function HomePage() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover object-top"
                 />
-                {/* Gradient fade - gradual cinematic blend */}
                 <div
-                  className="absolute inset-0 pointer-events-none"
                   style={{
-                    background: 'linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(20,20,22,0.4) 65%, rgba(20,20,22,0.8) 80%, #141416 100%)'
+                    position: 'absolute',
+                    inset: 0,
+                    pointerEvents: 'none',
+                    background: 'linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(20,20,22,0.4) 65%, rgba(20,20,22,0.8) 80%, #141416 100%)',
                   }}
                 />
               </div>
 
-              {/* Content - anchored to bottom */}
-              <div className="p-6 flex-1 flex flex-col justify-end">
-                <span className="text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-white/40 mb-3">YouTube</span>
-                <h3 className="text-[1.375rem] font-semibold text-white mb-2.5 tracking-[-0.01em]">Follow the Story</h3>
-                <p className="text-white/50 leading-[1.6] text-[0.9375rem] mb-5">
+              {/* Content */}
+              <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                <span
+                  style={{
+                    fontSize: '0.6875rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(255,255,255,0.4)',
+                    marginBottom: '12px',
+                    display: 'block',
+                  }}
+                >
+                  YouTube
+                </span>
+                <h3
+                  style={{
+                    fontSize: '1.375rem',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    marginBottom: '10px',
+                    letterSpacing: '-0.01em',
+                  }}
+                >
+                  Follow the Story
+                </h3>
+                <p
+                  style={{
+                    color: 'rgba(255,255,255,0.5)',
+                    lineHeight: 1.6,
+                    fontSize: '0.9375rem',
+                    marginBottom: '20px',
+                  }}
+                >
                   Behind the scenes, training content, and the journey of building something special.
                 </p>
-                <a
-                  href="https://youtube.com/@theschertzingertwins?si=xNoJs0yxNOsK_snw"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-blue-400 no-underline inline-flex items-center gap-1.5"
+                <span
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    color: '#60A5FA',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
                 >
-                  Watch Now <span className="transition-transform duration-200">→</span>
-                </a>
+                  Watch Now <span>→</span>
+                </span>
               </div>
-            </div>
+            </motion.a>
 
-            {/* You.Prjct Card - Featured/Larger */}
-            <div
-              className="beyond-card bg-black rounded-[20px] overflow-hidden flex flex-col min-h-[420px] relative cursor-pointer shadow-[0_0_100px_15px_rgba(59,130,246,0.2),0_0_60px_8px_rgba(139,92,246,0.15),0_0_160px_30px_rgba(59,130,246,0.1)]"
+            {/* You.Prjct Card */}
+            <motion.a
+              href="https://youprjct.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                background: '#000000',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '420px',
+                position: 'relative',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                boxShadow: '0 0 100px 15px rgba(59,130,246,0.2), 0 0 60px 8px rgba(139,92,246,0.15), 0 0 160px 30px rgba(59,130,246,0.1)',
+                transition: 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
+              whileHover={{ y: -6 }}
             >
-              {/* Prominent glow effect with subtle pulse */}
+              {/* Glow effect */}
               <div
-                className="glow-pulse absolute top-[15%] left-1/2 -translate-x-1/2 w-[320px] h-[320px] blur-[60px] pointer-events-none"
+                className="glow-pulse"
                 style={{
-                  background: 'radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(139, 92, 246, 0.2) 40%, transparent 70%)'
+                  position: 'absolute',
+                  top: '15%',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '320px',
+                  height: '320px',
+                  filter: 'blur(60px)',
+                  pointerEvents: 'none',
+                  background: 'radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(139, 92, 246, 0.2) 40%, transparent 70%)',
                 }}
               />
 
               {/* Phone mockup */}
-              <div className="relative h-[260px] flex justify-center items-start pt-6" style={{ maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)' }}>
+              <div
+                style={{
+                  position: 'relative',
+                  height: '260px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  paddingTop: '24px',
+                  maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
+                }}
+              >
                 <Image
                   src="/images/youprjct-phone.png"
                   alt="You.Prjct app"
                   width={200}
                   height={400}
-                  className="h-full w-auto object-contain"
+                  style={{ height: '100%', width: 'auto', objectFit: 'contain' }}
                 />
               </div>
 
-              {/* Content - anchored to bottom */}
-              <div className="px-7 pb-7 pt-6 flex-1 flex flex-col justify-end relative z-[1]">
-                <span className="text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-blue-400 mb-3">App</span>
-                <h3 className="text-[1.375rem] font-semibold text-white mb-1.5 tracking-[-0.01em]">You.Prjct</h3>
-                <p className="text-white/70 text-base mb-2">Order Your Life.</p>
-                <p className="text-white/40 leading-[1.6] text-sm mb-5">
+              {/* Content */}
+              <div
+                style={{
+                  padding: '24px 28px 28px',
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  position: 'relative',
+                  zIndex: 1,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: '0.6875rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
+                    color: '#60A5FA',
+                    marginBottom: '12px',
+                    display: 'block',
+                  }}
+                >
+                  App
+                </span>
+                <h3
+                  style={{
+                    fontSize: '1.375rem',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    marginBottom: '6px',
+                    letterSpacing: '-0.01em',
+                  }}
+                >
+                  You.Prjct
+                </h3>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1rem', marginBottom: '8px' }}>
+                  Order Your Life.
+                </p>
+                <p style={{ color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, fontSize: '0.875rem', marginBottom: '20px' }}>
                   Build discipline, track progress, become who you&apos;re meant to be.
                 </p>
-                <a
-                  href="https://youprjct.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-blue-400 no-underline inline-flex items-center gap-1.5"
+                <span
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    color: '#60A5FA',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
                 >
                   Download Free <span>→</span>
-                </a>
+                </span>
               </div>
-            </div>
+            </motion.a>
 
             {/* Podcast Card */}
-            <div className="beyond-card bg-[#141416] rounded-[20px] overflow-hidden p-7 flex flex-col items-center min-h-[420px] cursor-pointer">
-              {/* Podcast cover - hero element, centered and prominent */}
-              <div className="w-[200px] h-[200px] rounded-[20px] overflow-hidden shadow-[0_24px_64px_rgba(0,0,0,0.5),0_8px_24px_rgba(0,0,0,0.3)] mt-4 relative">
+            <motion.a
+              href="https://podcasts.apple.com/us/podcast/the-infinite-game-podcast/id1657820186"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                background: '#141416',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                padding: '28px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                minHeight: '420px',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                transition: 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
+              whileHover={{ y: -6 }}
+            >
+              {/* Podcast cover */}
+              <div
+                style={{
+                  width: '200px',
+                  height: '200px',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  boxShadow: '0 24px 64px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3)',
+                  marginTop: '16px',
+                  position: 'relative',
+                  flexShrink: 0,
+                }}
+              >
                 <Image
                   src="/images/podcast-cover.png"
                   alt="The Infinite Game podcast"
@@ -603,30 +872,70 @@ export default function HomePage() {
                 />
               </div>
 
-              {/* Content - anchored to bottom, full width for left alignment */}
-              <div className="mt-auto w-full text-left">
-                <span className="text-[0.6875rem] font-semibold tracking-[0.15em] uppercase text-white/40 mb-3 block">Podcast</span>
-                <h3 className="text-[1.375rem] font-semibold text-white mb-3 tracking-[-0.01em]">The Infinite Game</h3>
-                <p className="text-white/50 leading-[1.7] text-sm italic mb-5">
+              {/* Content */}
+              <div style={{ marginTop: 'auto', width: '100%', textAlign: 'left' }}>
+                <span
+                  style={{
+                    fontSize: '0.6875rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(255,255,255,0.4)',
+                    marginBottom: '12px',
+                    display: 'block',
+                  }}
+                >
+                  Podcast
+                </span>
+                <h3
+                  style={{
+                    fontSize: '1.375rem',
+                    fontWeight: 600,
+                    color: '#ffffff',
+                    marginBottom: '12px',
+                    letterSpacing: '-0.01em',
+                  }}
+                >
+                  The Infinite Game
+                </h3>
+                <p
+                  style={{
+                    color: 'rgba(255,255,255,0.5)',
+                    lineHeight: 1.7,
+                    fontSize: '0.875rem',
+                    fontStyle: 'italic',
+                    marginBottom: '20px',
+                  }}
+                >
                   To play the infinite game is to live as both masterpiece and work in progress, never finished, always invited further.
                 </p>
-                <a
-                  href="https://podcasts.apple.com/us/podcast/the-infinite-game-podcast/id1657820186"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium text-blue-400 no-underline inline-flex items-center gap-1.5"
+                <span
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    color: '#60A5FA',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
                 >
                   Listen Now <span>→</span>
-                </a>
+                </span>
               </div>
-            </div>
+            </motion.a>
           </div>
         </div>
       </section>
 
       {/* Final photo strip */}
-      <section className="p-0 overflow-hidden">
-        <div className="grid grid-cols-6 gap-1">
+      <section style={{ padding: 0, overflow: 'hidden' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(6, 1fr)',
+            gap: '4px',
+          }}
+        >
           {[
             'dsc07755.jpg',
             'dsc01757.jpg',
@@ -635,7 +944,7 @@ export default function HomePage() {
             'dsc00046-2.jpg',
             'dsc01692-3.jpg'
           ].map((photo, index) => (
-            <div key={index} className="relative h-[200px]">
+            <div key={index} style={{ position: 'relative', height: '200px' }}>
               <Image
                 src={`/images/community/${photo}`}
                 alt="Community moment"
@@ -645,37 +954,6 @@ export default function HomePage() {
               />
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="section">
-        <div className="container text-center">
-          <h2>Start Your Journey</h2>
-          <p className="text-xl max-w-[560px] mx-auto mt-4 mb-10">
-            Join hundreds of athletes who are taking their game to the next level
-            with Cincinnati Lacrosse Academy.
-          </p>
-          <Link
-            href="/get-started"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '14px 36px',
-              background: '#1A1A1A',
-              color: '#ffffff',
-              fontSize: '0.9375rem',
-              fontWeight: 600,
-              borderRadius: '9999px',
-              textDecoration: 'none',
-              letterSpacing: '-0.01em',
-              boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
-              transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
-            }}
-          >
-            Get Started
-          </Link>
         </div>
       </section>
 

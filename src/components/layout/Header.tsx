@@ -110,7 +110,7 @@ export default function Header() {
               </Link>
             )}
             <Link
-              href="/get-started"
+              href="/#schedule"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -187,7 +187,7 @@ export default function Header() {
             </button>
           ) : (
             <Link
-              href="/#programs"
+              href="/#schedule"
               onClick={handleLinkClick}
               className="text-2xl font-medium text-white/70 no-underline px-8 py-4 transition-colors duration-200 hover:text-white"
             >
@@ -255,7 +255,7 @@ export default function Header() {
 
           {/* Get Started CTA */}
           <Link
-            href="/get-started"
+            href="/#schedule"
             onClick={handleLinkClick}
             style={{
               display: 'inline-flex',
