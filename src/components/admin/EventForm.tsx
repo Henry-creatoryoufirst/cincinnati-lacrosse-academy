@@ -221,13 +221,18 @@ export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
     setError(null)
 
     const time24 = timeTo24(time)
-    const startDate = `${date}T${time24}`
+    // Build a proper local Date object so the ISO string includes the correct timezone offset
     const startH = parseInt(time24.split(':')[0])
     const startM = parseInt(time24.split(':')[1])
+    const [year, month, day] = date.split('-').map(Number)
+    const startObj = new Date(year, month - 1, day, startH, startM)
+    const startDate = startObj.toISOString()
+
     const totalMinutes = startH * 60 + startM + duration * 60
     const endH = Math.floor(totalMinutes / 60)
     const endM = totalMinutes % 60
-    const endDate = `${date}T${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`
+    const endObj = new Date(year, month - 1, day, endH, endM)
+    const endDate = endObj.toISOString()
 
     const payload: EventFormData = {
       title: title || selectedPreset.label,
@@ -299,10 +304,11 @@ export default function EventForm({ event, isOpen, onClose }: EventFormProps) {
         position: 'relative',
         width: '100%',
         maxWidth: '480px',
+        maxHeight: 'calc(100vh - 32px)',
         background: '#ffffff',
         borderRadius: '20px',
         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        overflow: 'hidden',
+        overflowY: 'auto',
       }}>
         {/* Header */}
         <div style={{
