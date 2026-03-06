@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Event is sold out' }, { status: 409 })
     }
 
-    // Check for duplicate booking
+    // Check for duplicate booking — only block if already confirmed/attended
     const { data: existingBooking } = await supabase
       .from('bookings')
       .select('id, status')
@@ -52,24 +52,21 @@ export async function POST(request: NextRequest) {
       .eq('event_id', eventId)
       .single()
 
-    if (existingBooking && existingBooking.status !== 'cancelled') {
+    if (existingBooking && ['confirmed', 'attended'].includes(existingBooking.status)) {
       return NextResponse.json(
         { error: 'You already have a booking for this event' },
         { status: 409 }
       )
     }
 
-    // Check membership for member pricing
+    // Get profile for Stripe customer ID
     const { data: profile } = await supabase
       .from('profiles')
-      .select('membership_status, stripe_customer_id')
+      .select('stripe_customer_id')
       .eq('user_id', user.id)
       .single()
 
-    const isMember = profile?.membership_status === 'active'
-    const price = isMember && event.member_price != null && event.member_price < event.price
-      ? event.member_price
-      : event.price
+    const price = event.price
 
     // Create pending booking
     const { data: booking, error: bookingError } = await supabase

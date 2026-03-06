@@ -16,7 +16,6 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
   const [eventId, setEventId] = useState<string>('')
   const [event, setEvent] = useState<Event | null>(null)
   const [user, setUser] = useState<{ id: string; email?: string; user_metadata?: { full_name?: string } } | null>(null)
-  const [isMember, setIsMember] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [step, setStep] = useState(1)
@@ -62,24 +61,12 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
       }
       setEvent(eventData)
 
-      // Check membership
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('membership_status')
-        .eq('user_id', authUser.id)
-        .single()
-
-      setIsMember(profile?.membership_status === 'active')
       setIsLoading(false)
     }
     init()
   }, [params, supabase, router])
 
-  const price = event
-    ? (isMember && event.member_price != null && event.member_price < event.price
-        ? event.member_price
-        : event.price)
-    : 0
+  const price = event ? event.price : 0
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target
@@ -441,19 +428,6 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
                       </div>
                     </div>
 
-                    {/* Card brand badges */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
-                      {['Visa', 'Mastercard', 'Amex', 'Discover'].map((brand) => (
-                        <div key={brand} style={{
-                          padding: '6px 12px', borderRadius: '6px',
-                          border: '1px solid #E5E7EB', background: '#fff',
-                          fontSize: '0.6875rem', fontWeight: 600,
-                          color: '#6B7280', letterSpacing: '0.02em',
-                        }}>
-                          {brand}
-                        </div>
-                      ))}
-                    </div>
                   </div>
                 )}
 
@@ -560,12 +534,6 @@ export default function BookEventPage({ params }: { params: Promise<{ id: string
                       <span style={{ color: '#6B7280' }}>Event Price</span>
                       <span style={{ color: '#1A1A1A', fontWeight: 500 }}>{formatPrice(event.price)}</span>
                     </div>
-                    {isMember && event.member_price != null && event.member_price < event.price && (
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
-                        <span style={{ color: '#059669' }}>Member Discount</span>
-                        <span style={{ color: '#059669', fontWeight: 500 }}>-{formatPrice(event.price - event.member_price)}</span>
-                      </div>
-                    )}
                   </div>
 
                   <div style={{ height: '1px', background: '#E5E7EB', margin: '16px 0' }} />
